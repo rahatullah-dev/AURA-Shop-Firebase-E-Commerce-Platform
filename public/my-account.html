@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aura – My Account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Nunito',sans-serif;background:linear-gradient(135deg,#dde3ff 0%,#fff6ef 100%);min-height:100vh;padding:28px 16px 60px;}
+    .container{max-width:1100px;margin:0 auto;}
+    .breadcrumb{font-size:13px;color:#888;font-weight:600;margin-bottom:20px;}
+    .breadcrumb a{color:#888;text-decoration:none;} .breadcrumb a:hover{color:#1a73e8;}
+    .breadcrumb span{color:#1a1a2e;font-weight:700;}
+    .layout{display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start;}
+
+    /* SIDEBAR */
+    .sidebar{background:#fff;border-radius:20px;padding:28px 20px 24px;text-align:center;position:sticky;top:20px;}
+    .avatar-wrap{position:relative;display:inline-block;margin-bottom:14px;}
+    .avatar-circle{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#4fa3f7);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#fff;border:3px solid #e8f0fe;margin:0 auto;}
+    .user-name-sb{font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:2px;}
+    .user-email-sb{font-size:12px;color:#888;margin-bottom:20px;}
+    .divider-h{height:1px;background:#f0f0f0;margin:16px 0;}
+    .nav-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;color:#444;letter-spacing:0.3px;text-decoration:none;margin-bottom:4px;transition:background 0.2s,color 0.2s;}
+    .nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
+    .nav-item:hover{background:#f0f4ff;color:#1a73e8;}
+    .nav-item.active{background:#1a73e8;color:#fff;}
+    .nav-item.active svg{stroke:#fff;}
+    .logout-btn{font-size:14px;font-weight:800;color:#e53935;background:none;border:none;cursor:pointer;margin-top:8px;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:12px;width:100%;transition:background 0.2s;}
+    .logout-btn:hover{background:#fdecea;}
+    .logout-btn svg{width:18px;height:18px;stroke:#e53935;fill:none;stroke-width:2;}
+
+    /* MAIN PANEL */
+    .main{background:#fff;border-radius:20px;padding:32px 28px;}
+    .panel{display:none;} .panel.active{display:block;}
+    .panel h2{font-size:26px;font-weight:900;color:#1a1a2e;margin-bottom:24px;}
+
+    /* ORDERS TABLE */
+    .orders-table{width:100%;border-collapse:collapse;}
+    .orders-table th{text-align:left;font-size:12px;font-weight:800;color:#1a1a2e;padding:10px 12px;border-bottom:1.5px solid #f0f0f0;text-transform:uppercase;letter-spacing:0.5px;}
+    .orders-table td{padding:14px 12px;font-size:14px;font-weight:600;color:#444;border-bottom:1px solid #f5f5f5;vertical-align:middle;}
+    .orders-table tr:last-child td{border-bottom:none;}
+    .badge{display:inline-block;padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;letter-spacing:0.5px;}
+    .badge-delivered{background:#e8f5e9;color:#2e7d32;}
+    .badge-shipped{background:#e8f0fe;color:#1a73e8;}
+    .badge-pending{background:#fff8e1;color:#f57c00;}
+    .badge-cancelled{background:#fdecea;color:#c62828;}
+    .empty-state{text-align:center;padding:60px 20px;}
+    .empty-state .icon{font-size:3rem;margin-bottom:12px;}
+    .empty-state p{color:#888;font-size:14px;font-weight:700;}
+    .empty-state a{display:inline-block;margin-top:16px;padding:12px 28px;border-radius:50px;background:#1a73e8;color:#fff;font-weight:800;text-decoration:none;font-size:14px;}
+
+    /* PROFILE FORM */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+    .form-group{display:flex;flex-direction:column;gap:6px;}
+    .form-group.full{grid-column:1/-1;}
+    .form-group label{font-size:12px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+    .form-group input,.form-group select{padding:12px 16px;border:1.5px solid #e2e2e2;border-radius:12px;font-size:14px;font-family:'Nunito',sans-serif;color:#1a1a2e;outline:none;transition:border-color 0.2s;background:#fafbff;}
+    .form-group input:focus,.form-group select:focus{border-color:#1a73e8;background:#fff;}
+    .save-btn{padding:12px 32px;background:linear-gradient(135deg,#1a73e8,#4fa3f7);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity 0.2s;}
+    .save-btn:hover{opacity:0.9;}
+
+    /* LOADING */
+    .loading-row td{text-align:center;padding:40px;color:#888;font-size:14px;}
+
+    @media(max-width:780px){
+      .layout{grid-template-columns:1fr;}
+      .sidebar{position:static;}
+      .form-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> ›
+    <span id="breadcrumbActive">My Account</span>
+  </div>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="avatar-circle" id="sidebarAvatar">?</div>
+      <div class="user-name-sb" id="sidebarName">Loading...</div>
+      <div class="user-email-sb" id="sidebarEmail"></div>
+      <div class="divider-h"></div>
+
+      <a class="nav-item active" id="nav-orders" onclick="switchPanel('orders', this)">
+        <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
+        My Orders
+      </a>
+      <a class="nav-item" href="./wishlist.html">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Wishlist
+      </a>
+      <a class="nav-item" id="nav-profile" onclick="switchPanel('profile',this)">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </a>
+      <a class="nav-item" id="nav-addresses" onclick="switchPanel('addresses',this)">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        Saved Addresses
+      </a>
+      <a class="nav-item" id="nav-settings" onclick="switchPanel('settings',this)">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Settings
+      </a>
+      <a class="nav-item" href="index.html">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Back to Shop
+      </a>
+      <div class="divider-h"></div>
+      <button class="logout-btn" id="logoutBtn">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- ORDERS PANEL -->
+      <div class="panel active" id="panel-orders">
+        <h2>My Orders</h2>
+        <table class="orders-table">
+          <thead><tr>
+            <th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th>
+          </tr></thead>
+          <tbody id="ordersBody">
+            <tr class="loading-row"><td colspan="5">Loading orders...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- WISHLIST PANEL -->
+      <div class="panel" id="panel-wishlist">
+        <h2>My Wishlist</h2>
+        <div id="wishlistBody">
+          <div class="empty-state">
+            <div class="icon">🤍</div>
+            <p>Your wishlist is empty.</p>
+            <a href="featured_products.html">Browse Products</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE PANEL -->
+      <div class="panel" id="panel-profile">
+        <h2>My Profile</h2>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name</label><input id="pf-name" type="text"/></div>
+          <div class="form-group"><label>Email</label><input id="pf-email" type="email" disabled style="background:#f5f5f5;color:#999;"/></div>
+          <div class="form-group"><label>Phone</label><input id="pf-phone" type="tel" placeholder="+92 300 0000000"/></div>
+          <div class="form-group"><label>City</label><input id="pf-city" type="text" placeholder="Rawalpindi"/></div>
+          <div class="form-group full"><label>Address</label><input id="pf-address" type="text" placeholder="Street, Area..."/></div>
+        </div>
+        <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+        <div class="toast" id="profileToast" style="display:none;margin-top:14px;padding:10px 16px;border-radius:50px;text-align:center;font-size:13px;font-weight:700;"></div>
+      </div>
+
+      <!-- SAVED ADDRESSES PANEL -->
+      <div class="panel" id="panel-addresses">
+        <h2>Saved Addresses</h2>
+        <div id="addressList" style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px;">
+          <div class="empty-state">
+            <p>Loading addresses...</p>
+          </div>
+        </div>
+        <button class="save-btn" onclick="showAddAddressForm()">+ Add New Address</button>
+        
+        <div id="addressFormWrap" style="display:none; margin-top:24px; padding-top:24px; border-top:1px solid #f0f0f0;">
+          <h3 style="margin-bottom:16px;">Add New Address</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Label (e.g. Home, Office)</label><input id="addr-label" type="text" placeholder="Home"/></div>
+            <div class="form-group"><label>City</label><input id="addr-city" type="text" placeholder="City"/></div>
+            <div class="form-group full"><label>Full Address</label><input id="addr-full" type="text" placeholder="Street, Building, etc."/></div>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <button class="save-btn" onclick="saveNewAddress()">Save Address</button>
+            <button class="save-btn" style="background:#f5f5f5;color:#555;" onclick="hideAddAddressForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCOUNT SETTINGS PANEL -->
+      <div class="panel" id="panel-settings">
+        <h2>Account Settings</h2>
+        
+        <div style="background:#fafbff; border:1px solid #e2e2e2; border-radius:12px; padding:24px; margin-bottom:24px;">
+          <h3 style="margin-bottom:16px;font-size:18px;">Change Password</h3>
+          <div class="form-grid">
+            <div class="form-group"><label>Current Password</label><input id="pwd-current" type="password" placeholder="••••••••"/></div>
+            <div class="form-group"><label>New Password</label><input id="pwd-new" type="password" placeholder="••••••••"/></div>
+          </div>
+          <button class="save-btn" onclick="handleChangePassword()">Update Password</button>
+        </div>
+
+        <div style="background:#fef5f5; border:1px solid #fdecea; border-radius:12px; padding:24px;">
+          <h3 style="margin-bottom:8px;font-size:18px;color:#c62828;">Danger Zone</h3>
+          <p style="font-size:14px;color:#666;margin-bottom:16px;">Once you delete your account, there is no going back. Please be certain.</p>
+          <button class="save-btn" style="background:#c62828;" onclick="handleDeleteAccount()">Delete Account</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="modal-overlay" id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+  <div style="background:#fff; border-radius:16px; padding:24px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; position:relative;">
+    <button onclick="document.getElementById('orderModal').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
+    <h3 id="usr-order-id" style="font-size:1.4rem; margin-bottom:8px; color:#1a1a2e; font-weight:900;">Order Details</h3>
+    <div id="usr-order-date" style="color:#666; font-size:14px; margin-bottom:20px;"></div>
+    <div id="usr-order-items"></div>
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-weight:700; color:#1a1a2e;">Total Amount</span>
+      <span id="usr-order-total" style="font-size:1.6rem; font-weight:900; color:#1a73e8;"></span>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth, logout, getUserProfile, changeUserPassword, deleteUserAccount, auth, db }
+    from "./js/auth.js";
+  import {
+    doc, getDoc, collection, query, where, orderBy, getDocs, updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // ── REQUIRE AUTH ──────────────────────────────────────────
+  const user = await requireAuth("login.html");
+
+  // ── FILL SIDEBAR ─────────────────────────────────────────
+  document.getElementById("sidebarName").textContent  = user.displayName || "User";
+  document.getElementById("sidebarEmail").textContent = user.email;
+  document.getElementById("sidebarAvatar").textContent =
+    (user.displayName || user.email)[0].toUpperCase();
+
+  // ── LOGOUT ────────────────────────────────────────────────
+  document.getElementById("logoutBtn").onclick = async () => {
+    if (confirm("Are you sure you want to logout?")) await logout();
+  };
+
+  // ── LOAD ORDERS ───────────────────────────────────────────
+  window.allUserOrders = [];
+  async function loadOrders() {
+    const tbody = document.getElementById("ordersBody");
+    try {
+      // Firebase: query orders collection where userId == user.uid
+      const q    = query(
+        collection(db, "orders"),
+        where("userId", "==", user.uid)
+      );
+      const snap = await getDocs(q);
+
+      if (snap.empty) {
+        tbody.innerHTML = `<tr><td colspan="5">
+          <div class="empty-state">
+            <div class="icon">📦</div>
+            <p>No orders yet. Start shopping!</p>
+            <a href="index.html#products">Shop Now</a>
+          </div></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      
+      const orders = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      orders.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
+      window.allUserOrders = orders;
+      
+      orders.forEach(o => {
+        const map = { delivered:"badge-delivered", shipped:"badge-shipped",
+                      pending:"badge-pending",   cancelled:"badge-cancelled" };
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td style="font-family:monospace;font-weight:700;">#${o.id.slice(-6).toUpperCase()}</td>
+          <td>${o.createdAt?.toDate().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}) || "—"}</td>
+          <td>${o.items?.length || 0} item(s)</td>
+          <td style="font-family:monospace;font-weight:700;">$${(o.total||0).toFixed(2)}</td>
+          <td>
+            <span class="badge ${map[o.status]||'badge-pending'}">${(o.status||"pending").charAt(0).toUpperCase()+(o.status||"pending").slice(1)}</span>
+          </td>
+          <td>
+            <button class="save-btn" style="padding:6px 12px; font-size:12px;" onclick="viewUserOrder('${o.id}')">View</button>
+          </td>`;
+        tbody.appendChild(row);
+      });
+    } catch(e) {
+      console.error(e);
+      // Graceful fallback for demo (before Firebase is set up)
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:#888;font-size:14px;">
+        Connect Firebase to see your orders here.</td></tr>`;
+    }
+  }
+  loadOrders();
+
+  window.viewUserOrder = (id) => {
+    const order = window.allUserOrders.find(o => o.id === id);
+    if(!order) return;
+    document.getElementById('usr-order-id').textContent = 'Order #' + order.id.toUpperCase();
+    document.getElementById('usr-order-date').textContent = order.createdAt ? order.createdAt.toDate().toLocaleString() : '';
+    document.getElementById('usr-order-total').textContent = '$' + (order.total || 0).toFixed(2);
+    
+    document.getElementById('usr-order-items').innerHTML = order.items ? order.items.map(i => `
+      <div style="display:flex; align-items:center; padding:12px; border-bottom:1px solid #f0f0f0;">
+        <img src="${i.thumbnail || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:6px; margin-right:12px; object-fit:cover;">
+        <div style="flex:1;">
+          <div style="font-weight:700; color:#1a1a2e; font-size:14px;">${i.name}</div>
+          ${i.options?.size ? `<div style="font-size:12px; color:#888;">Size: ${i.options.size} | Color: ${i.options.color}</div>` : ''}
+        </div>
+        <div style="font-size:13px; font-weight:600; color:#666; margin-right:16px;">Qty: ${i.qty}</div>
+        <div style="font-size:14px; font-weight:800;">$${((i.price||0)*i.qty).toFixed(2)}</div>
+      </div>
+    `).join('') : '<p>No items</p>';
+    
+    document.getElementById('orderModal').style.display = 'flex';
+  };
+
+  // ── LOAD PROFILE ──────────────────────────────────────────
+  let userProfileDoc = null;
+  async function loadProfile() {
+    try {
+      userProfileDoc = await getUserProfile(user.uid);
+      if (userProfileDoc) {
+        document.getElementById("pf-name").value    = userProfileDoc.name    || user.displayName || "";
+        document.getElementById("pf-email").value   = userProfileDoc.email   || user.email       || "";
+        document.getElementById("pf-phone").value   = userProfileDoc.phone   || "";
+        document.getElementById("pf-city").value    = userProfileDoc.city    || "";
+        document.getElementById("pf-address").value = userProfileDoc.address || "";
+        renderAddresses(userProfileDoc.addresses || []);
+      }
+    } catch(e) {
+      document.getElementById("pf-name").value  = user.displayName || "";
+      document.getElementById("pf-email").value = user.email || "";
+      renderAddresses([]);
+    }
+  }
+  loadProfile();
+
+  // ── ADDRESSES LOGIC ───────────────────────────────────────
+  function renderAddresses(addresses) {
+    const list = document.getElementById('addressList');
+    if (addresses.length === 0) {
+      list.innerHTML = '<div class="empty-state"><p>No saved addresses yet.</p></div>';
+      return;
+    }
+    list.innerHTML = addresses.map((a, i) => `
+      <div style="padding:16px; border:1px solid #e2e2e2; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-weight:800; color:#1a1a2e; margin-bottom:4px;">${a.label}</div>
+          <div style="font-size:13px; color:#666;">${a.full}, ${a.city}</div>
+        </div>
+        <button class="save-btn" style="padding:8px 16px; background:#fdecea; color:#c62828; font-size:12px;" onclick="deleteAddress(${i})">Delete</button>
+      </div>
+    `).join('');
+  }
+
+  window.showAddAddressForm = () => document.getElementById('addressFormWrap').style.display = 'block';
+  window.hideAddAddressForm = () => {
+    document.getElementById('addressFormWrap').style.display = 'none';
+    document.getElementById('addr-label').value = '';
+    document.getElementById('addr-city').value = '';
+    document.getElementById('addr-full').value = '';
+  };
+
+  window.saveNewAddress = async () => {
+    const label = document.getElementById('addr-label').value.trim();
+    const city = document.getElementById('addr-city').value.trim();
+    const full = document.getElementById('addr-full').value.trim();
+    if(!label || !city || !full) return alert('Please fill all fields');
+    
+    try {
+      const addresses = userProfileDoc?.addresses || [];
+      addresses.push({ label, city, full });
+      await updateDoc(doc(db, "users", user.uid), { addresses });
+      if(userProfileDoc) userProfileDoc.addresses = addresses;
+      renderAddresses(addresses);
+      window.hideAddAddressForm();
+      alert('Address saved!');
+    } catch (e) {
+      console.error(e);
+      alert('Failed to save address.');
+    }
+  };
+
+  window.deleteAddress = async (index) => {
+    if(!confirm('Delete this address?')) return;
+    try {
+      const addresses = userProfileDoc?.addresses || [];
+      addresses.splice(index, 1);
+      await updateDoc(doc(db, "users", user.uid), { addresses });
+      if(userProfileDoc) userProfileDoc.addresses = addresses;
+      renderAddresses(addresses);
+    } catch(e) {
+      alert('Failed to delete address.');
+    }
+  };
+
+  // ── ACCOUNT SETTINGS LOGIC ────────────────────────────────
+  window.handleChangePassword = async () => {
+    const curr = document.getElementById('pwd-current').value;
+    const newP = document.getElementById('pwd-new').value;
+    if(!curr || !newP) return alert('Please enter both current and new password');
+    if(newP.length < 6) return alert('New password must be at least 6 characters');
+    try {
+      await changeUserPassword(curr, newP);
+      alert('Password updated successfully');
+      document.getElementById('pwd-current').value = '';
+      document.getElementById('pwd-new').value = '';
+    } catch(e) {
+      console.error(e);
+      alert(e.message === 'NOT_LOGGED_IN' ? 'Please log in again.' : 'Failed to update password. Check current password.');
+    }
+  };
+
+  window.handleDeleteAccount = async () => {
+    const pwd = prompt('To confirm account deletion, please enter your password:');
+    if(!pwd) return;
+    try {
+      await deleteUserAccount(pwd);
+      alert('Account deleted. We are sorry to see you go.');
+      window.location.href = 'index.html';
+    } catch(e) {
+      console.error(e);
+      alert('Failed to delete account. Incorrect password?');
+    }
+  };
+
+  // ── SAVE PROFILE ──────────────────────────────────────────
+  window.saveProfile = async function() {
+    const toast = document.getElementById("profileToast");
+    try {
+      // Firebase: update user doc in Firestore
+      await updateDoc(doc(db, "users", user.uid), {
+        name:    document.getElementById("pf-name").value.trim(),
+        phone:   document.getElementById("pf-phone").value.trim(),
+        city:    document.getElementById("pf-city").value.trim(),
+        address: document.getElementById("pf-address").value.trim()
+      });
+      toast.textContent  = "✅ Profile saved successfully!";
+      toast.style.cssText = "display:block;background:#e8f5e9;color:#2e7d32;";
+    } catch(e) {
+      toast.textContent  = "❌ Could not save. Connect Firebase first.";
+      toast.style.cssText = "display:block;background:#fdecea;color:#c62828;";
+    }
+    setTimeout(() => toast.style.display = "none", 3000);
+  };
+</script>
+
+<script>
+  // Panel switching
+  window.switchPanel = function(name, el) {
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    
+    const panel = document.getElementById("panel-" + name);
+    if(panel) panel.classList.add("active");
+    
+    if(el) {
+      el.classList.add("active");
+    } else {
+      const navItem = document.getElementById("nav-" + name);
+      if(navItem) navItem.classList.add("active");
+    }
+    
+    const labels = { orders:"My Orders", wishlist:"Wishlist", profile:"My Profile", addresses:"Saved Addresses", settings:"Account Settings" };
+    document.getElementById("breadcrumbActive").textContent = labels[name] || name;
+    
+    // Update URL without reloading
+    window.history.replaceState({}, '', `?tab=${name}`);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab') || 'orders';
+    window.switchPanel(tab);
+  });
+</script>
+</body>
+</html>

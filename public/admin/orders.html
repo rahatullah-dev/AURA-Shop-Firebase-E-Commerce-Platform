@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura Admin – Orders</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+  <div class="admin-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">A</div>
+        <div class="sidebar-brand-text">Aura<span>Admin Panel</span></div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="adminAvatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="adminName">Loading...</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav">
+        <div class="sidebar-nav-label">Main Menu</div>
+        <li>
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="orders.html" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="products.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="categories.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+            Categories
+          </a>
+        </li>
+        
+        <div class="sidebar-nav-label" style="margin-top:12px;">Storefront</div>
+        <li>
+          <a href="../index.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            View Live Store
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="drawer-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="mobile-menu-btn" id="menuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+          </button>
+          <h1>Orders</h1>
+        </div>
+        <div class="admin-topbar-actions">
+          <div class="admin-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search by Order ID..." />
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-content">
+        <!-- FILTER TABS -->
+        <div class="filter-tabs" id="statusFilters">
+          <button class="filter-tab active" data-filter="all">All Orders</button>
+          <button class="filter-tab" data-filter="confirmed">Confirmed</button>
+          <button class="filter-tab" data-filter="processing">Processing</button>
+          <button class="filter-tab" data-filter="shipped">Shipped</button>
+          <button class="filter-tab" data-filter="delivered">Delivered</button>
+          <button class="filter-tab" data-filter="cancelled">Cancelled</button>
+        </div>
+
+        <div class="admin-table-wrap">
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Action</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody">
+                <tr class="loading-row"><td colspan="7"><div class="loading-spinner"></div> Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ORDER DETAIL MODAL -->
+  <div class="modal-overlay" id="orderModalOverlay">
+    <div class="modal" style="max-width:700px; width:95%; max-height:90vh; overflow-y:auto; padding:0;">
+      <div style="padding:24px 28px; border-bottom:1px solid var(--admin-border); background:#f8fafc; border-radius:16px 16px 0 0; display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <h3 style="margin:0; font-size:1.4rem; color:var(--admin-dark); margin-bottom:4px;" id="mdl-order-id">Order #</h3>
+          <div style="font-size:.84rem; color:var(--admin-light);" id="mdl-order-date">Date</div>
+        </div>
+        <button class="btn-icon" onclick="closeOrderModal()" style="background:#fff">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div style="padding:28px;">
+        
+        <!-- Status update row -->
+        <div style="display:flex; align-items:center; justify-content:space-between; background:var(--admin-surface); border:1.5px solid var(--admin-border); border-radius:12px; padding:16px 20px; margin-bottom:24px;">
+          <div>
+            <div style="font-size:.76rem; font-weight:700; color:var(--admin-light); text-transform:uppercase; letter-spacing:.04em; margin-bottom:6px;">Current Status</div>
+            <div id="mdl-current-status"></div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <select id="updateStatusSelect" style="padding:8px 12px; border:1px solid var(--admin-border); border-radius:8px; font-family:'Outfit'; outline:none;">
+              <option value="confirmed">Confirmed</option>
+              <option value="processing">Processing</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <button class="btn btn-primary btn-sm" id="updateStatusBtn" onclick="saveOrderStatus()">Update</button>
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-bottom:28px;">
+          <div>
+            <div style="font-size:.8rem; font-weight:700; color:var(--admin-mid); text-transform:uppercase; margin-bottom:10px;">Customer Info</div>
+            <div style="font-weight:700; color:var(--admin-dark); margin-bottom:2px;" id="mdl-cust-name">Name</div>
+            <div style="font-size:.88rem; color:var(--admin-mid); margin-bottom:2px;" id="mdl-cust-email">Email</div>
+            <div style="font-size:.88rem; color:var(--admin-mid);" id="mdl-cust-phone">Phone</div>
+          </div>
+          <div>
+            <div style="font-size:.8rem; font-weight:700; color:var(--admin-mid); text-transform:uppercase; margin-bottom:10px;">Shipping Address</div>
+            <div style="font-size:.88rem; color:var(--admin-mid); line-height:1.5;" id="mdl-address">Address</div>
+          </div>
+        </div>
+
+        <div style="font-size:.8rem; font-weight:700; color:var(--admin-mid); text-transform:uppercase; margin-bottom:12px;">Order Items</div>
+        <div style="border:1px solid var(--admin-border); border-radius:12px; overflow:hidden; margin-bottom:24px;" id="mdl-items">
+          <!-- Items injected here -->
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:#f8fafc; border-radius:12px;">
+          <span style="font-weight:600; color:var(--admin-mid);">Total Amount</span>
+          <span style="font-size:1.4rem; font-weight:800; color:var(--admin-dark);" id="mdl-total">$0.00</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="toast"></div>
+
+  <script type="module">
+    import { requireAdmin, getAllOrders, getOrderDetails, updateOrderStatus } from '../js/adminService.js';
+
+    let allOrders = [];
+    let currentFilter = 'all';
+    let currentOpenOrderId = null;
+
+    async function init() {
+      const user = await requireAdmin();
+      if(!user) return;
+      document.getElementById('adminName').textContent = user.profile?.name || user.displayName || 'Admin';
+      document.getElementById('adminAvatar').textContent = (user.profile?.name || user.displayName || user.email)[0].toUpperCase();
+
+      await loadOrders();
+      setupFilters();
+    }
+    init();
+
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'admin-toast ' + type + ' show';
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    async function loadOrders() {
+      try {
+        allOrders = await getAllOrders();
+        renderOrders();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('ordersBody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--admin-red)">Error loading orders.</td></tr>`;
+      }
+    }
+
+    function renderOrders(searchQuery = '') {
+      const tbody = document.getElementById('ordersBody');
+      let filtered = allOrders;
+
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(o => 
+          (o.orderNumber || o.id).toLowerCase().includes(q) ||
+          o.customer?.name?.toLowerCase().includes(q)
+        );
+      }
+
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(o => o.status === currentFilter);
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">🧾</div><p>No orders found.</p></div></td></tr>`;
+        return;
+      }
+
+      const map = {
+        confirmed: "badge-confirmed",
+        processing: "badge-processing",
+        shipped: "badge-shipped",
+        delivered: "badge-delivered",
+        cancelled: "badge-cancelled"
+      };
+
+      tbody.innerHTML = '';
+      filtered.forEach(o => {
+        const statusClass = map[o.status] || 'badge-draft';
+        const statusText = (o.status || 'unknown').charAt(0).toUpperCase() + (o.status || 'unknown').slice(1);
+        const date = o.createdAt ? o.createdAt.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+        const itemCount = o.items ? o.items.reduce((s,i)=>s+i.qty,0) : 0;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-family:monospace;font-weight:700;color:var(--admin-dark)">${o.orderNumber || '#' + o.id.slice(-6).toUpperCase()}</td>
+          <td>
+            <div style="font-weight:700;color:var(--admin-dark)">${o.customer?.name || 'Unknown'}</div>
+            <div style="font-size:.76rem;color:var(--admin-light)">${o.customer?.email || ''}</div>
+          </td>
+          <td>${date}</td>
+          <td>${itemCount} item(s)</td>
+          <td style="font-weight:700;">$${(o.total || 0).toFixed(2)}</td>
+          <td><span class="badge ${statusClass}">${statusText}</span></td>
+          <td>
+            <div class="table-actions" style="justify-content:flex-end">
+              <button class="btn btn-secondary btn-sm" onclick="viewOrder('${o.id}')">View Details</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function setupFilters() {
+      document.getElementById('searchInput').addEventListener('input', e => {
+        renderOrders(e.target.value);
+      });
+
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', e => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.dataset.filter;
+          renderOrders(document.getElementById('searchInput').value);
+        });
+      });
+    }
+
+    window.viewOrder = async function(id) {
+      document.getElementById('orderModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      const order = await getOrderDetails(id);
+      if(!order) return;
+      currentOpenOrderId = id;
+
+      document.getElementById('mdl-order-id').textContent = order.orderNumber || '#' + order.id.toUpperCase();
+      document.getElementById('mdl-order-date').textContent = order.createdAt ? order.createdAt.toDate().toLocaleString() : '';
+      
+      const map = {
+        confirmed: "badge-confirmed", processing: "badge-processing", shipped: "badge-shipped",
+        delivered: "badge-delivered", cancelled: "badge-cancelled"
+      };
+      const statusClass = map[order.status] || 'badge-draft';
+      const statusText = (order.status || 'unknown').toUpperCase();
+      document.getElementById('mdl-current-status').innerHTML = `<span class="badge ${statusClass}" style="font-size:.88rem;padding:6px 14px;">${statusText}</span>`;
+      document.getElementById('updateStatusSelect').value = order.status || 'confirmed';
+
+      document.getElementById('mdl-cust-name').textContent = order.customer?.name || 'N/A';
+      document.getElementById('mdl-cust-email').textContent = order.customer?.email || '';
+      document.getElementById('mdl-cust-phone').textContent = order.customer?.phone || '';
+
+      const addr = order.shippingAddress;
+      if (addr) {
+        document.getElementById('mdl-address').innerHTML = `
+          ${addr.addressLine1}<br>
+          ${addr.addressLine2 ? addr.addressLine2 + '<br>' : ''}
+          ${addr.city}, ${addr.state} ${addr.zip}<br>
+          ${addr.country}
+        `;
+      } else {
+        document.getElementById('mdl-address').innerHTML = 'No address provided.';
+      }
+
+      document.getElementById('mdl-total').textContent = `$${(order.total || 0).toFixed(2)}`;
+
+      const itemsCont = document.getElementById('mdl-items');
+      itemsCont.innerHTML = order.items ? order.items.map(i => `
+        <div style="display:flex; align-items:center; padding:12px 16px; border-bottom:1px solid var(--admin-border); background:#fff;">
+          <img src="${i.thumbnail || 'https://via.placeholder.com/40'}" style="width:44px; height:44px; border-radius:6px; object-fit:cover; margin-right:14px; border:1px solid #f1f5f9;">
+          <div style="flex:1;">
+            <div style="font-weight:700; color:var(--admin-dark); font-size:.88rem;">${i.name}</div>
+            ${i.options?.size ? `<div style="font-size:.76rem; color:var(--admin-light);">Size: ${i.options.size} | Color: ${i.options.color}</div>` : ''}
+          </div>
+          <div style="font-weight:600; color:var(--admin-mid); margin-right:20px;">Qty: ${i.qty}</div>
+          <div style="font-weight:800; color:var(--admin-dark);">$${((i.price||0)*i.qty).toFixed(2)}</div>
+        </div>
+      `).join('') : '<div style="padding:16px;">No items</div>';
+      if(itemsCont.lastElementChild) itemsCont.lastElementChild.style.borderBottom = 'none';
+    };
+
+    window.closeOrderModal = function() {
+      document.getElementById('orderModalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+      currentOpenOrderId = null;
+    };
+
+    window.saveOrderStatus = async function() {
+      if(!currentOpenOrderId) return;
+      const btn = document.getElementById('updateStatusBtn');
+      const newStatus = document.getElementById('updateStatusSelect').value;
+      
+      btn.disabled = true;
+      btn.textContent = '...';
+
+      try {
+        await updateOrderStatus(currentOpenOrderId, newStatus);
+        showToast('Order status updated successfully');
+        await loadOrders(); // Refresh table
+        
+        // Update modal UI
+        const map = {
+          confirmed: "badge-confirmed", processing: "badge-processing", shipped: "badge-shipped",
+          delivered: "badge-delivered", cancelled: "badge-cancelled"
+        };
+        document.getElementById('mdl-current-status').innerHTML = `<span class="badge ${map[newStatus]}" style="font-size:.88rem;padding:6px 14px;">${newStatus.toUpperCase()}</span>`;
+        
+      } catch(err) {
+        console.error(err);
+        showToast('Error updating status', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update';
+      }
+    };
+
+    // Mobile Menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+    });
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    });
+  </script>
+</body>
+</html>

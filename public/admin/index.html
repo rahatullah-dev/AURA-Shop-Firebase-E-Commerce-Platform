@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura – Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+<link href="https://cdn.jsdelivr.net/npm/@tailwindcss/forms@0.5.2/dist/forms.min.css" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+  };
+</script>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+  <div class="admin-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">A</div>
+        <div class="sidebar-brand-text">Aura<span>Admin Panel</span></div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="adminAvatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="adminName">Loading...</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+        <button class="sidebar-logout" id="logoutBtn" title="Logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+
+      <ul class="sidebar-nav">
+        <div class="sidebar-nav-label">Main Menu</div>
+        <li>
+          <a href="index.html" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="orders.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Orders
+            <span class="nav-badge" id="navPendingOrders" style="display:none">0</span>
+          </a>
+        </li>
+        <li>
+          <a href="products.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="categories.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+            Categories
+          </a>
+        </li>
+        
+        <div class="sidebar-nav-label" style="margin-top:12px;">Storefront</div>
+        <li>
+          <a href="../index.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            View Live Store
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="drawer-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="mobile-menu-btn" id="menuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <h1>Dashboard Overview</h1>
+        </div>
+        <div class="admin-topbar-actions">
+          <div class="badge badge-published" style="font-size:.7rem;padding:6px 12px;">
+          <button id="themeToggle" class="ml-4 p-1 rounded" onclick="toggleTheme()" title="Toggle dark mode">🌙</button>
+           <button id="backToStoreBtn" class="ml-4 p-1 rounded bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200" title="Back to Store" onclick="window.location.href='../index.html'">← Storefront</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-content">
+        <!-- STATS GRID -->
+        <div class="stat-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <div class="loading-spinner"></div>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Total Revenue</div>
+              <div class="stat-value">...</div>
+            </div>
+          </div>
+          <!-- More stats loaded via JS -->
+        </div>
+
+        <!-- RECENT ORDERS TABLE -->
+        <div class="admin-table-wrap">
+          <div class="admin-table-header">
+            <h2>Recent Orders</h2>
+            <a href="orders.html" class="btn btn-sm btn-secondary">View All</a>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentOrdersBody">
+                <tr class="loading-row"><td colspan="5"><div class="loading-spinner"></div> Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <script type="module">
+    import { requireAdmin, getDashboardStats, getAllOrders } from '../js/adminService.js';
+    import { logout } from '../js/auth.js';
+
+    // ── INITIALIZE ──────────────────────────────────────
+    let currentUser;
+    
+    async function init() {
+      currentUser = await requireAdmin();
+      if (!currentUser) return;
+      
+      // Update UI
+      document.getElementById('adminName').textContent = currentUser.profile?.name || currentUser.displayName || 'Admin';
+      document.getElementById('adminAvatar').textContent = (currentUser.profile?.name || currentUser.displayName || currentUser.email)[0].toUpperCase();
+      
+      const dateOpts = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('dateDisplay').textContent = new Date().toLocaleDateString('en-US', dateOpts);
+
+      loadStats();
+      loadRecentOrders();
+    }
+    
+    init();
+
+    // ── LOGOUT ──────────────────────────────────────────
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if(confirm('Are you sure you want to log out?')) {
+        await logout(); // It redirects to login
+      }
+    });
+
+    // ── LOAD STATS ──────────────────────────────────────
+    async function loadStats() {
+      try {
+        const stats = await getDashboardStats();
+        
+        // Update nav badge
+        const pendingBadge = document.getElementById('navPendingOrders');
+        if (stats.pendingOrders > 0) {
+          pendingBadge.textContent = stats.pendingOrders;
+          pendingBadge.style.display = 'inline-block';
+        } else {
+          pendingBadge.style.display = 'none';
+        }
+
+        const grid = document.getElementById('statsGrid');
+        grid.innerHTML = `
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Total Revenue</div>
+              <div class="stat-value">$${stats.totalRevenue.toFixed(2)}</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Total Orders</div>
+              <div class="stat-value">${stats.totalOrders}</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Pending Orders</div>
+              <div class="stat-value">${stats.pendingOrders}</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Total Products</div>
+              <div class="stat-value">${stats.totalProducts}</div>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="stat-info">
+              <div class="stat-label">Inventory Alerts</div>
+              <div class="stat-value" style="font-size:1.1rem;margin-top:6px;">
+                <span style="color:var(--admin-amber)">${stats.lowStockProducts} Low</span> / 
+                <span style="color:var(--admin-red)">${stats.outOfStockProducts} Out</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Error loading stats:', err);
+      }
+    }
+
+    // ── LOAD RECENT ORDERS ──────────────────────────────
+    async function loadRecentOrders() {
+      const tbody = document.getElementById('recentOrdersBody');
+      try {
+        const orders = await getAllOrders();
+        const recent = orders.slice(0, 6);
+        
+        if (recent.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;">No orders found.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = '';
+        recent.forEach(o => {
+          const map = {
+            confirmed: "badge-confirmed",
+            processing: "badge-processing",
+            shipped: "badge-shipped",
+            delivered: "badge-delivered",
+            cancelled: "badge-cancelled"
+          };
+          
+          const statusClass = map[o.status] || 'badge-confirmed';
+          const statusText = (o.status || 'confirmed').charAt(0).toUpperCase() + (o.status || 'confirmed').slice(1);
+          const date = o.createdAt ? o.createdAt.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+          
+          tbody.innerHTML += `
+            <tr>
+              <td style="font-family:monospace;font-weight:700;color:var(--admin-dark)">${o.orderNumber || '#' + o.id.slice(-6).toUpperCase()}</td>
+              <td>
+                <div style="font-weight:600;color:var(--admin-dark)">${o.customer?.name || 'Unknown'}</div>
+                <div style="font-size:.76rem;color:var(--admin-light)">${o.customer?.email || ''}</div>
+              </td>
+              <td>${date}</td>
+              <td style="font-weight:700;">$${(o.total || 0).toFixed(2)}</td>
+              <td><span class="badge ${statusClass}">${statusText}</span></td>
+            </tr>
+          `;
+        });
+        
+      } catch (err) {
+        console.error('Error loading recent orders:', err);
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--admin-red);">Failed to load orders.</td></tr>`;
+      }
+    }
+
+    // ── MOBILE MENU ─────────────────────────────────────
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('open');
+      if (sidebar.classList.contains('open')) {
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      } else {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
+    if(overlay) overlay.addEventListener('click', toggleMenu);
+
+  </script>
+</body>
+</html>

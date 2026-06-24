@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura Admin – Categories</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+  <div class="admin-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">A</div>
+        <div class="sidebar-brand-text">Aura<span>Admin Panel</span></div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="adminAvatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="adminName">Loading...</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav">
+        <div class="sidebar-nav-label">Main Menu</div>
+        <li>
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="orders.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="products.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="categories.html" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+            Categories
+          </a>
+        </li>
+        
+        <div class="sidebar-nav-label" style="margin-top:12px;">Storefront</div>
+        <li>
+          <a href="../index.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            View Live Store
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="drawer-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="mobile-menu-btn" id="menuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+          </button>
+          <h1>Categories</h1>
+        </div>
+        <div class="admin-topbar-actions">
+          <button class="btn btn-primary" onclick="openCatModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Category
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-content">
+        <div class="admin-table-wrap">
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width:50px">Icon</th>
+                  <th>Category Name</th>
+                  <th>Slug / ID</th>
+                  <th>Display Order</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="catBody">
+                <tr class="loading-row"><td colspan="6"><div class="loading-spinner"></div> Loading categories...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- CATEGORY MODAL -->
+  <div class="modal-overlay" id="catModalOverlay">
+    <div class="modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--admin-border);">
+        <h3 id="modalTitle" style="margin:0; font-size:1.25rem;">Add New Category</h3>
+        <button class="btn-icon" onclick="closeCatModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="catForm" onsubmit="event.preventDefault(); saveCategory();">
+        <input type="hidden" id="cat-id" />
+        
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Category Name *</label>
+          <input type="text" id="cat-name" required placeholder="e.g. Footwear" />
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label>Slug (URL identifier)</label>
+          <input type="text" id="cat-slug" placeholder="Auto-generated if left blank" />
+        </div>
+
+        <div class="form-grid" style="margin-bottom:16px;">
+          <div class="form-group">
+            <label>Icon (Emoji)</label>
+            <input type="text" id="cat-icon" placeholder="👟" maxlength="4" />
+          </div>
+          <div class="form-group">
+            <label>Display Order</label>
+            <input type="number" id="cat-order" value="0" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="cat-active" checked />
+            <div class="toggle-switch"></div>
+            Active (Visible to users)
+          </label>
+        </div>
+
+        <div class="form-footer">
+          <button type="button" class="btn btn-icon" onclick="closeCatModal()" style="width:auto;padding:0 16px">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveCatBtn" style="margin-left:auto">
+            Save Category
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="toast"></div>
+
+  <script type="module">
+    import { requireAdmin, getAllCategories, addCategory, updateCategory, deleteCategory } from '../js/adminService.js';
+
+    let allCategories = [];
+
+    async function init() {
+      const user = await requireAdmin();
+      if(!user) return;
+      document.getElementById('adminName').textContent = user.profile?.name || user.displayName || 'Admin';
+      document.getElementById('adminAvatar').textContent = (user.profile?.name || user.displayName || user.email)[0].toUpperCase();
+
+      await loadCategories();
+    }
+    init();
+
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'admin-toast ' + type + ' show';
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    async function loadCategories() {
+      try {
+        allCategories = await getAllCategories();
+        renderCategories();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('catBody').innerHTML = `<tr><td colspan="6" style="text-align:center;color:var(--admin-red)">Error loading categories.</td></tr>`;
+      }
+    }
+
+    function renderCategories() {
+      const tbody = document.getElementById('catBody');
+      
+      if (allCategories.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="6">
+            <div class="empty-state">
+              <div class="empty-icon">📁</div>
+              <p>No categories found. Create one to get started.</p>
+            </div>
+          </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      allCategories.forEach(c => {
+        const statusBadge = c.isActive !== false 
+          ? `<span class="badge badge-published">Active</span>`
+          : `<span class="badge badge-draft">Inactive</span>`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-size:1.4rem;text-align:center;">${c.icon || '📁'}</td>
+          <td style="font-weight:700;color:var(--admin-dark)">${c.name}</td>
+          <td style="font-family:monospace;color:var(--admin-light)">${c.slug || c.id}</td>
+          <td>${c.order || 0}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="table-actions" style="justify-content:flex-end">
+              <button class="btn-icon" onclick="editCat('${c.id}')" title="Edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="btn-icon danger" onclick="delCat('${c.id}')" title="Delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.openCatModal = function() {
+      document.getElementById('catForm').reset();
+      document.getElementById('cat-id').value = '';
+      document.getElementById('modalTitle').textContent = 'Add New Category';
+      document.getElementById('catModalOverlay').classList.add('active');
+    };
+
+    window.closeCatModal = function() {
+      document.getElementById('catModalOverlay').classList.remove('active');
+    };
+
+    window.editCat = function(id) {
+      const cat = allCategories.find(c => c.id === id);
+      if(!cat) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit Category';
+      document.getElementById('cat-id').value = cat.id;
+      document.getElementById('cat-name').value = cat.name || '';
+      document.getElementById('cat-slug').value = cat.slug || cat.id || '';
+      document.getElementById('cat-icon').value = cat.icon || '';
+      document.getElementById('cat-order').value = cat.order || 0;
+      document.getElementById('cat-active').checked = cat.isActive !== false;
+
+      document.getElementById('catModalOverlay').classList.add('active');
+    };
+
+    window.saveCategory = async function() {
+      const btn = document.getElementById('saveCatBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading-spinner"></div> Saving...';
+
+      try {
+        const id = document.getElementById('cat-id').value;
+        const slugInput = document.getElementById('cat-slug').value.trim();
+        const data = {
+          name: document.getElementById('cat-name').value.trim(),
+          icon: document.getElementById('cat-icon').value.trim() || '📁',
+          order: Number(document.getElementById('cat-order').value),
+          isActive: document.getElementById('cat-active').checked
+        };
+        
+        if (slugInput) data.slug = slugInput;
+
+        if (id) {
+          await updateCategory(id, data);
+          showToast('Category updated!');
+        } else {
+          await addCategory(data);
+          showToast('Category created!');
+        }
+
+        closeCatModal();
+        await loadCategories();
+
+      } catch (err) {
+        console.error(err);
+        showToast('Error saving category.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Category';
+      }
+    };
+
+    window.delCat = async function(id) {
+      if(confirm('Are you sure you want to permanently delete this category?')) {
+        try {
+          await deleteCategory(id);
+          showToast('Category deleted.');
+          await loadCategories();
+        } catch (err) {
+          console.error(err);
+          showToast('Error deleting category.', 'error');
+        }
+      }
+    };
+
+    // Mobile Menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+    });
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    });
+  </script>
+</body>
+</html>

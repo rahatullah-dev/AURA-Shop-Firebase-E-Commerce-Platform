@@ -1,0 +1,184 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── HELPERS ───────────────────────────────────────────────────────────────
+
+    // Is the request from an authenticated user?
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Is the authenticated user the document owner?
+    function isOwner(uid) {
+      return isAuth() && request.auth.uid == uid;
+    }
+
+    // Does the user have admin role? (Reads their Firestore user doc)
+    function isAdmin() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Does the user have admin or manager role?
+    function isStaff() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'manager'];
+    }
+
+    // Is the incoming data valid for a new user document?
+    function validUserDoc() {
+      let d = request.resource.data;
+      return d.uid is string
+          && d.email is string
+          && d.role == 'user';         // role must default to 'user' on creation
+    }
+
+
+    // ── USERS ─────────────────────────────────────────────────────────────────
+    match /users/{uid} {
+      // Owner can read their own profile; admin/staff can read any
+      allow read: if isOwner(uid) || isStaff();
+
+      // Create: only authenticated user creating their own doc with role='user'
+      allow create: if isOwner(uid) && validUserDoc();
+
+      // Update own profile (cannot change role)
+      allow update: if isOwner(uid)
+                    && request.resource.data.role == resource.data.role
+                 || isAdmin();          // admin can change anything including role
+
+      // Only admin can delete user docs
+      allow delete: if isAdmin();
+    }
+
+
+    // ── PRODUCTS ──────────────────────────────────────────────────────────────
+    match /products/{productId} {
+      // Published products are publicly readable; unpublished only for staff
+      allow read: if resource.data.isPublished == true || isStaff();
+
+      // Only staff can create/update/delete products
+      allow write: if isStaff();
+
+      // Variants subcollection — same rules as parent product
+      match /variants/{variantId} {
+        allow read: if get(/databases/$(database)/documents/products/$(productId)).data.isPublished == true
+                    || isStaff();
+        allow write: if isStaff();
+      }
+    }
+
+
+    // ── CATEGORIES ────────────────────────────────────────────────────────────
+    match /categories/{categoryId} {
+      // Active categories are publicly readable
+      allow read: if resource.data.isActive == true || isStaff();
+      allow write: if isStaff();
+
+      match /subcategories/{subId} {
+        allow read: if get(/databases/$(database)/documents/categories/$(categoryId)).data.isActive == true
+                    || isStaff();
+        allow write: if isStaff();
+      }
+    }
+
+
+    // ── ORDERS ────────────────────────────────────────────────────────────────
+    match /orders/{orderId} {
+      // Customer can read only their own orders; staff can read all
+      allow read: if isAuth() && (resource.data.userId == request.auth.uid || isStaff());
+
+      // Customer can create a new order for themselves
+      allow create: if isAuth()
+                    && request.resource.data.userId == request.auth.uid;
+
+      // Customer cannot update orders (only staff can, e.g. to change status)
+      allow update: if isStaff();
+
+      // Nobody deletes orders (soft-cancel via status field instead)
+      allow delete: if false;
+
+      // Order timeline — read: owner or staff | write: system (Cloud Functions) or staff
+      match /timeline/{eventId} {
+        allow read:  if isAuth() && (
+                       get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
+                       || isStaff()
+                     );
+        allow write: if isStaff();
+      }
+    }
+
+
+    // ── REVIEWS ───────────────────────────────────────────────────────────────
+    match /reviews/{reviewId} {
+      // Approved reviews are public; pending/rejected reviews only visible to owner or staff
+      allow read: if resource.data.status == 'approved'
+                  || (isAuth() && resource.data.userId == request.auth.uid)
+                  || isStaff();
+
+      // Authenticated user can create a review (one per order — enforced by app logic)
+      allow create: if isAuth() && request.resource.data.userId == request.auth.uid;
+
+      // Owner can update their own review; staff can moderate (change status, add reply)
+      allow update: if (isAuth() && resource.data.userId == request.auth.uid
+                        && request.resource.data.status == resource.data.status)  // owner cannot change status
+                    || isStaff();
+
+      // Only staff can delete reviews
+      allow delete: if isStaff();
+    }
+
+
+    // ── COUPONS ───────────────────────────────────────────────────────────────
+    match /coupons/{couponId} {
+      // Any authenticated user can read active coupons (to validate at checkout)
+      allow read: if isAuth();
+
+      // Only staff can manage coupons
+      allow write: if isStaff();
+    }
+
+
+    // ── CART ──────────────────────────────────────────────────────────────────
+    match /cart/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /items/{itemId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+
+    // ── WISHLIST ──────────────────────────────────────────────────────────────
+    match /wishlist/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /items/{productId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+
+    // ── NOTIFICATIONS ─────────────────────────────────────────────────────────
+    match /notifications/{notificationId} {
+      // User can read notifications addressed to them
+      allow read: if isAuth() && (
+                    resource.data.userId == request.auth.uid
+                    || resource.data.userId == null    // broadcast notifications
+                    || isStaff()
+                  );
+
+      // Mark as read — user can only update isRead / readAt on their own notifications
+      allow update: if isAuth()
+                    && resource.data.userId == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['isRead', 'readAt']);
+
+      // Only staff/Cloud Functions can create or delete notifications
+      allow create, delete: if isStaff();
+    }
+
+  }
+}

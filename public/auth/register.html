@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura – Create Account</title>
+  <meta name="description" content="Create your Aura Shop account to start shopping, track orders and manage your wishlist." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dde3ff 0%, #fff6ef 100%);
+      padding: 24px 16px
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 36px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 12px 48px rgba(26, 115, 232, 0.10)
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #1a73e8, #4fa3f7);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 900;
+      color: #1a73e8
+    }
+
+    .logo-text span {
+      color: #f5a623
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 19px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      margin: 18px 0 24px
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 16px
+    }
+
+    .field label {
+      position: absolute;
+      top: -9px;
+      left: 16px;
+      background: #fff;
+      padding: 0 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      z-index: 1
+    }
+
+    .field input {
+      width: 100%;
+      border: 1.5px solid #e2e2e2;
+      border-radius: 50px;
+      padding: 13px 18px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    .field input:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 3px rgba(26, 115, 232, .10)
+    }
+
+    .field input::placeholder {
+      color: #bbb
+    }
+
+    .strength-wrap {
+      margin: -4px 0 10px;
+      padding: 0 4px
+    }
+
+    .strength-bar {
+      height: 5px;
+      border-radius: 3px;
+      background: #ebebeb;
+      overflow: hidden;
+      margin-bottom: 5px
+    }
+
+    .strength-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width .35s, background .35s
+    }
+
+    .strength-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700
+    }
+
+    .strength-labels .weak {
+      color: #f5a623
+    }
+
+    .strength-labels .strong {
+      color: #34a853
+    }
+
+    .field-hint {
+      font-size: 11px;
+      padding: 2px 6px 0;
+      display: none
+    }
+
+    .field-hint.error {
+      color: #e53935;
+      display: block
+    }
+
+    .field-hint.success {
+      color: #34a853;
+      display: block
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #1a73e8, #4fa3f7);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity .2s
+    }
+
+    .btn-primary:hover {
+      opacity: .92
+    }
+
+    .btn-primary:disabled {
+      opacity: .6;
+      cursor: not-allowed
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 13px;
+      border-radius: 50px;
+      background: #fff;
+      border: 1.5px solid #e2e2e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #444;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+      font-family: 'Nunito', sans-serif
+    }
+
+    .btn-google:hover {
+      background: #f5f8ff;
+      border-color: #1a73e8
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ebebeb
+    }
+
+    .divider span {
+      font-size: 12px;
+      color: #bbb;
+      font-weight: 700
+    }
+
+    .bottom-link {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-top: 16px
+    }
+
+    .bottom-link a {
+      color: #1a73e8;
+      font-weight: 800;
+      text-decoration: none
+    }
+
+    .toast {
+      display: none;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 50px;
+      margin-top: 14px
+    }
+
+    .toast.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      display: block
+    }
+
+    .toast.error {
+      background: #fdecea;
+      color: #c62828;
+      display: block
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      <span class="logo-text">Aura<span>.</span></span>
+    </div>
+    <h2>Create Account</h2>
+
+    <div class="field"><label>Full Name</label><input type="text" id="name" placeholder="John Doe"
+        autocomplete="name" /></div>
+    <div class="field"><label>Email</label><input type="email" id="email" placeholder="john.doe@email.com"
+        autocomplete="email" /></div>
+    <div class="field"><label>Password</label><input type="password" id="password" placeholder="Create a password"
+        oninput="checkStrength(this.value)" autocomplete="new-password" /></div>
+
+    <div class="strength-wrap">
+      <div class="strength-bar">
+        <div class="strength-fill" id="str-fill"></div>
+      </div>
+      <div class="strength-labels"><span class="weak">Weak</span><span class="strong">Strong</span></div>
+    </div>
+
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" id="confirm" placeholder="Re-enter your password" autocomplete="new-password" />
+      <span class="field-hint" id="match-hint"></span>
+    </div>
+
+    <button class="btn-primary" id="reg-btn" onclick="handleRegister()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btn-text">Register</span>
+    </button>
+
+    <div class="divider"><span>OR</span></div>
+
+    <button class="btn-google" onclick="handleGoogleRegister()">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335"
+          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.12 17.74 9.5 24 9.5z" />
+        <path fill="#4285F4"
+          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+        <path fill="#FBBC05"
+          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+        <path fill="#34A853"
+          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.62-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+      </svg>
+      Sign Up with Google
+    </button>
+
+    <div class="bottom-link">Already have an account? <a href="login.html">LOGIN</a></div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script type="module">
+    // ✅ FIX: Import path corrected — no space in filename
+    import { auth, db } from '../firebase-config.js';
+    import {
+      createUserWithEmailAndPassword,
+      updateProfile,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      doc, setDoc, getDoc, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    onAuthStateChanged(auth, user => { if (user) window.location.href = '../index.html'; });
+
+    window.checkStrength = val => {
+      const fill = document.getElementById('str-fill');
+      let s = 0;
+      if (val.length >= 8) s++;
+      if (/[A-Z]/.test(val)) s++;
+      if (/[0-9]/.test(val)) s++;
+      if (/[^A-Za-z0-9]/.test(val)) s++;
+      fill.style.width = [0, 28, 55, 78, 100][s] + '%';
+      fill.style.background = ['#ebebeb', '#e53935', '#f5a623', '#1a73e8', '#34a853'][s];
+    };
+
+    document.getElementById('confirm').addEventListener('input', function () {
+      const pass = document.getElementById('password').value;
+      const hint = document.getElementById('match-hint');
+      if (!this.value) { hint.className = 'field-hint'; return; }
+      hint.textContent = this.value === pass ? '✓ Passwords match' : '✗ Passwords do not match';
+      hint.className = 'field-hint ' + (this.value === pass ? 'success' : 'error');
+    });
+
+    function setLoading(on) {
+      document.getElementById('reg-btn').disabled = on;
+      document.getElementById('spinner').style.display = on ? 'block' : 'none';
+      document.getElementById('btn-text').textContent = on ? 'Creating account…' : 'Register';
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast ' + type;
+      setTimeout(() => t.className = 'toast', 3500);
+    }
+
+    // ✅ FIX: Added role:'user' field required by Firestore security rules
+    async function createUserDoc(user, name) {
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        name: name || user.displayName || '',
+        email: user.email,
+        photoURL: user.photoURL || '',
+        role: 'user',
+        phone: '',
+        address: '',
+        city: '',
+        createdAt: serverTimestamp(),
+        wishlist: [],
+        addresses: []
+      });
+    }
+
+    window.handleRegister = async () => {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value;
+      const conf = document.getElementById('confirm').value;
+      if (!name || !email || !pass || !conf) { showToast('Please fill in all fields.', 'error'); return; }
+      if (pass !== conf) { showToast('Passwords do not match.', 'error'); return; }
+      if (pass.length < 6) { showToast('Password must be at least 6 characters.', 'error'); return; }
+      setLoading(true);
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await updateProfile(cred.user, { displayName: name });
+        await createUserDoc(cred.user, name);
+        showToast('Account created! Welcome to Aura.', 'success');
+        setTimeout(() => window.location.href = '../index.html', 1200);
+      } catch (e) {
+        const map = {
+          'auth/email-already-in-use': 'This email is already registered.',
+          'auth/invalid-email': 'Invalid email address.',
+          'auth/weak-password': 'Password must be at least 6 characters.',
+          'auth/network-request-failed': 'Network error. Check your connection.'
+        };
+        showToast(map[e.code] || 'Registration failed. Please try again.', 'error');
+      } finally { setLoading(false); }
+    };
+
+    window.handleGoogleRegister = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const cred = await signInWithPopup(auth, provider);
+        // ✅ FIX: Check if doc exists before creating — prevents overwriting existing accounts
+        const userRef = doc(db, 'users', cred.user.uid);
+        const snap = await getDoc(userRef);
+        if (!snap.exists()) {
+          await createUserDoc(cred.user, cred.user.displayName);
+        }
+        window.location.href = '../index.html';
+      } catch (e) {
+        const map = {
+          'auth/popup-closed-by-user': 'Google sign-up was cancelled.',
+          'auth/network-request-failed': 'Network error. Check your connection.'
+        };
+        showToast(map[e.code] || 'Google sign-up failed. Please try again.', 'error');
+      }
+    };
+  </script>
+</body>
+
+</html>

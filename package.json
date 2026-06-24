@@ -1,0 +1,22 @@
+{
+  "name": "aura-shop",
+  "version": "1.0.0",
+  "description": "Production-ready ecommerce store",
+  "main": "src/index.html",
+  "scripts": {
+    "dev": "vite src",
+    "build": "vite build src --outDir ../dist",
+    "preview": "vite preview src"
+  },
+  "keywords": [
+    "ecommerce",
+    "firebase",
+    "cloudinary",
+    "vanilla-js"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}

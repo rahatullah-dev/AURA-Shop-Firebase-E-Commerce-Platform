@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura Admin – Products</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+
+<body>
+  <div class="admin-layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">A</div>
+        <div class="sidebar-brand-text">Aura<span>Admin Panel</span></div>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="adminAvatar">A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="adminName">Loading...</div>
+          <div class="sidebar-user-role">Administrator</div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav">
+        <div class="sidebar-nav-label">Main Menu</div>
+        <li>
+          <a href="index.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a href="orders.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Orders
+          </a>
+        </li>
+        <li>
+          <a href="products.html" class="active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+              <line x1="7" y1="7" x2="7.01" y2="7" />
+            </svg>
+            Products
+          </a>
+        </li>
+        <li>
+          <a href="categories.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6" />
+              <line x1="8" y1="12" x2="21" y2="12" />
+              <line x1="8" y1="18" x2="21" y2="18" />
+              <line x1="3" y1="6" x2="3.01" y2="6" />
+              <line x1="3" y1="12" x2="3.01" y2="12" />
+              <line x1="3" y1="18" x2="3.01" y2="18" />
+            </svg>
+            Categories
+          </a>
+        </li>
+        
+        <div class="sidebar-nav-label" style="margin-top:12px;">Storefront</div>
+        <li>
+          <a href="../index.html" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+            View Live Store
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <div class="drawer-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="mobile-menu-btn" id="menuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+          </button>
+          <h1>Products</h1>
+        </div>
+        <div class="admin-topbar-actions">
+          <div class="admin-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search products..." />
+          </div>
+          <button class="btn btn-primary" onclick="openProductModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Product
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-content">
+        <!-- FILTER TABS -->
+        <div class="filter-tabs" id="statusFilters">
+          <button class="filter-tab active" data-filter="all">All Products</button>
+          <button class="filter-tab" data-filter="published">Published</button>
+          <button class="filter-tab" data-filter="draft">Drafts</button>
+          <button class="filter-tab" data-filter="low-stock">Low Stock</button>
+        </div>
+
+        <!-- PRODUCTS TABLE -->
+        <div class="admin-table-wrap">
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th style="width:60px">Image</th>
+                  <th>Product Info</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productsBody">
+                <tr class="loading-row"><td colspan="7"><div class="loading-spinner"></div> Loading products...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay" id="productModalOverlay">
+    <div class="modal" style="max-width:800px; width:95%; max-height:90vh; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--admin-border);">
+        <h3 id="modalTitle" style="margin:0; font-size:1.25rem;">Add New Product</h3>
+        <button class="btn-icon" onclick="closeProductModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="productForm" onsubmit="event.preventDefault(); saveProduct();">
+        <input type="hidden" id="prod-id" />
+        
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Product Name *</label>
+            <input type="text" id="prod-name" required placeholder="e.g. Aura Classic Sunglasses" />
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="prod-category" required>
+              <option value="">Select Category</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Brand</label>
+            <input type="text" id="prod-brand" placeholder="e.g. Aura" />
+          </div>
+
+          <div class="form-group">
+            <label>Price (USD) *</label>
+            <input type="number" id="prod-price" step="0.01" min="0" required placeholder="49.99" />
+          </div>
+          
+          <div class="form-group">
+            <label>Sale Price (USD)</label>
+            <input type="number" id="prod-salePrice" step="0.01" min="0" placeholder="Optional" />
+          </div>
+
+          <div class="form-group">
+            <label>Stock Quantity *</label>
+            <input type="number" id="prod-stock" min="0" required placeholder="100" />
+          </div>
+          
+          <div class="form-group">
+            <label>SKU</label>
+            <input type="text" id="prod-sku" placeholder="AUR-SUN-01" />
+          </div>
+
+          <div class="form-group full">
+            <label>Short Description</label>
+            <input type="text" id="prod-shortDesc" placeholder="Brief summary for product cards..." />
+          </div>
+          
+          <div class="form-group full">
+            <label>Full Description</label>
+            <textarea id="prod-desc" placeholder="Detailed product description..."></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label>Product Image</label>
+            <div class="image-upload-area" id="imageDropArea">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p>Click or drag image to upload</p>
+              <span>Supports JPG, PNG, WEBP</span>
+              <input type="file" id="fileInput" accept="image/*" style="display:none" />
+            </div>
+            <div class="image-preview-grid" id="imagePreviewContainer"></div>
+          </div>
+
+          <div class="form-group full">
+            <div class="toggle-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="prod-published" checked />
+                <div class="toggle-switch"></div>
+                Published (Visible on store)
+              </label>
+              
+              <label class="toggle-label">
+                <input type="checkbox" id="prod-featured" />
+                <div class="toggle-switch"></div>
+                Featured
+              </label>
+
+              <label class="toggle-label">
+                <input type="checkbox" id="prod-new" />
+                <div class="toggle-switch"></div>
+                New Arrival
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="button" class="btn btn-icon" onclick="closeProductModal()" style="width:auto;padding:0 16px">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveProductBtn" style="margin-left:auto">
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-toast" id="toast"></div>
+
+  <script type="module">
+    import { 
+      requireAdmin, getAllProducts, getAllCategories, 
+      addProduct, updateProduct, hardDeleteProduct, uploadImage 
+    } from '../js/adminService.js';
+
+    let allProducts = [];
+    let categories = [];
+    let currentFilter = 'all';
+    let uploadedImages = []; // Stores URLs of uploaded images
+
+    // ── INIT ────────────────────────────────────────────
+    async function init() {
+      const user = await requireAdmin();
+      if(!user) return;
+      document.getElementById('adminName').textContent = user.profile?.name || user.displayName || 'Admin';
+      document.getElementById('adminAvatar').textContent = (user.profile?.name || user.displayName || user.email)[0].toUpperCase();
+
+      await loadCategories();
+      await loadProducts();
+      setupSearchAndFilters();
+      setupImageUpload();
+    }
+    init();
+
+    // ── TOAST ───────────────────────────────────────────
+    function showToast(msg, type='success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'admin-toast ' + type + ' show';
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ── LOAD DATA ───────────────────────────────────────
+    async function loadCategories() {
+      categories = await getAllCategories();
+      const select = document.getElementById('prod-category');
+      categories.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = c.name;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadProducts() {
+      try {
+        allProducts = await getAllProducts();
+        renderProducts();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('productsBody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--admin-red)">Error loading products.</td></tr>`;
+      }
+    }
+
+    // ── RENDER TABLE ────────────────────────────────────
+    function renderProducts(searchQuery = '') {
+      const tbody = document.getElementById('productsBody');
+      
+      let filtered = allProducts;
+
+      // Apply Search
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        filtered = filtered.filter(p => 
+          p.name?.toLowerCase().includes(q) || 
+          p.sku?.toLowerCase().includes(q) ||
+          p.brand?.toLowerCase().includes(q)
+        );
+      }
+
+      // Apply Tab Filter
+      if (currentFilter === 'published') filtered = filtered.filter(p => p.isPublished);
+      if (currentFilter === 'draft') filtered = filtered.filter(p => !p.isPublished);
+      if (currentFilter === 'low-stock') filtered = filtered.filter(p => p.trackStock && p.stock <= (p.lowStockAt || 5));
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr><td colspan="7">
+            <div class="empty-state">
+              <div class="empty-icon">📦</div>
+              <p>No products found matching your criteria.</p>
+            </div>
+          </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = '';
+      filtered.forEach(p => {
+        // Stock logic
+        let stockBadge = `<span class="badge badge-in-stock">In Stock (${p.stock})</span>`;
+        if (p.trackStock) {
+          if (p.stock === 0) stockBadge = `<span class="badge badge-out-of-stock">Out of Stock</span>`;
+          else if (p.stock <= (p.lowStockAt || 5)) stockBadge = `<span class="badge badge-low-stock">Low Stock (${p.stock})</span>`;
+        } else {
+          stockBadge = `<span class="badge" style="background:#f1f5f9;color:var(--admin-mid)">Not Tracked</span>`;
+        }
+
+        const statusBadge = p.isPublished 
+          ? `<span class="badge badge-published">Published</span>`
+          : `<span class="badge badge-draft">Draft</span>`;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <img src="${p.thumbnail || p.images?.[0]?.url || 'https://via.placeholder.com/60'}" class="table-thumb" alt="thumb">
+          </td>
+          <td>
+            <div class="table-product-name">${p.name}</div>
+            <div style="font-size:.76rem;color:var(--admin-light);margin-top:2px;">SKU: ${p.sku || 'N/A'}</div>
+          </td>
+          <td>${p.categoryName || p.categoryId || 'Uncategorized'}</td>
+          <td style="font-weight:700;">$${(p.price || 0).toFixed(2)}</td>
+          <td>${stockBadge}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="table-actions" style="justify-content:flex-end">
+              <button class="btn-icon" onclick="editProduct('${p.id}')" title="Edit">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="btn-icon danger" onclick="deleteProd('${p.id}')" title="Delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // ── SEARCH & FILTERS ────────────────────────────────
+    function setupSearchAndFilters() {
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        renderProducts(e.target.value);
+      });
+
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+          e.target.classList.add('active');
+          currentFilter = e.target.dataset.filter;
+          renderProducts(document.getElementById('searchInput').value);
+        });
+      });
+    }
+
+    // ── MODAL LOGIC ─────────────────────────────────────
+    window.openProductModal = function() {
+      document.getElementById('productForm').reset();
+      document.getElementById('prod-id').value = '';
+      document.getElementById('modalTitle').textContent = 'Add New Product';
+      uploadedImages = [];
+      renderImagePreviews();
+      document.getElementById('productModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closeProductModal = function() {
+      document.getElementById('productModalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    window.editProduct = function(id) {
+      const prod = allProducts.find(p => p.id === id);
+      if(!prod) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit Product';
+      document.getElementById('prod-id').value = prod.id;
+      document.getElementById('prod-name').value = prod.name || '';
+      document.getElementById('prod-category').value = prod.categoryId || '';
+      document.getElementById('prod-brand').value = prod.brand || '';
+      document.getElementById('prod-price').value = prod.price || '';
+      document.getElementById('prod-salePrice').value = prod.salePrice || '';
+      document.getElementById('prod-stock').value = prod.stock || 0;
+      document.getElementById('prod-sku').value = prod.sku || '';
+      document.getElementById('prod-shortDesc').value = prod.shortDesc || '';
+      document.getElementById('prod-desc').value = prod.description || '';
+      
+      document.getElementById('prod-published').checked = prod.isPublished !== false;
+      document.getElementById('prod-featured').checked = !!prod.isFeatured;
+      document.getElementById('prod-new').checked = !!prod.isNew;
+
+      uploadedImages = prod.images ? prod.images.map(i => i.url) : (prod.thumbnail ? [prod.thumbnail] : []);
+      renderImagePreviews();
+
+      document.getElementById('productModalOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.saveProduct = async function() {
+      const btn = document.getElementById('saveProductBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="loading-spinner"></div> Saving...';
+
+      try {
+        const id = document.getElementById('prod-id').value;
+        const catId = document.getElementById('prod-category').value;
+        const catName = categories.find(c => c.id === catId)?.name || '';
+
+        const data = {
+          name: document.getElementById('prod-name').value.trim(),
+          categoryId: catId,
+          categoryName: catName,
+          brand: document.getElementById('prod-brand').value.trim(),
+          price: Number(document.getElementById('prod-price').value),
+          salePrice: document.getElementById('prod-salePrice').value ? Number(document.getElementById('prod-salePrice').value) : null,
+          stock: Number(document.getElementById('prod-stock').value),
+          sku: document.getElementById('prod-sku').value.trim(),
+          shortDesc: document.getElementById('prod-shortDesc').value.trim(),
+          description: document.getElementById('prod-desc').value.trim(),
+          isPublished: document.getElementById('prod-published').checked,
+          isFeatured: document.getElementById('prod-featured').checked,
+          isNew: document.getElementById('prod-new').checked,
+          thumbnail: uploadedImages.length > 0 ? uploadedImages[0] : '',
+          images: uploadedImages.map((url, i) => ({ url, isPrimary: i===0, order: i }))
+        };
+
+        if (id) {
+          await updateProduct(id, data);
+          showToast('Product updated successfully!');
+        } else {
+          await addProduct(data);
+          showToast('Product added successfully!');
+        }
+
+        closeProductModal();
+        await loadProducts(); // Refresh list
+
+      } catch (err) {
+        console.error(err);
+        showToast('Error saving product.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Product';
+      }
+    };
+
+    window.deleteProd = async function(id) {
+      if(confirm('Are you sure you want to permanently delete this product?')) {
+        try {
+          await hardDeleteProduct(id);
+          showToast('Product deleted.');
+          await loadProducts();
+        } catch (err) {
+          console.error(err);
+          showToast('Error deleting product.', 'error');
+        }
+      }
+    };
+
+    // ── IMAGE UPLOAD HANDLING ───────────────────────────
+    function setupImageUpload() {
+      const dropArea = document.getElementById('imageDropArea');
+      const fileInput = document.getElementById('fileInput');
+
+      dropArea.addEventListener('click', () => fileInput.click());
+
+      dropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropArea.classList.add('dragging');
+      });
+
+      dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('dragging');
+      });
+
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('dragging');
+        if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length) handleFiles(e.target.files);
+      });
+    }
+
+async function handleFiles(files) {
+  const dropArea = document.getElementById('imageDropArea');
+  const origHtml = dropArea.innerHTML;
+
+  // Add progress UI
+  const progressContainer = document.createElement('div');
+  progressContainer.id = 'uploadProgressContainer';
+  progressContainer.innerHTML = `<div style="background:#e0e0e0;height:8px;border-radius:4px;overflow:hidden;margin-top:8px;"><div id="uploadProgressBar" style="width:0%;background:#4caf50;height:100%;"></div></div>`;
+  dropArea.innerHTML = `<div class="loading-spinner"></div><p style="margin-top:10px">Uploading...</p>`;
+  dropArea.appendChild(progressContainer);
+  dropArea.style.pointerEvents = 'none';
+
+  let completed = 0;
+  const total = files.length;
+
+  try {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (!file.type.startsWith('image/')) continue;
+      const url = await uploadImage(file, 'products', (percent) => {
+        const overall = Math.round(((completed + percent / 100) / total) * 100);
+        document.getElementById('uploadProgressBar').style.width = overall + '%';
+      });
+      uploadedImages.push(url);
+      completed++;
+      document.getElementById('uploadProgressBar').style.width = Math.round((completed / total) * 100) + '%';
+    }
+    renderImagePreviews();
+    showToast('All images uploaded successfully.');
+  } catch (err) {
+    console.error('Upload failed:', err);
+    showToast('Failed to upload image.', 'error');
+  } finally {
+    dropArea.innerHTML = origHtml;
+    dropArea.style.pointerEvents = 'auto';
+  }
+}
+
+    function renderImagePreviews() {
+      const container = document.getElementById('imagePreviewContainer');
+      container.innerHTML = '';
+      uploadedImages.forEach((url, index) => {
+        const div = document.createElement('div');
+        div.className = 'image-preview-item';
+        div.innerHTML = `
+          <img src="${url}" alt="Preview" />
+          <button type="button" class="remove-img" title="Remove" onclick="removeImage(${index})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    window.removeImage = function(index) {
+      uploadedImages.splice(index, 1);
+      renderImagePreviews();
+    };
+
+    // Mobile Menu
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebarOverlay').classList.add('active');
+    });
+    document.getElementById('sidebarOverlay').addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    });
+  </script>
+</body>
+</html>

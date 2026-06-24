@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura – Admin Login</title>
+  <meta name="description" content="Admin panel login for Aura Shop management." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background grid */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(37, 99, 235, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37, 99, 235, .06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridShift 20s linear infinite;
+    }
+
+    @keyframes gridShift {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(60px, 60px);
+      }
+    }
+
+    /* Glow orbs */
+    body::after {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(37, 99, 235, .15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .glow-bottom {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(124, 58, 237, .12) 0%, transparent 70%);
+      bottom: -80px;
+      left: -80px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .03);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, .08);
+      border-radius: 20px;
+      padding: 44px 38px 38px;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, .3);
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -.02em;
+    }
+
+    .logo-text span {
+      color: #7c3aed;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: .78rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .35);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 32px;
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .field label {
+      display: block;
+      font-size: .74rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .5);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 8px;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1.5px solid rgba(255, 255, 255, .1);
+      border-radius: 10px;
+      padding: 13px 44px 13px 16px;
+      font-size: .9rem;
+      font-family: 'Outfit', sans-serif;
+      color: #fff;
+      background: rgba(255, 255, 255, .04);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s, background .2s;
+    }
+
+    .field input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .field input::placeholder {
+      color: rgba(255, 255, 255, .25);
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: rgba(255, 255, 255, .35);
+      display: flex;
+      align-items: center;
+      padding: 0;
+      transition: color .2s;
+    }
+
+    .toggle-pw:hover {
+      color: #2563eb;
+    }
+
+    .toggle-pw svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: #fff;
+      font-size: .92rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .04em;
+      margin-top: 6px;
+      transition: opacity .2s, box-shadow .2s, transform .2s;
+      font-family: 'Outfit', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-login:hover {
+      opacity: .92;
+      box-shadow: 0 6px 24px rgba(37, 99, 235, .35);
+      transform: translateY(-1px);
+    }
+
+    .btn-login:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-link a {
+      font-size: .82rem;
+      color: rgba(255, 255, 255, .4);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color .2s;
+    }
+
+    .back-link a:hover {
+      color: #2563eb;
+    }
+
+    .toast {
+      display: none;
+      text-align: center;
+      font-size: .82rem;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-top: 16px;
+    }
+
+    .toast.success {
+      background: rgba(22, 163, 74, .15);
+      color: #4ade80;
+      display: block;
+    }
+
+    .toast.error {
+      background: rgba(220, 38, 38, .15);
+      color: #f87171;
+      display: block;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Shield icon */
+    .shield-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin: 0 auto 24px;
+      padding: 6px 14px;
+      background: rgba(37, 99, 235, .1);
+      border: 1px solid rgba(37, 99, 235, .15);
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .shield-badge svg {
+      width: 14px;
+      height: 14px;
+      color: #2563eb;
+    }
+
+    .shield-badge span {
+      font-size: .72rem;
+      font-weight: 700;
+      color: #60a5fa;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-bottom"></div>
+
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      <span class="logo-text">Aura<span>.</span></span>
+    </div>
+    <div class="subtitle">Admin Panel</div>
+
+    <div class="shield-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg>
+      <span>Secure Login</span>
+    </div>
+
+    <div class="field">
+      <label for="admin-email">Email Address</label>
+      <input type="email" id="admin-email" placeholder="admin@aurashop.com" autocomplete="email" />
+    </div>
+
+    <div class="field">
+      <label for="admin-password">Password</label>
+      <input type="password" id="admin-password" placeholder="Enter your password" autocomplete="current-password" />
+      <button class="toggle-pw" id="togglePwBtn" type="button">
+        <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+        </svg>
+      </button>
+    </div>
+
+    <button class="btn-login" id="loginBtn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Sign In to Dashboard</span>
+    </button>
+
+    <div class="back-link">
+      <a href="../index.html">← Back to Store</a>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from '../firebase-config.js';
+    import {
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+    import {
+      doc, getDoc
+    } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+    // If already logged in as admin, redirect
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (snap.exists() && snap.data().role === 'admin') {
+          window.location.href = 'index.html';
+        }
+      }
+    });
+
+    // Password toggle
+    let pwVisible = false;
+    document.getElementById('togglePwBtn').addEventListener('click', () => {
+      pwVisible = !pwVisible;
+      const inp = document.getElementById('admin-password');
+      const icon = document.getElementById('eye-icon');
+      inp.type = pwVisible ? 'text' : 'password';
+      icon.innerHTML = pwVisible
+        ? '<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>'
+        : '<path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>';
+    });
+
+    // Loading state
+    function setLoading(on) {
+      document.getElementById('loginBtn').disabled = on;
+      document.getElementById('spinner').style.display = on ? 'block' : 'none';
+      document.getElementById('btnText').textContent = on ? 'Signing in…' : 'Sign In to Dashboard';
+    }
+
+    // Toast
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + type;
+      setTimeout(() => t.className = 'toast', 4000);
+    }
+
+    // Login handler
+    document.getElementById('loginBtn').addEventListener('click', handleLogin);
+
+    // Allow Enter key
+    document.getElementById('admin-password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('admin-email').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('admin-password').focus();
+    });
+
+    async function handleLogin() {
+      const email = document.getElementById('admin-email').value.trim();
+      const pass = document.getElementById('admin-password').value;
+
+      if (!email || !pass) {
+        showToast('Please fill in all fields.', 'error');
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+
+        // Check admin role
+        const userDoc = await getDoc(doc(db, 'users', cred.user.uid));
+        if (!userDoc.exists() || userDoc.data().role !== 'admin') {
+          await auth.signOut();
+          showToast('Access denied. Admin privileges required.', 'error');
+          setLoading(false);
+          return;
+        }
+
+        showToast('Welcome back, Admin!', 'success');
+        setTimeout(() => window.location.href = 'index.html', 800);
+      } catch (e) {
+        const map = {
+          'auth/user-not-found': 'No account found with this email.',
+          'auth/wrong-password': 'Incorrect password.',
+          'auth/invalid-credential': 'Invalid email or password.',
+          'auth/invalid-email': 'Please enter a valid email.',
+          'auth/too-many-requests': 'Too many attempts. Wait a moment.',
+          'auth/network-request-failed': 'Network error. Check your connection.'
+        };
+        showToast(map[e.code] || 'Something went wrong. Try again.', 'error');
+        setLoading(false);
+      }
+    }
+  </script>
+</body>
+
+</html>

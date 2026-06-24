@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aura – Login</title>
+  <meta name="description" content="Login to your Aura Shop account to access orders, wishlist and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #dde3ff 0%, #fff6ef 100%)
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 36px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 12px 48px rgba(26, 115, 232, 0.10)
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #1a73e8, #4fa3f7);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 900
+    }
+
+    .logo-text {
+      font-size: 26px;
+      font-weight: 900;
+      color: #1a73e8
+    }
+
+    .logo-text span {
+      color: #f5a623
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 19px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      margin: 18px 0 24px
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 16px
+    }
+
+    .field label {
+      position: absolute;
+      top: -9px;
+      left: 16px;
+      background: #fff;
+      padding: 0 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #999;
+      z-index: 1
+    }
+
+    .field input {
+      width: 100%;
+      border: 1.5px solid #e2e2e2;
+      border-radius: 50px;
+      padding: 13px 46px 13px 18px;
+      font-size: 14px;
+      font-family: 'Nunito', sans-serif;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s
+    }
+
+    .field input:focus {
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 3px rgba(26, 115, 232, .10)
+    }
+
+    .field input::placeholder {
+      color: #bbb
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #bbb;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      transition: color .2s
+    }
+
+    .toggle-pw:hover {
+      color: #1a73e8
+    }
+
+    .toggle-pw svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #1a73e8, #4fa3f7);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      transition: opacity .2s;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px
+    }
+
+    .btn-primary:hover {
+      opacity: .92
+    }
+
+    .btn-primary:disabled {
+      opacity: .6;
+      cursor: not-allowed
+    }
+
+    .btn-google {
+      width: 100%;
+      padding: 13px;
+      border-radius: 50px;
+      background: #fff;
+      border: 1.5px solid #e2e2e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #444;
+      cursor: pointer;
+      transition: background .2s, border-color .2s;
+      font-family: 'Nunito', sans-serif
+    }
+
+    .btn-google:hover {
+      background: #f5f8ff;
+      border-color: #1a73e8
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 16px 0
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ebebeb
+    }
+
+    .divider span {
+      font-size: 12px;
+      color: #bbb;
+      font-weight: 700
+    }
+
+    .forgot {
+      text-align: center;
+      margin: 14px 0 4px
+    }
+
+    .forgot a {
+      font-size: 13px;
+      color: #1a73e8;
+      font-weight: 700;
+      text-decoration: none
+    }
+
+    .bottom-link {
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+      margin-top: 16px
+    }
+
+    .bottom-link a {
+      color: #1a73e8;
+      font-weight: 800;
+      text-decoration: none
+    }
+
+    .toast {
+      display: none;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 50px;
+      margin-top: 14px
+    }
+
+    .toast.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      display: block
+    }
+
+    .toast.error {
+      background: #fdecea;
+      color: #c62828;
+      display: block
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, .4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: none
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">A</div>
+      <span class="logo-text">Aura<span>.</span></span>
+    </div>
+    <h2>Welcome Back</h2>
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="example@email.com" autocomplete="email" />
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" />
+      <button class="toggle-pw" onclick="togglePw()" type="button">
+        <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+        </svg>
+      </button>
+    </div>
+
+    <button class="btn-primary" id="login-btn" onclick="handleLogin()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btn-text">Login</span>
+    </button>
+
+    <div class="divider"><span>OR</span></div>
+
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg width="18" height="18" viewBox="0 0 48 48">
+        <path fill="#EA4335"
+          d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.12 17.74 9.5 24 9.5z" />
+        <path fill="#4285F4"
+          d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+        <path fill="#FBBC05"
+          d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+        <path fill="#34A853"
+          d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.62-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+      </svg>
+      Sign In with Google
+    </button>
+
+    <!-- ✅ FIX: Links to real forgot-password page instead of # -->
+    <div class="forgot"><a href="forgot-password.html">Forgot Password?</a></div>
+    <div class="bottom-link">Don't have an account? <a href="register.html">REGISTER NOW</a></div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+  <script type="module">
+    // ✅ FIX: Import path corrected — no space in filename
+    import { auth, db } from '../firebase-config.js';
+    import {
+      signInWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Redirect if already logged in, with role check
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const snap = await getDoc(doc(db, 'users', user.uid));
+          const role = (snap?.data()?.role ?? 'user').toString().trim().toLowerCase();
+          console.log('Auth state detected:', { uid: user.uid, email: user.email, role });
+          const dest = role === 'admin' ? '../admin/index.html' : '../index.html';
+          console.log('Redirecting to', dest);
+          window.location.href = dest;
+        } catch (e) {
+          console.error('Error fetching user role:', e);
+          // Fallback
+          window.location.href = '../index.html';
+        }
+      }
+    });
+
+    let pwVisible = false;
+    window.togglePw = () => {
+      pwVisible = !pwVisible;
+      const inp = document.getElementById('password');
+      const icon = document.getElementById('eye-icon');
+      inp.type = pwVisible ? 'text' : 'password';
+      icon.innerHTML = pwVisible
+        ? `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`
+        : `<path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88L6.59 6.59m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>`;
+    };
+
+    function setLoading(on) {
+      document.getElementById('login-btn').disabled = on;
+      document.getElementById('spinner').style.display = on ? 'block' : 'none';
+      document.getElementById('btn-text').textContent = on ? 'Logging in…' : 'Login';
+    }
+
+    function showToast(msg, type) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast ' + type;
+      setTimeout(() => t.className = 'toast', 3500);
+    }
+
+    window.handleLogin = async () => {
+      const email = document.getElementById('email').value.trim();
+      const pass = document.getElementById('password').value;
+      if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
+      setLoading(true);
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, pass);
+        // Fetch role from Firestore
+        const userDoc = await getDoc(doc(db, 'users', cred.user.uid));
+        const rawRole = userDoc?.data()?.role || 'user';
+        const role = rawRole.toString().trim().toLowerCase();
+        console.log('Login success:', { uid: cred.user.uid, email: cred.user.email, role: rawRole });
+        // Cache role for UI convenience (not for auth decisions)
+        localStorage.setItem('aura_role', role);
+        if (role === 'admin') {
+          console.log('Redirecting admin to admin dashboard');
+          showToast('Welcome admin! Redirecting…', 'success');
+          setTimeout(() => window.location.href = '../admin/index.html', 1000);
+        } else {
+          console.log('Redirecting user to storefront');
+          showToast('Logged in! Redirecting…', 'success');
+          setTimeout(() => window.location.href = '../index.html', 1000);
+        }
+      } catch (e) {
+        showToast(friendlyError(e.code), 'error');
+      } finally { setLoading(false); }
+    };
+
+    window.handleGoogleLogin = async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const cred = await signInWithPopup(auth, provider);
+        // ✅ FIX: Only create user doc if it doesn't already exist
+        const userRef = doc(db, 'users', cred.user.uid);
+        const snap = await getDoc(userRef);
+        if (!snap.exists()) {
+          await setDoc(userRef, {
+            uid: cred.user.uid,
+            name: cred.user.displayName || '',
+            email: cred.user.email,
+            photoURL: cred.user.photoURL || '',
+            role: 'user',
+            phone: '',
+            address: '',
+            city: '',
+            createdAt: serverTimestamp(),
+            wishlist: [],
+            addresses: []
+          });
+          // New user defaults to 'user' role
+          console.log('New Google user created with role user');
+        }
+        // Fetch role (in case existing user is admin)
+        const userSnap = await getDoc(userRef);
+        const rawRole = userSnap?.data()?.role ?? 'user';
+        const role = rawRole.toString().trim().toLowerCase();
+        console.log('Google login success:', { uid: cred.user.uid, email: cred.user.email, role: rawRole });
+        if (role === 'admin') {
+          console.log('Redirecting admin via Google to admin dashboard');
+          window.location.href = '../admin/index.html';
+        } else {
+          console.log('Redirecting regular user via Google to storefront');
+          window.location.href = '../index.html';
+        }
+      } catch (e) {
+        showToast(friendlyError(e.code), 'error');
+      }
+    };
+
+    // ✅ FIX: Added auth/invalid-credential for Firebase v10+ (replaces wrong-password + user-not-found)
+    function friendlyError(code) {
+      const map = {
+        'auth/user-not-found': 'No account found with this email.',
+        'auth/wrong-password': 'Incorrect password. Try again.',
+        'auth/invalid-credential': 'Invalid email or password. Please try again.',
+        'auth/invalid-email': 'Please enter a valid email address.',
+        'auth/too-many-requests': 'Too many attempts. Please wait a moment.',
+        'auth/popup-closed-by-user': 'Google sign-in was cancelled.',
+        'auth/network-request-failed': 'Network error. Check your connection.'
+      };
+      return map[code] || 'Something went wrong. Please try again.';
+    }
+  </script>
+</body>
+
+</html>

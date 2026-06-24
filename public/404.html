@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 – Page Not Found | AURA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .code { font-size: clamp(6rem, 20vw, 12rem); font-weight: 900; color: #2563eb; line-height: 1; letter-spacing: -0.04em; opacity: 0.12; }
+    .icon { font-size: 5rem; margin: -40px 0 20px; }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; color: #1a2233; margin-bottom: 12px; }
+    p { font-size: 1rem; color: #8896ab; max-width: 400px; line-height: 1.6; margin-bottom: 36px; }
+    .btn { display: inline-block; background: #2563eb; color: #fff; padding: 14px 40px; border-radius: 50px; font-size: 1rem; font-weight: 700; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+    .btn:hover { background: #1d4ed8; transform: translateY(-2px); }
+    .home-link { display: block; margin-top: 16px; color: #8896ab; text-decoration: none; font-size: 0.9rem; }
+    .home-link:hover { color: #2563eb; }
+  </style>
+</head>
+<body>
+  <div class="code">404</div>
+  <div class="icon">🔍</div>
+  <h1>Page Not Found</h1>
+  <p>The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+  <a href="index.html" class="btn">← Back to Home</a>
+  <a href="featured_products.html" class="home-link">Browse Products Instead</a>
+</body>
+</html>

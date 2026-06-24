@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AURA – Checkout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f0f4fb;--white:#fff;--dark:#111827;--mid:#4b5563;--light:#9ca3af;
+      --accent:#2563eb;--accent2:#1d4ed8;
+      --green:#16a34a;--green-bg:#dcfce7;
+      --red:#ef4444;
+      --radius:14px;--shadow:0 2px 16px rgba(17,24,39,.08);--tr:.2s ease;
+    }
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:40px 20px 60px}
+
+    .topbar { background: var(--white); padding: 16px 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); margin: -40px -20px 40px; }
+    .topbar a { font-size: 22px; font-weight: 900; color: var(--accent); text-decoration: none; }
+
+    .page-wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:32px}
+
+    /* ── MAIN ROW ── */
+    .main-row{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+
+    /* ── FORM CARD ── */
+    .form-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 28px;display:flex;flex-direction:column;gap:24px}
+    .form-section { display: flex; flex-direction: column; gap: 16px; }
+    .form-title{font-size:1.1rem;font-weight:800;letter-spacing:.05em;color:var(--dark);margin-bottom:4px; padding-bottom: 8px; border-bottom: 1px solid #f3f4f6;}
+
+    .input-group{display:flex;flex-direction:column;gap:6px;}
+    .input-group label { font-size: 0.85rem; font-weight: 600; color: var(--mid); }
+    .input-row{display:flex;gap:12px}
+    .flex2{flex:2}
+    .flex1{flex:1}
+
+    .form-input{width:100%;padding:13px 16px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.92rem;color:var(--dark);outline:none;background:#fff;transition:border-color var(--tr),box-shadow var(--tr)}
+    .form-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+    .form-input::placeholder{color:var(--light)}
+
+    /* COD */
+    .cod-label{display:flex;align-items:center;gap:12px;cursor:pointer;font-size:.95rem;font-weight: 600; color:var(--dark); padding: 16px; border: 1.5px solid #e2e8f0; border-radius: 10px; transition: border-color var(--tr);}
+    .cod-label:hover { border-color: var(--accent); }
+    .cod-radio{display:none}
+    .radio-custom{width:22px;height:22px;border-radius:50%;border:2px solid #d1d5db;flex-shrink:0;transition:border-color var(--tr),background var(--tr);position:relative}
+    .cod-radio:checked + .radio-custom{border-color:var(--accent)}
+    .cod-radio:checked + .radio-custom::after{content:'';width:12px;height:12px;border-radius:50%;background:var(--accent);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+    .cod-radio:checked ~ .cod-label { border-color: var(--accent); background: #eff6ff;}
+
+    /* Buttons */
+    .btn-proceed{padding:16px;background:var(--accent);color:#fff;border:none;border-radius:12px;font-family:'Outfit',sans-serif;font-size:1rem;font-weight:800;letter-spacing:.05em;cursor:pointer;transition:background var(--tr),transform var(--tr),box-shadow var(--tr);box-shadow:0 4px 14px rgba(37,99,235,.25); width: 100%;}
+    .btn-proceed:hover{background:var(--accent2);transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.35)}
+    .btn-proceed:active{transform:translateY(0)}
+    .btn-proceed:disabled{background:#9ca3af;cursor:not-allowed;transform:none;box-shadow:none;}
+
+    .btn-back{padding:10px;background:#f3f4f6;color:var(--mid);border:none;border-radius:10px;font-family:'Outfit',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:background var(--tr),color var(--tr);text-align:center;text-decoration: none;}
+    .btn-back:hover{background:#e5e7eb;color:var(--dark)}
+
+    /* ── SUMMARY CARD ── */
+    .summary-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 22px;display:flex;flex-direction:column;gap:0}
+    .summary-title{font-size:1.1rem;font-weight:800;color:var(--dark);margin-bottom:18px}
+
+    .summary-items { max-height: 300px; overflow-y: auto; margin-bottom: 16px; padding-right: 8px;}
+    .summary-item{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .s-img{width:54px;height:54px;border-radius:8px;flex-shrink:0;background:#f3f4f6;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .s-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .s-info{flex:1}
+    .s-name{font-size:.85rem;font-weight:600;color:var(--dark);line-height:1.3; margin-bottom: 4px;}
+    .s-price{font-size:.9rem;font-weight:800;color:var(--dark)}
+    .s-qty{font-size: .8rem; color: var(--light); font-weight: 600;}
+
+    .s-divider{height:1.5px;background:#f3f4f6;margin:10px 0}
+    .s-row{display:flex;justify-content:space-between;font-size:.9rem;color:var(--mid);margin-bottom:10px;font-weight: 500;}
+    .s-row.discount { color: var(--green); }
+    .total-row{font-size:1.15rem;font-weight:800;color:var(--dark);margin-top:4px;margin-bottom:0}
+
+    /* Toast */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 22px;border-radius:10px;font-size:.85rem;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.18);z-index:999;transform:translateY(80px);opacity:0;transition:transform .3s ease,opacity .3s ease;border-left:3px solid var(--accent)}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.error{border-left-color:var(--red)}
+
+    @media(max-width:860px){.main-row{grid-template-columns:1fr}}
+    @media(max-width:500px){.input-row{flex-direction:column}}
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="products.html">Aura.</a>
+  </nav>
+
+  <div class="page-wrap">
+
+    <div class="main-row">
+
+      <!-- Checkout Form -->
+      <div class="form-card">
+        
+        <!-- Shipping Details -->
+        <div class="form-section">
+          <h2 class="form-title">1. Shipping Address</h2>
+          <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" class="form-input" id="shipName" placeholder="e.g. Jane Doe" required/>
+          </div>
+          <div class="input-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-input" id="shipPhone" placeholder="+1 (555) 000-0000" required/>
+          </div>
+          <div class="input-group">
+            <label>Street Address</label>
+            <input type="text" class="form-input" id="shipStreet" placeholder="123 Main St, Apt 4B" required/>
+          </div>
+          <div class="input-row">
+            <div class="input-group flex2">
+              <label>City</label>
+              <input type="text" class="form-input" id="shipCity" placeholder="New York" required/>
+            </div>
+            <div class="input-group flex1">
+              <label>State</label>
+              <input type="text" class="form-input" id="shipState" placeholder="NY" required/>
+            </div>
+            <div class="input-group flex1">
+              <label>ZIP Code</label>
+              <input type="text" class="form-input" id="shipZip" placeholder="10001" required/>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="form-section" style="margin-top: 10px;">
+          <h2 class="form-title">2. Payment Method</h2>
+          
+          <label class="cod-label" style="background:#eff6ff; border-color:var(--accent);">
+            <input type="radio" name="payment" id="codRadio" class="cod-radio" value="cod" checked/>
+            <span class="radio-custom"></span>
+            Cash on Delivery (Pay at Doorstep)
+          </label>
+          <label class="cod-label">
+            <input type="radio" name="payment" class="cod-radio" value="card" disabled/>
+            <span class="radio-custom"></span>
+            Credit/Debit Card (Coming Soon)
+          </label>
+
+        </div>
+
+        <button class="btn-proceed" id="proceedBtn">PLACE ORDER</button>
+        <a href="order-summary.html" class="btn-back">Return to Cart</a>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="summary-card">
+        <h2 class="summary-title">Order Summary</h2>
+
+        <div class="summary-items" id="summary-items">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="s-divider"></div>
+
+        <div class="s-row"><span>Subtotal</span><span id="sum-subtotal">$0.00</span></div>
+        <div class="s-row discount" id="sum-discount-row" style="display:none;">
+          <span>Discount</span><span id="sum-discount">-$0.00</span>
+        </div>
+        <div class="s-row"><span>Shipping</span><span id="sum-shipping">$0.00</span></div>
+        <div class="s-row"><span>Tax</span><span id="sum-tax">$0.00</span></div>
+
+        <div class="s-divider"></div>
+
+        <div class="s-row total-row">
+          <span>Total</span>
+          <span class="total-val" id="sum-total">$0.00</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { syncCartToFirestore } from './js/cartService.js';
+    import { createOrder } from './js/orderService.js';
+    import { getCurrentUser } from './js/auth.js';
+
+    let cartItems = [];
+    let orderSummary = null;
+    let currentUser = null;
+
+    async function init() {
+      currentUser = await getCurrentUser();
+      if (!currentUser) {
+        alert("You must be logged in to checkout.");
+        window.location.href = "auth/login.html?redirect=cart";
+        return;
+      }
+
+      // Pre-fill user data
+      document.getElementById('shipName').value = currentUser.name || '';
+      
+      // Load cart and summary
+      cartItems = await syncCartToFirestore();
+      
+      if (cartItems.length === 0) {
+        alert("Your cart is empty.");
+        window.location.href = "products.html";
+        return;
+      }
+
+      const summaryStr = sessionStorage.getItem('aura_checkout_summary');
+      if (!summaryStr) {
+        window.location.href = "order-summary.html";
+        return;
+      }
+      
+      orderSummary = JSON.parse(summaryStr);
+      renderSummary();
+
+      document.getElementById('proceedBtn').addEventListener('click', handlePlaceOrder);
+    }
+
+    function renderSummary() {
+      const itemsContainer = document.getElementById('summary-items');
+      itemsContainer.innerHTML = cartItems.map(item => `
+        <div class="summary-item">
+          <div class="s-img"><img src="${item.thumbnail || 'https://via.placeholder.com/100'}" alt="${item.name}"></div>
+          <div class="s-info">
+            <div class="s-name">${item.name}</div>
+            <div class="s-qty">Qty: ${item.qty}</div>
+          </div>
+          <span class="s-price">$${(item.price * item.qty).toFixed(2)}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('sum-subtotal').textContent = `$${orderSummary.subtotal.toFixed(2)}`;
+      document.getElementById('sum-tax').textContent = `$${orderSummary.tax.toFixed(2)}`;
+      document.getElementById('sum-shipping').textContent = orderSummary.shippingFee === 0 ? 'FREE' : `$${orderSummary.shippingFee.toFixed(2)}`;
+      document.getElementById('sum-total').textContent = `$${orderSummary.total.toFixed(2)}`;
+
+      if (orderSummary.discountAmt > 0) {
+        document.getElementById('sum-discount-row').style.display = 'flex';
+        document.getElementById('sum-discount').textContent = `-$${orderSummary.discountAmt.toFixed(2)}`;
+      }
+    }
+
+    async function handlePlaceOrder() {
+      const btn = document.getElementById('proceedBtn');
+      
+      // Validate Form
+      const shipping = {
+        name: document.getElementById('shipName').value.trim(),
+        phone: document.getElementById('shipPhone').value.trim(),
+        street: document.getElementById('shipStreet').value.trim(),
+        city: document.getElementById('shipCity').value.trim(),
+        state: document.getElementById('shipState').value.trim(),
+        zip: document.getElementById('shipZip').value.trim(),
+        country: 'US' // default
+      };
+
+      if (!shipping.name || !shipping.phone || !shipping.street || !shipping.city || !shipping.state || !shipping.zip) {
+        showToast("⚠️ Please fill out all shipping fields.", true);
+        return;
+      }
+
+      const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+
+      try {
+        btn.disabled = true;
+        btn.textContent = "PROCESSING...";
+
+        const orderResult = await createOrder(cartItems, {
+          shipping,
+          paymentMethod,
+          ...orderSummary
+        }, orderSummary.coupon);
+
+        // Clear session summary
+        sessionStorage.removeItem('aura_checkout_summary');
+
+        // Redirect to success
+        window.location.href = `order-success.html?orderId=${orderResult.orderId}`;
+        
+      } catch (err) {
+        console.error("Order failed:", err);
+        showToast(`❌ Order failed: ${err.message}`, true);
+        btn.disabled = false;
+        btn.textContent = "PLACE ORDER";
+      }
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show ' + (isError ? 'error' : '');
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('show'), 4000);
+    }
+
+    init();
+  </script>
+</body>
+</html>

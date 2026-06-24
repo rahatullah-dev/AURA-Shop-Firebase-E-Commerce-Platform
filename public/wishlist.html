@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AURA – My Wishlist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="wishlist.css"/>
+<style>
+
+/* ============================================
+   AURA – Wishlist  |  wishlist.css
+   ============================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4fb;--white:#fff;--dark:#111827;--mid:#4b5563;--light:#9ca3af;
+  --accent:#2563eb;--accent2:#1d4ed8;
+  --red:#ef4444;--gold:#f59e0b;
+  --radius:12px;--shadow:0 2px 14px rgba(17,24,39,.08);--tr:.2s ease;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:24px 20px 60px}
+
+.breadcrumb{font-size:.82rem;color:var(--light);display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.breadcrumb a{color:var(--mid);text-decoration:none;transition:color var(--tr)}.breadcrumb a:hover{color:var(--accent)}
+.bc-active{color:var(--dark);font-weight:600}
+.divider-line{height:1px;background:#e5e7eb;margin-bottom:24px}
+
+.page-wrap{max-width:1280px;margin:0 auto}
+.page-title{font-size:1.6rem;font-weight:800;color:var(--dark);margin-bottom:24px;letter-spacing:-.02em}
+.page-title span{color:var(--accent)}
+
+/* ── GRID ── */
+.wishlist-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+
+/* ── CARD ── */
+.wish-card{background:var(--white);border:1.5px solid #e5e7eb;border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px;position:relative;transition:box-shadow var(--tr),border-color var(--tr),transform var(--tr);animation:cardIn .4s ease both}
+.wish-card:hover{box-shadow:0 6px 24px rgba(37,99,235,.12);border-color:#bfdbfe;transform:translateY(-3px)}
+.wish-card.selected{border-color:var(--accent);box-shadow:0 4px 18px rgba(37,99,235,.18)}
+
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.wish-card:nth-child(1){animation-delay:.04s}.wish-card:nth-child(2){animation-delay:.08s}
+.wish-card:nth-child(3){animation-delay:.12s}.wish-card:nth-child(4){animation-delay:.16s}
+.wish-card:nth-child(5){animation-delay:.20s}.wish-card:nth-child(6){animation-delay:.24s}
+.wish-card:nth-child(7){animation-delay:.28s}.wish-card:nth-child(8){animation-delay:.32s}
+.wish-card:nth-child(9){animation-delay:.36s}.wish-card:nth-child(10){animation-delay:.40s}
+
+/* Heart */
+.heart-btn{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--red);transition:transform var(--tr),color var(--tr);line-height:1}
+.heart-btn:hover{transform:scale(1.25)}
+.heart-btn.active{color:var(--red)}
+.heart-btn:not(.active){color:#d1d5db}
+
+/* Product Images via background */
+.wish-img{width:100%;height:140px;border-radius:8px;background:#f3f4f6;margin-bottom:2px}
+.shoe-img-1{background:#f0f4f8 url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='60' cy='95' rx='44' ry='9' fill='%23e0e0e0'/%3E%3Cpath d='M16 95Q16 52 42 46L80 44Q102 44 104 57L104 95Z' fill='%23bdbdbd'/%3E%3Cpath d='M42 46L42 65' stroke='%23999' stroke-width='2'/%3E%3Cpath d='M62 44L62 65' stroke='%23999' stroke-width='2'/%3E%3Cpath d='M82 44L82 65' stroke='%23999' stroke-width='2'/%3E%3Cpath d='M16 85Q60 78 104 85' stroke='%23f0f2f5' stroke-width='2'/%3E%3Cpath d='M48 72Q65 67 95 74' stroke='%232563eb' stroke-width='2' fill='none' opacity='.4'/%3E%3C/svg%3E") center/70% no-repeat}
+.shoe-img-2{background:#f5f5f5 url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cellipse cx='60' cy='95' rx='44' ry='9' fill='%23d5d5d5'/%3E%3Cpath d='M16 95Q16 52 42 46L80 44Q102 44 104 57L104 95Z' fill='%23aaaaaa'/%3E%3Cpath d='M42 46L42 65' stroke='%23888' stroke-width='2'/%3E%3Cpath d='M62 44L62 65' stroke='%23888' stroke-width='2'/%3E%3Cpath d='M82 44L82 65' stroke='%23888' stroke-width='2'/%3E%3Cpath d='M16 85Q60 78 104 85' stroke='%23ddd' stroke-width='2'/%3E%3C/svg%3E") center/70% no-repeat}
+.headphone-img{background:#f0f0f0 url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 65Q20 28 60 28Q100 28 100 65' stroke='%23111' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Crect x='12' y='62' width='18' height='28' rx='8' fill='%23111'/%3E%3Crect x='90' y='62' width='18' height='28' rx='8' fill='%23111'/%3E%3C/svg%3E") center/70% no-repeat}
+.headphone-img-2{background:#f5f5f5 url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 65Q20 28 60 28Q100 28 100 65' stroke='%23333' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Crect x='12' y='62' width='18' height='28' rx='8' fill='%23222'/%3E%3Crect x='90' y='62' width='18' height='28' rx='8' fill='%23222'/%3E%3C/svg%3E") center/70% no-repeat}
+.skincare-img{background:#fdf6ee url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='30' y='22' width='24' height='72' rx='8' fill='%23c8a882'/%3E%3Crect x='30' y='14' width='24' height='16' rx='5' fill='%23a07850'/%3E%3Crect x='57' y='32' width='24' height='62' rx='8' fill='%23d4b896'/%3E%3Crect x='57' y='24' width='24' height='14' rx='5' fill='%23a07850'/%3E%3C/svg%3E") center/55% no-repeat}
+
+/* Card Body */
+.wish-body{display:flex;flex-direction:column;gap:6px}
+.wish-name{font-size:.82rem;font-weight:700;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wish-price{font-size:.95rem;font-weight:800;color:var(--dark)}
+.wish-rating{display:flex;align-items:center;gap:5px}
+.stars{color:var(--gold);font-size:.75rem;letter-spacing:1px}
+.rev{font-size:.7rem;color:var(--light)}
+
+/* Buttons */
+.btn-cart{width:100%;padding:8px 10px;background:var(--accent);color:#fff;border:none;border-radius:7px;font-family:'Outfit',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background var(--tr),transform var(--tr)}
+.btn-cart:hover{background:var(--accent2);transform:scale(1.02)}
+.btn-cart.active-cart{background:var(--accent2)}
+.btn-remove{background:none;border:none;font-family:'Outfit',sans-serif;font-size:.72rem;color:var(--mid);cursor:pointer;text-decoration:underline;text-align:center;transition:color var(--tr)}
+.btn-remove:hover{color:var(--red)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 22px;border-radius:10px;font-size:.85rem;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.18);z-index:999;transform:translateY(80px);opacity:0;transition:transform .3s ease,opacity .3s ease;border-left:3px solid var(--accent)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Responsive */
+@media(max-width:1100px){.wishlist-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:860px){.wishlist-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.wishlist-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:380px){.wishlist-grid{grid-template-columns:1fr}}
+
+
+</style>
+</head>
+<body>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="#">Home</a><span>›</span>
+    <a href="./my-account.html">Account</a><span>›</span>
+    <span class="bc-active">My Wishlist</span>
+  </div>
+  <div class="divider-line"></div>
+
+  <div class="page-wrap">
+    <h1 class="page-title">My Wishlist — <span id="itemCount">0</span> Items</h1>
+
+    <div class="wishlist-grid" id="wishlistGrid">
+      <!-- Loading state -->
+      <div style="grid-column: 1/-1; padding: 40px; text-align: center; color: #888; font-weight: 600;">
+        Loading your wishlist...
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { getWishlistProducts, toggleWishlist } from './js/wishlistService.js';
+    import { syncCartToFirestore, saveLocalCart, getLocalCart } from './js/cartService.js';
+    import { getCurrentUser } from './js/auth.js';
+
+    const toast = document.getElementById('toast');
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    async function init() {
+      const user = await getCurrentUser();
+      if (!user) {
+        document.getElementById('wishlistGrid').innerHTML = `
+          <div style="grid-column: 1/-1; padding: 60px; text-align: center; color: #888;">
+            <div style="font-size:3rem; margin-bottom: 12px;">💔</div>
+            <h2 style="color:#111; margin-bottom: 8px;">Please Login</h2>
+            <p style="margin-bottom: 16px;">You need an account to view and manage your wishlist.</p>
+            <a href="auth/login.html?redirect=wishlist" style="padding: 10px 24px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">Login Now</a>
+          </div>`;
+        return;
+      }
+
+      await loadWishlist();
+    }
+
+    async function loadWishlist() {
+      const grid = document.getElementById('wishlistGrid');
+      try {
+        const products = await getWishlistProducts();
+        document.getElementById('itemCount').textContent = products.length;
+
+        if (products.length === 0) {
+          grid.innerHTML = `
+            <div style="grid-column: 1/-1; padding: 60px; text-align: center; color: #888;">
+              <div style="font-size:3rem; margin-bottom: 12px;">🛒</div>
+              <h2 style="color:#111; margin-bottom: 8px;">Your Wishlist is Empty</h2>
+              <p style="margin-bottom: 16px;">Looks like you haven't saved any items yet.</p>
+              <a href="products.html" style="padding: 10px 24px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 8px; font-weight: 600;">Browse Products</a>
+            </div>`;
+          return;
+        }
+
+        grid.innerHTML = products.map((p, idx) => {
+          const displayPrice = p.salePrice || p.price;
+          const stars = '★'.repeat(p.rating) + '☆'.repeat(5 - p.rating);
+          const safeName = p.name.replace(/'/g, "\\'");
+          return `
+            <div class="wish-card" id="card-${p.id}" style="animation-delay: ${idx * 0.04}s">
+              <button class="heart-btn active" aria-label="Remove from wishlist" onclick="removeWishItem('${p.id}', '${safeName}')">♥</button>
+              <div class="wish-img">
+                <img src="${p.thumbnail || p.images?.[0] || 'https://via.placeholder.com/200'}" alt="${p.name}" style="width:100%; height:100%; object-fit:contain; padding:8px;">
+              </div>
+              <div class="wish-body">
+                <div class="wish-name" title="${p.name}">${p.name}</div>
+                <div class="wish-price">$${displayPrice.toFixed(2)}</div>
+                <div class="wish-rating"><span class="stars">${stars}</span><span class="rev">(${p.reviews || 0} Reviews)</span></div>
+                <button class="btn-cart" onclick="addWishToCart('${p.id}', '${safeName}', ${displayPrice}, '${p.thumbnail || p.images?.[0] || ''}', this)">
+                  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                  Add to Cart
+                </button>
+                <button class="btn-remove" onclick="removeWishItem('${p.id}', '${safeName}')">Remove from Wishlist</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error(err);
+        grid.innerHTML = '<div style="grid-column: 1/-1; padding: 40px; color: red; text-align: center;">Failed to load wishlist.</div>';
+      }
+    }
+
+    window.removeWishItem = async (id, name) => {
+      const card = document.getElementById(`card-${id}`);
+      if (card) {
+        card.style.transition = 'opacity .3s ease, transform .3s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.92)';
+      }
+      
+      try {
+        await toggleWishlist(id);
+        if (card) {
+          setTimeout(() => {
+            card.remove();
+            const countEl = document.getElementById('itemCount');
+            countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+          }, 300);
+        }
+        showToast(`🗑️ "${name}" removed from wishlist`);
+        
+        // If empty now, reload to show empty state
+        if (document.querySelectorAll('.wish-card').length <= 1) {
+          setTimeout(loadWishlist, 350);
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("❌ Failed to remove item.");
+        if (card) {
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+        }
+      }
+    };
+
+    window.addWishToCart = async (id, name, price, thumbnail, btn) => {
+      let cart = getLocalCart();
+      const existing = cart.find(i => i.cartItemId === id || i.id === id);
+      if (existing) existing.qty++;
+      else cart.push({ id, cartItemId: id, name, price, qty: 1, thumbnail });
+      
+      saveLocalCart(cart);
+      
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✓ Added!';
+      btn.style.background = '#16a34a';
+      btn.disabled = true;
+      
+      try {
+        await syncCartToFirestore();
+        showToast(`🛒 "${name}" added to cart!`);
+      } catch(e) {
+        console.error(e);
+      }
+
+      setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 1500);
+    };
+
+    init();
+  </script>
+</body>
+</html>

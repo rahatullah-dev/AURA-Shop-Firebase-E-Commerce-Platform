@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AURA – Shopping Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f0f4fb;--white:#fff;--dark:#111827;--mid:#4b5563;--light:#9ca3af;
+      --accent:#2563eb;--accent2:#1d4ed8;
+      --green:#16a34a;--red:#ef4444;
+      --radius:14px;--shadow:0 2px 16px rgba(17,24,39,.08);--tr:.2s ease;
+    }
+    body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;}
+    
+    .topbar { background: var(--white); padding: 16px 28px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .topbar a { font-size: 22px; font-weight: 900; color: var(--accent); text-decoration: none; }
+    
+    .page-wrapper { display:flex; align-items:flex-start; justify-content:center; padding:40px 20px 80px; flex: 1;}
+    .page-wrap { width:100%; max-width:1100px; display:grid; grid-template-columns:1fr 360px; gap:28px; align-items:start; }
+
+    /* ── CART COL ── */
+    .cart-col { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+    .cart-header { padding: 20px 24px; border-bottom: 1px solid #f3f4f6; font-size: 1.2rem; font-weight: 800; }
+    
+    .cart-list { display: flex; flex-direction: column; }
+    .cart-item { display:flex; align-items:center; gap:18px; padding:20px 24px; border-bottom:1px solid #f3f4f6; transition:background var(--tr); }
+    .cart-item:last-child { border-bottom:none; }
+    
+    .item-img { width:90px; height:90px; border-radius:10px; flex-shrink:0; background:#f9fafb; display:flex; align-items:center; justify-content:center; overflow:hidden;}
+    .item-img img { max-width:100%; max-height:100%; object-fit:contain; }
+    
+    .item-details { flex:1; display:flex; flex-direction:column; gap:4px; }
+    .item-name { font-size:.95rem; font-weight:700; color:var(--dark); }
+    .item-meta { font-size:.8rem; color:var(--light); font-weight: 500;}
+    .item-price { font-size:1.05rem; font-weight:800; color:var(--dark); margin-top: 4px;}
+    
+    .qty-wrap { display:flex; align-items:center; gap:0; border:1.5px solid #e5e7eb; border-radius:9px; overflow:hidden; height: 38px;}
+    .qty-btn { width:34px; height:100%; background:#f9fafb; border:none; cursor:pointer; font-size:1.1rem; color:var(--mid); transition:background var(--tr),color var(--tr); display:flex; align-items:center; justify-content:center; }
+    .qty-btn:hover { background:#eff6ff; color:var(--accent); }
+    .qty-val { width:40px; text-align:center; font-size:.9rem; font-weight:700; color:var(--dark); background:#fff; border:none; outline:none; font-family:'Outfit',sans-serif;}
+    
+    .delete-btn { width:38px; height:38px; border-radius:10px; background:none; border:1.5px solid #e5e7eb; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--light); flex-shrink:0; transition:all var(--tr); }
+    .delete-btn:hover { border-color:var(--red); color:var(--red); background:#fff5f5; }
+    
+    .empty-cart { padding: 60px 20px; text-align: center; }
+    .empty-cart h3 { font-size: 1.2rem; color: var(--dark); margin-bottom: 10px;}
+    .empty-cart p { color: var(--light); margin-bottom: 20px;}
+    .shop-btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: #fff; text-decoration: none; border-radius: 8px; font-weight: 700; }
+
+    /* ── SUMMARY COL ── */
+    .summary-col { background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow); padding:28px 24px; display:flex; flex-direction:column; gap:0; }
+    .summary-title { font-size:1.2rem; font-weight:800; color:var(--dark); margin-bottom:20px; }
+    
+    .s-row { display:flex; justify-content:space-between; font-size:.95rem; color:var(--mid); margin-bottom:12px; font-weight: 500;}
+    .s-row.discount { color: var(--green); }
+    .total-row { font-size:1.2rem; font-weight:800; color:var(--dark); margin-bottom:0; margin-top: 6px;}
+    .s-divider { height:1.5px; background:#f3f4f6; margin:14px 0; }
+    
+    .promo-wrap { display:flex; gap:8px; margin-top:20px; margin-bottom:24px; }
+    .promo-input { flex:1; padding:12px 14px; border:1.5px solid #e5e7eb; border-radius:10px; font-family:'Outfit',sans-serif; font-size:.9rem; color:var(--dark); outline:none; transition:border-color var(--tr); }
+    .promo-input:focus { border-color:var(--accent); }
+    .promo-btn { padding:0 18px; background:transparent; border:1.5px solid var(--accent); color:var(--accent); border-radius:10px; font-family:'Outfit',sans-serif; font-size:.85rem; font-weight:700; cursor:pointer; transition:all var(--tr); }
+    .promo-btn:hover { background:var(--accent); color:#fff; }
+    
+    .checkout-btn { width:100%; padding:15px; background:var(--accent); color:#fff; border:none; border-radius:12px; font-family:'Outfit',sans-serif; font-size:.95rem; font-weight:800; letter-spacing:.05em; cursor:pointer; transition:all var(--tr); box-shadow:0 4px 14px rgba(37,99,235,.25); }
+    .checkout-btn:hover { background:var(--accent2); transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,99,235,.35); }
+    .checkout-btn:active { transform:translateY(0); }
+    .checkout-btn:disabled { background: #d1d5db; box-shadow: none; cursor: not-allowed; transform: none; }
+
+    .auth-warning { margin-top: 14px; font-size: 0.85rem; color: var(--red); text-align: center; font-weight: 600; display: none;}
+    .auth-warning a { color: var(--accent); text-decoration: underline; }
+
+    /* Toast */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 22px;border-radius:10px;font-size:.85rem;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.18);z-index:999;transform:translateY(80px);opacity:0;transition:transform .3s ease,opacity .3s ease;border-left:3px solid var(--green)}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.error{border-left-color:var(--red)}
+
+    @media(max-width:860px){.page-wrap{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+  <nav class="topbar">
+    <a href="products.html">Aura.</a>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="page-wrap">
+      
+      <!-- CART ITEMS -->
+      <div class="cart-col">
+        <div class="cart-header">Your Cart (<span id="item-count">0</span>)</div>
+        <div class="cart-list" id="cart-list">
+          <div class="empty-cart">
+            <h3>Loading Cart...</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER SUMMARY -->
+      <div class="summary-col">
+        <h2 class="summary-title">Order Summary</h2>
+        <div class="s-row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+        <div class="s-row discount" id="discount-row" style="display:none;">
+          <span>Discount (<span id="promo-label"></span>)</span>
+          <span id="discount-amt">-$0.00</span>
+        </div>
+        <div class="s-row"><span>Shipping</span><span id="shipping-amt">$10.00</span></div>
+        <div class="s-row"><span>Tax (8.5%)</span><span id="tax-amt">$0.00</span></div>
+        
+        <div class="s-divider"></div>
+        <div class="s-row total-row"><span>Total</span><span id="totalAmount">$0.00</span></div>
+
+        <div class="promo-wrap">
+          <input type="text" class="promo-input" id="promoInput" placeholder="Promo code"/>
+          <button class="promo-btn" id="promoBtn">Apply</button>
+        </div>
+
+        <button class="checkout-btn" id="checkoutBtn" disabled>PROCEED TO CHECKOUT</button>
+        <div class="auth-warning" id="auth-warning">
+          You must <a href="auth/login.html?redirect=cart">Login</a> to checkout.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { syncCartToFirestore, getLocalCart, updateCartItemQuantity, removeCartItem, validateCoupon, calculateDiscount } from './js/cartService.js';
+    import { getCurrentUser } from './js/auth.js';
+
+    let cartItems = [];
+    let appliedCoupon = null;
+    let currentUser = null;
+
+    const SHIPPING_RATE = 10.00;
+    const TAX_RATE = 0.085;
+
+    async function init() {
+      currentUser = await getCurrentUser();
+      
+      if (currentUser) {
+        // Sync local to Firestore, then fetch merged
+        cartItems = await syncCartToFirestore();
+      } else {
+        cartItems = getLocalCart();
+      }
+      
+      renderCart();
+      
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      if (!currentUser && cartItems.length > 0) {
+        document.getElementById('auth-warning').style.display = 'block';
+        checkoutBtn.textContent = 'LOGIN TO CHECKOUT';
+        checkoutBtn.disabled = false;
+        checkoutBtn.onclick = () => window.location.href = 'auth/login.html?redirect=cart';
+      } else {
+        checkoutBtn.onclick = proceedToCheckout;
+      }
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cart-list');
+      document.getElementById('item-count').textContent = cartItems.length;
+
+      if (cartItems.length === 0) {
+        list.innerHTML = `
+          <div class="empty-cart">
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added anything yet.</p>
+            <a href="products.html" class="shop-btn">Continue Shopping</a>
+          </div>`;
+        document.getElementById('checkoutBtn').disabled = true;
+        updateTotals();
+        return;
+      }
+
+      document.getElementById('checkoutBtn').disabled = !currentUser && cartItems.length === 0;
+
+      list.innerHTML = cartItems.map(item => `
+        <div class="cart-item">
+          <div class="item-img"><img src="${item.thumbnail || 'https://via.placeholder.com/100'}" alt="${item.name}"></div>
+          <div class="item-details">
+            <div class="item-name">${item.name}</div>
+            <div class="item-meta">
+              ${item.options?.size ? `Size: ${item.options.size} | ` : ''} 
+              ${item.options?.color ? `Color: ${item.options.color}` : ''}
+            </div>
+            <div class="item-price">$${(item.price * item.qty).toFixed(2)}</div>
+          </div>
+          <div class="qty-wrap">
+            <button class="qty-btn" onclick="updateQty('${item.cartItemId}', -1)">−</button>
+            <input class="qty-val" type="text" value="${item.qty}" readonly/>
+            <button class="qty-btn" onclick="updateQty('${item.cartItemId}', 1)">+</button>
+          </div>
+          <button class="delete-btn" onclick="removeItem('${item.cartItemId}')">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      `).join('');
+
+      updateTotals();
+    }
+
+    function updateTotals() {
+      const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      
+      let discountAmt = 0;
+      if (appliedCoupon) {
+        discountAmt = calculateDiscount(subtotal, appliedCoupon);
+      }
+      
+      const taxable = Math.max(0, subtotal - discountAmt);
+      const tax = taxable * TAX_RATE;
+      let shipping = cartItems.length > 0 ? SHIPPING_RATE : 0;
+      
+      if (appliedCoupon?.type === 'free_shipping') {
+        shipping = 0;
+        discountAmt = SHIPPING_RATE; // visualize it as discount
+      }
+
+      const total = taxable + tax + shipping;
+
+      document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('tax-amt').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('shipping-amt').textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+      document.getElementById('totalAmount').textContent = `$${total.toFixed(2)}`;
+
+      if (discountAmt > 0) {
+        document.getElementById('discount-row').style.display = 'flex';
+        document.getElementById('promo-label').textContent = appliedCoupon.code;
+        document.getElementById('discount-amt').textContent = `-$${discountAmt.toFixed(2)}`;
+      } else {
+        document.getElementById('discount-row').style.display = 'none';
+      }
+
+      // Save order state for checkout page
+      sessionStorage.setItem('aura_checkout_summary', JSON.stringify({
+        subtotal, discountAmt, tax, shippingFee: shipping, total, coupon: appliedCoupon
+      }));
+    }
+
+    window.updateQty = async (cartItemId, delta) => {
+      const item = cartItems.find(i => i.cartItemId === cartItemId);
+      if (!item) return;
+      const newQty = item.qty + delta;
+      if (newQty < 1) {
+        removeItem(cartItemId);
+        return;
+      }
+      item.qty = newQty;
+      await updateCartItemQuantity(cartItemId, newQty);
+      renderCart();
+    };
+
+    window.removeItem = async (cartItemId) => {
+      cartItems = cartItems.filter(i => i.cartItemId !== cartItemId);
+      await removeCartItem(cartItemId);
+      renderCart();
+      showToast('Item removed from cart');
+    };
+
+    document.getElementById('promoBtn').addEventListener('click', async () => {
+      const codeInput = document.getElementById('promoInput');
+      const code = codeInput.value.trim();
+      if (!code) return;
+
+      try {
+        appliedCoupon = await validateCoupon(code);
+        showToast(`✅ Promo code applied successfully!`);
+        updateTotals();
+      } catch (err) {
+        showToast(err.message, true);
+        appliedCoupon = null;
+        updateTotals();
+      }
+    });
+
+    function proceedToCheckout() {
+      window.location.href = 'payment.html';
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'toast show ' + (isError ? 'error' : '');
+      clearTimeout(t._t);
+      t._t = setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    init();
+  </script>
+</body>
+</html>
