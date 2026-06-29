@@ -238,6 +238,86 @@
       color: var(--light);
     }
 
+    /* ═══════ SEARCH SUGGESTIONS ═══════ */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: -1px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, .12);
+      z-index: 1000;
+      display: none;
+    }
+
+    .search-suggestions.active {
+      display: block;
+    }
+
+    .suggestion-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f8fafc;
+      cursor: pointer;
+      transition: background var(--tr);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .84rem;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .suggestion-item:hover {
+      background: var(--accent-soft);
+    }
+
+    .suggestion-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--light);
+      flex-shrink: 0;
+    }
+
+    .suggestion-text {
+      flex: 1;
+    }
+
+    .suggestion-name {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .suggestion-category {
+      font-size: .72rem;
+      color: var(--light);
+      margin-top: 2px;
+    }
+
+    .suggestion-price {
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .no-suggestions {
+      padding: 16px;
+      text-align: center;
+      color: var(--light);
+      font-size: .84rem;
+    }
+
+    .nav-search-wrapper {
+      position: relative;
+    }
+
     .icon-btn {
       width: 40px;
       height: 40px;
@@ -3482,12 +3562,15 @@
     </ul>
 
     <div class="nav-right">
-      <div class="nav-search">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-        <input type="text" placeholder="Search products..." id="navSearchInput">
+      <div class="nav-search-wrapper">
+        <div class="nav-search">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" placeholder="Search products..." id="navSearchInput" autocomplete="off">
+        </div>
+        <div class="search-suggestions" id="searchSuggestions"></div>
       </div>
 
       <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
@@ -4934,12 +5017,157 @@
     }
     updateCartBadge();
 
-    // ── NAVBAR SEARCH REDIRECT ─────────────────────
-    document.getElementById('navSearchInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter' && e.target.value.trim()) {
-        window.location.href = `products.html?search=${encodeURIComponent(e.target.value.trim())}`;
+    // ── NAVBAR SEARCH WITH AUTO-SUGGESTIONS ────────
+    function initSearchWithSuggestions() {
+      const searchInput = document.getElementById('navSearchInput');
+      const suggestionsContainer = document.getElementById('searchSuggestions');
+      
+      if (!searchInput) return;
+
+      // All available products for search
+      const allProducts = [
+        // Trending
+        { name: 'SoundWave Pro Headphones', cat: 'Electronics', price: 119.99 },
+        { name: 'AeroStride Run 5', cat: 'Sportswear', price: 89.99 },
+        { name: 'PulseTrack Smartwatch Pro', cat: 'Electronics', price: 169.99 },
+        { name: 'Aura Polarized Sunglasses', cat: 'Accessories', price: 59.99 },
+        { name: 'EchoFit Wireless Earbuds', cat: 'Electronics', price: 79.99 },
+        { name: 'CloudComfort Running Shoes', cat: 'Sportswear', price: 119.99 },
+        
+        // Featured
+        { name: 'Pro Noise-Cancel Headphones', cat: 'Electronics', price: 129.99 },
+        { name: 'Smart Fitness Watch', cat: 'Electronics', price: 119.99 },
+        { name: 'Premium Backpack', cat: 'Accessories', price: 89.99 },
+        { name: 'Drone X Pro', cat: 'Electronics', price: 199.99 },
+        
+        // Best Sellers
+        { name: 'AuraPods Pro', cat: 'Electronics', price: 199.99 },
+        { name: 'VitaBoost Energy Drink', cat: 'Beverages', price: 4.99 },
+        { name: 'TechShield Laptop Case', cat: 'Accessories', price: 34.99 },
+        { name: 'AuraGlow LED Desk Lamp', cat: 'Home Decor', price: 44.99 },
+        
+        // New Arrivals
+        { name: 'Pixel Perfect Camera', cat: 'Electronics', price: 449.99 },
+        { name: 'Bamboo Desk Organizer', cat: 'Office', price: 29.99 },
+        { name: 'SleekFlow Phone Stand', cat: 'Accessories', price: 19.99 },
+        { name: 'ProGrip Phone Case', cat: 'Accessories', price: 24.99 },
+        
+        // Additional Products
+        { name: 'Apple MacBook Pro', cat: 'Electronics', price: 1299.99 },
+        { name: 'Sony WH-1000XM5 Headphones', cat: 'Electronics', price: 399.99 },
+        { name: 'Samsung 65 inch TV', cat: 'Electronics', price: 899.99 },
+        { name: 'Canon EOS R5 Camera', cat: 'Electronics', price: 3899.99 },
+        { name: 'Nike Air Max 90', cat: 'Sportswear', price: 129.99 },
+        { name: 'Adidas Ultraboost 22', cat: 'Sportswear', price: 180.00 },
+        { name: 'Levi 501 Jeans', cat: 'Clothing', price: 89.99 },
+        { name: 'Tommy Hilfiger T-Shirt', cat: 'Clothing', price: 49.99 },
+        { name: 'Apple iPhone 15 Pro', cat: 'Electronics', price: 999.99 },
+        { name: 'Samsung Galaxy S24', cat: 'Electronics', price: 899.99 },
+        { name: 'iPad Air', cat: 'Electronics', price: 599.99 },
+        { name: 'Apple Watch Series 9', cat: 'Electronics', price: 399.99 },
+        { name: 'AirPods Max', cat: 'Electronics', price: 549.99 },
+        { name: 'Mechanical Gaming Keyboard', cat: 'Electronics', price: 149.99 },
+        { name: 'Logitech MX Master 3', cat: 'Electronics', price: 99.99 },
+        { name: '4K Webcam', cat: 'Electronics', price: 199.99 },
+        { name: 'Gaming Monitor 144Hz', cat: 'Electronics', price: 349.99 },
+        { name: 'Wireless Charging Pad', cat: 'Accessories', price: 29.99 },
+        { name: 'USB-C Hub', cat: 'Accessories', price: 39.99 },
+        { name: 'Portable Power Bank', cat: 'Electronics', price: 49.99 }
+      ];
+
+      // Filter products based on search query
+      function filterProducts(query) {
+        if (!query.trim()) return [];
+        
+        const lowerQuery = query.toLowerCase();
+        return allProducts
+          .filter(product => product.name.toLowerCase().includes(lowerQuery))
+          .slice(0, 8); // Limit to 8 suggestions
       }
-    });
+
+      // Render suggestions
+      function renderSuggestions(products) {
+        suggestionsContainer.innerHTML = '';
+        
+        if (products.length === 0) {
+          suggestionsContainer.innerHTML = '<div class="no-suggestions">No products found</div>';
+          suggestionsContainer.classList.add('active');
+          return;
+        }
+
+        products.forEach(product => {
+          const item = document.createElement('div');
+          item.className = 'suggestion-item';
+          item.innerHTML = `
+            <svg class="suggestion-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <div class="suggestion-text">
+              <div class="suggestion-name">${escapeHtml(product.name)}</div>
+              <div class="suggestion-category">${escapeHtml(product.cat)}</div>
+            </div>
+            <div class="suggestion-price">$${product.price.toFixed(2)}</div>
+          `;
+          
+          item.addEventListener('click', () => {
+            searchInput.value = product.name;
+            performSearch(product.name);
+          });
+          
+          suggestionsContainer.appendChild(item);
+        });
+
+        suggestionsContainer.classList.add('active');
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Handle input
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.trim();
+        
+        if (query.length === 0) {
+          suggestionsContainer.classList.remove('active');
+          return;
+        }
+
+        const filtered = filterProducts(query);
+        renderSuggestions(filtered);
+      });
+
+      // Handle Enter key
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && e.target.value.trim()) {
+          performSearch(e.target.value.trim());
+        }
+      });
+
+      // Close suggestions when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-search-wrapper')) {
+          suggestionsContainer.classList.remove('active');
+        }
+      });
+
+      // Perform search and redirect
+      function performSearch(query) {
+        suggestionsContainer.classList.remove('active');
+        window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+      }
+    }
+
+    // Initialize search when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSearchWithSuggestions);
+    } else {
+      initSearchWithSuggestions();
+    }
 
     // ── TOAST ──────────────────────────────────────
     window.showToast = (msg) => {
