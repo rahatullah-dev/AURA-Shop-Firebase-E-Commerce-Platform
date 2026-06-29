@@ -75,6 +75,15 @@
             Categories
           </a>
         </li>
+        <li>
+          <a href="settings.html">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            Settings
+          </a>
+        </li>
         
         <div class="sidebar-nav-label" style="margin-top:12px;">Storefront</div>
         <li>
@@ -212,11 +221,20 @@
     let currentFilter = 'all';
     let currentOpenOrderId = null;
 
+    // Display global errors in console/toast instead of breaking table
+    window.addEventListener('error', function(e) {
+      console.error('JS Error:', e.message, 'at', e.filename, e.lineno);
+      showToast('An unexpected error occurred.', 'error');
+    });
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Promise Error:', e.reason);
+    });
+
     async function init() {
       const user = await requireAdmin();
       if(!user) return;
       document.getElementById('adminName').textContent = user.profile?.name || user.displayName || 'Admin';
-      document.getElementById('adminAvatar').textContent = (user.profile?.name || user.displayName || user.email)[0].toUpperCase();
+      document.getElementById('adminAvatar').textContent = (user.profile?.name || user.displayName || user.email || 'A')[0].toUpperCase();
 
       await loadOrders();
       setupFilters();
@@ -273,7 +291,7 @@
       filtered.forEach(o => {
         const statusClass = map[o.status] || 'badge-draft';
         const statusText = (o.status || 'unknown').charAt(0).toUpperCase() + (o.status || 'unknown').slice(1);
-        const date = o.createdAt ? o.createdAt.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+        const date = (o.createdAt && typeof o.createdAt.toDate === 'function') ? o.createdAt.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
         const itemCount = o.items ? o.items.reduce((s,i)=>s+i.qty,0) : 0;
 
         const tr = document.createElement('tr');
@@ -339,10 +357,10 @@
       const addr = order.shippingAddress;
       if (addr) {
         document.getElementById('mdl-address').innerHTML = `
-          ${addr.addressLine1}<br>
+          ${addr.addressLine1 || ''}<br>
           ${addr.addressLine2 ? addr.addressLine2 + '<br>' : ''}
-          ${addr.city}, ${addr.state} ${addr.zip}<br>
-          ${addr.country}
+          ${addr.city || ''}, ${addr.state || ''} ${addr.zip || ''}<br>
+          ${addr.country || ''}
         `;
       } else {
         document.getElementById('mdl-address').innerHTML = 'No address provided.';

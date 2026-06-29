@@ -189,6 +189,21 @@ export async function getNewArrivals(count = 8) {
   return products.slice(0, count);
 }
 
+// ── GET BEST SELLERS ───────────────────────────────────────
+export async function getBestSellersProducts(count = 8) {
+  const snap = await getDocs(query(collection(db, PRODUCTS_COL), where('isPublished', '==', true)));
+  let products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  products = products.filter(p => p.isBestSeller === true);
+  // Fallback if no products explicitly marked as best seller, sort by rating
+  if (products.length === 0) {
+    products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    products.sort((a, b) => (b.ratingAvg || 0) - (a.ratingAvg || 0));
+  } else {
+    products.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+  }
+  return products.slice(0, count);
+}
+
 // ── GET RELATED PRODUCTS ───────────────────────────────────
 export async function getRelatedProducts(categoryId, excludeId, count = 4) {
   const snap = await getDocs(query(collection(db, PRODUCTS_COL), where('isPublished', '==', true)));

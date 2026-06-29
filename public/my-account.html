@@ -18,9 +18,9 @@
     /* SIDEBAR */
     .sidebar{background:#fff;border-radius:20px;padding:28px 20px 24px;text-align:center;position:sticky;top:20px;}
     .avatar-wrap{position:relative;display:inline-block;margin-bottom:14px;}
+    .avatar-img{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid #e8f0fe;display:block;margin:0 auto;}
     .avatar-circle{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#4fa3f7);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#fff;border:3px solid #e8f0fe;margin:0 auto;}
-    .user-name-sb{font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:2px;}
-    .user-email-sb{font-size:12px;color:#888;margin-bottom:20px;}
+    .user-name-sb{font-size:16px;font-weight:800;color:#1a1a2e;margin-bottom:20px;}
     .divider-h{height:1px;background:#f0f0f0;margin:16px 0;}
     .nav-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;cursor:pointer;font-size:14px;font-weight:800;color:#444;letter-spacing:0.3px;text-decoration:none;margin-bottom:4px;transition:background 0.2s,color 0.2s;}
     .nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0;}
@@ -44,12 +44,20 @@
     .badge{display:inline-block;padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;letter-spacing:0.5px;}
     .badge-delivered{background:#e8f5e9;color:#2e7d32;}
     .badge-shipped{background:#e8f0fe;color:#1a73e8;}
+    .badge-confirmed{background:#e3f2fd;color:#1565c0;}
     .badge-pending{background:#fff8e1;color:#f57c00;}
     .badge-cancelled{background:#fdecea;color:#c62828;}
     .empty-state{text-align:center;padding:60px 20px;}
     .empty-state .icon{font-size:3rem;margin-bottom:12px;}
     .empty-state p{color:#888;font-size:14px;font-weight:700;}
     .empty-state a{display:inline-block;margin-top:16px;padding:12px 28px;border-radius:50px;background:#1a73e8;color:#fff;font-weight:800;text-decoration:none;font-size:14px;}
+    .loading-row td{text-align:center;padding:40px;color:#888;font-size:14px;}
+
+    /* Action buttons */
+    .btn-view{padding:6px 14px;border-radius:50px;border:none;background:linear-gradient(135deg,#1a73e8,#4fa3f7);color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .2s;}
+    .btn-view:hover{opacity:.85;}
+    .btn-cancel{padding:6px 14px;border-radius:50px;border:1.5px solid #e53935;background:#fff;color:#e53935;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-left:8px;transition:background .2s,color .2s;}
+    .btn-cancel:hover{background:#fdecea;}
 
     /* PROFILE FORM */
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
@@ -61,13 +69,40 @@
     .save-btn{padding:12px 32px;background:linear-gradient(135deg,#1a73e8,#4fa3f7);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity 0.2s;}
     .save-btn:hover{opacity:0.9;}
 
-    /* LOADING */
-    .loading-row td{text-align:center;padding:40px;color:#888;font-size:14px;}
+    /* Photo Upload */
+    .photo-upload-section{display:flex;align-items:center;gap:20px;padding:20px;background:#f5f7ff;border-radius:16px;margin-bottom:24px;border:1.5px dashed #c5d5fb;}
+    .profile-photo-preview{width:80px;height:80px;border-radius:50%;object-fit:cover;border:3px solid #e8f0fe;flex-shrink:0;}
+    .profile-photo-placeholder{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#4fa3f7);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;border:3px solid #e8f0fe;flex-shrink:0;}
+    .photo-upload-info h4{font-size:14px;font-weight:800;color:#1a1a2e;margin-bottom:4px;}
+    .photo-upload-info p{font-size:12px;color:#888;margin-bottom:10px;}
+    .upload-btn-label{display:inline-block;padding:8px 20px;border-radius:50px;border:1.5px solid #1a73e8;color:#1a73e8;font-size:12px;font-weight:800;cursor:pointer;transition:background .2s,color .2s;}
+    .upload-btn-label:hover{background:#1a73e8;color:#fff;}
+    #photoFileInput{display:none;}
+    .upload-progress{font-size:12px;font-weight:700;color:#1a73e8;margin-top:6px;display:none;}
+
+    /* MODALS */
+    .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
+    .modal-box{background:#fff;border-radius:20px;padding:32px 28px;width:95%;max-width:460px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.15);animation:popIn .2s ease;}
+    @keyframes popIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+    .modal-close{position:absolute;top:18px;right:20px;background:none;border:none;font-size:22px;cursor:pointer;color:#888;line-height:1;}
+    .modal-icon{font-size:2.8rem;text-align:center;margin-bottom:10px;}
+    .modal-title{font-size:20px;font-weight:900;color:#1a1a2e;text-align:center;margin-bottom:8px;}
+    .modal-body{font-size:14px;color:#666;text-align:center;margin-bottom:24px;line-height:1.6;}
+    .modal-actions{display:flex;gap:12px;justify-content:center;}
+    .modal-confirm-btn{padding:12px 28px;border-radius:50px;border:none;background:#e53935;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .2s;}
+    .modal-confirm-btn:hover{opacity:.85;}
+    .modal-cancel-btn{padding:12px 28px;border-radius:50px;border:1.5px solid #ddd;background:#fff;color:#555;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:background .2s;}
+    .modal-cancel-btn:hover{background:#f5f5f5;}
+
+    /* GLOBAL TOAST */
+    #globalToast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:14px 28px;border-radius:50px;font-size:14px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+    #globalToast.show{opacity:1;}
 
     @media(max-width:780px){
       .layout{grid-template-columns:1fr;}
       .sidebar{position:static;}
       .form-grid{grid-template-columns:1fr;}
+      .photo-upload-section{flex-direction:column;text-align:center;}
     }
   </style>
 </head>
@@ -82,18 +117,15 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-      <div class="avatar-circle" id="sidebarAvatar">?</div>
+      <div class="avatar-wrap" id="sidebarAvatarWrap">
+        <div class="avatar-circle" id="sidebarAvatar">?</div>
+      </div>
       <div class="user-name-sb" id="sidebarName">Loading...</div>
-      <div class="user-email-sb" id="sidebarEmail"></div>
       <div class="divider-h"></div>
 
       <a class="nav-item active" id="nav-orders" onclick="switchPanel('orders', this)">
         <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2"/></svg>
         My Orders
-      </a>
-      <a class="nav-item" href="./wishlist.html">
-        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Wishlist
       </a>
       <a class="nav-item" id="nav-profile" onclick="switchPanel('profile',this)">
         <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -126,29 +158,32 @@
         <h2>My Orders</h2>
         <table class="orders-table">
           <thead><tr>
-            <th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th>
+            <th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th>
           </tr></thead>
           <tbody id="ordersBody">
-            <tr class="loading-row"><td colspan="5">Loading orders...</td></tr>
+            <tr class="loading-row"><td colspan="6">Loading orders...</td></tr>
           </tbody>
         </table>
-      </div>
-
-      <!-- WISHLIST PANEL -->
-      <div class="panel" id="panel-wishlist">
-        <h2>My Wishlist</h2>
-        <div id="wishlistBody">
-          <div class="empty-state">
-            <div class="icon">🤍</div>
-            <p>Your wishlist is empty.</p>
-            <a href="featured_products.html">Browse Products</a>
-          </div>
-        </div>
       </div>
 
       <!-- PROFILE PANEL -->
       <div class="panel" id="panel-profile">
         <h2>My Profile</h2>
+
+        <!-- Profile Photo Upload -->
+        <div class="photo-upload-section">
+          <div id="profilePhotoPreviewWrap">
+            <div class="profile-photo-placeholder" id="profilePhotoPlaceholder">?</div>
+          </div>
+          <div class="photo-upload-info">
+            <h4>Profile Photo</h4>
+            <p>Upload a photo (JPG or PNG, max 2MB).<br>It will appear across your whole account.</p>
+            <label class="upload-btn-label" for="photoFileInput">Choose Photo</label>
+            <input type="file" id="photoFileInput" accept="image/jpeg,image/png,image/webp"/>
+            <div class="upload-progress" id="uploadProgress">Uploading…</div>
+          </div>
+        </div>
+
         <div class="form-grid">
           <div class="form-group"><label>Full Name</label><input id="pf-name" type="text"/></div>
           <div class="form-group"><label>Email</label><input id="pf-email" type="email" disabled style="background:#f5f5f5;color:#999;"/></div>
@@ -164,12 +199,9 @@
       <div class="panel" id="panel-addresses">
         <h2>Saved Addresses</h2>
         <div id="addressList" style="display:flex;flex-direction:column;gap:16px;margin-bottom:24px;">
-          <div class="empty-state">
-            <p>Loading addresses...</p>
-          </div>
+          <div class="empty-state"><p>Loading addresses...</p></div>
         </div>
         <button class="save-btn" onclick="showAddAddressForm()">+ Add New Address</button>
-        
         <div id="addressFormWrap" style="display:none; margin-top:24px; padding-top:24px; border-top:1px solid #f0f0f0;">
           <h3 style="margin-bottom:16px;">Add New Address</h3>
           <div class="form-grid">
@@ -187,7 +219,6 @@
       <!-- ACCOUNT SETTINGS PANEL -->
       <div class="panel" id="panel-settings">
         <h2>Account Settings</h2>
-        
         <div style="background:#fafbff; border:1px solid #e2e2e2; border-radius:12px; padding:24px; margin-bottom:24px;">
           <h3 style="margin-bottom:16px;font-size:18px;">Change Password</h3>
           <div class="form-grid">
@@ -196,7 +227,6 @@
           </div>
           <button class="save-btn" onclick="handleChangePassword()">Update Password</button>
         </div>
-
         <div style="background:#fef5f5; border:1px solid #fdecea; border-radius:12px; padding:24px;">
           <h3 style="margin-bottom:8px;font-size:18px;color:#c62828;">Danger Zone</h3>
           <p style="font-size:14px;color:#666;margin-bottom:16px;">Once you delete your account, there is no going back. Please be certain.</p>
@@ -209,54 +239,119 @@
 </div>
 
 <!-- ORDER DETAIL MODAL -->
-<div class="modal-overlay" id="orderModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
-  <div style="background:#fff; border-radius:16px; padding:24px; width:95%; max-width:600px; max-height:90vh; overflow-y:auto; position:relative;">
-    <button onclick="document.getElementById('orderModal').style.display='none'" style="position:absolute; top:20px; right:20px; background:none; border:none; font-size:24px; cursor:pointer;">&times;</button>
-    <h3 id="usr-order-id" style="font-size:1.4rem; margin-bottom:8px; color:#1a1a2e; font-weight:900;">Order Details</h3>
-    <div id="usr-order-date" style="color:#666; font-size:14px; margin-bottom:20px;"></div>
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-box" style="max-width:600px;max-height:90vh;overflow-y:auto;">
+    <button class="modal-close" onclick="closeModal('orderModal')">&times;</button>
+    <h3 id="usr-order-id" style="font-size:1.4rem;margin-bottom:8px;color:#1a1a2e;font-weight:900;">Order Details</h3>
+    <div id="usr-order-date" style="color:#666;font-size:14px;margin-bottom:20px;"></div>
     <div id="usr-order-items"></div>
-    <div style="margin-top:20px; padding-top:16px; border-top:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
-      <span style="font-weight:700; color:#1a1a2e;">Total Amount</span>
-      <span id="usr-order-total" style="font-size:1.6rem; font-weight:900; color:#1a73e8;"></span>
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-weight:700;color:#1a1a2e;">Total Amount</span>
+      <span id="usr-order-total" style="font-size:1.6rem;font-weight:900;color:#1a73e8;"></span>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL CONFIRMATION MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('cancelModal')">&times;</button>
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-title">Cancel Order?</div>
+    <div class="modal-body">
+      Are you sure you want to cancel this order?<br>
+      <strong id="cancelOrderLabel" style="color:#1a1a2e;font-size:15px;"></strong><br>
+      <span style="color:#e53935;font-size:13px;">This action cannot be undone.</span>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-cancel-btn" onclick="closeModal('cancelModal')">Keep Order</button>
+      <button class="modal-confirm-btn" id="confirmCancelBtn">Yes, Cancel It</button>
     </div>
   </div>
 </div>
 
 <script type="module">
-  import { requireAuth, logout, getUserProfile, changeUserPassword, deleteUserAccount, auth, db }
+  import { requireAuth, logout, getUserProfile, changeUserPassword, deleteUserAccount, auth, db, getCurrentUserRole }
     from "./js/auth.js";
   import {
-    doc, getDoc, collection, query, where, orderBy, getDocs, updateDoc
+    doc, collection, query, where, getDocs, updateDoc
   } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { storage } from "./firebase-config.js";
+  import {
+    ref, uploadBytes, getDownloadURL
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
   // ── REQUIRE AUTH ──────────────────────────────────────────
-  const user = await requireAuth("login.html");
+  const user = await requireAuth("auth/login.html");
+  const role = await getCurrentUserRole();
+  if (role === 'admin') { window.location.replace('admin/index.html'); }
 
-  // ── FILL SIDEBAR ─────────────────────────────────────────
-  document.getElementById("sidebarName").textContent  = user.displayName || "User";
-  document.getElementById("sidebarEmail").textContent = user.email;
-  document.getElementById("sidebarAvatar").textContent =
-    (user.displayName || user.email)[0].toUpperCase();
+  // ── SIDEBAR AVATAR RENDERER ───────────────────────────────
+  function renderSidebarAvatar(photoURL, displayName) {
+    const wrap   = document.getElementById('sidebarAvatarWrap');
+    const letter = (displayName || user.email || '?')[0].toUpperCase();
+    if (photoURL) {
+      const img = document.createElement('img');
+      img.className = 'avatar-img';
+      img.id        = 'sidebarAvatar';
+      img.alt       = 'Profile Photo';
+      img.src       = photoURL;
+      img.onerror   = () => {
+        const div = document.createElement('div');
+        div.className = 'avatar-circle';
+        div.id = 'sidebarAvatar';
+        div.textContent = letter;
+        img.replaceWith(div);
+      };
+      wrap.innerHTML = '';
+      wrap.appendChild(img);
+    } else {
+      wrap.innerHTML = `<div class="avatar-circle" id="sidebarAvatar">${letter}</div>`;
+    }
+  }
+
+  // Placeholder until Firestore profile loads
+  document.getElementById("sidebarName").textContent = user.displayName || "Loading...";
+  renderSidebarAvatar(user.photoURL, user.displayName);
 
   // ── LOGOUT ────────────────────────────────────────────────
   document.getElementById("logoutBtn").onclick = async () => {
     if (confirm("Are you sure you want to logout?")) await logout();
   };
 
-  // ── LOAD ORDERS ───────────────────────────────────────────
+  // ── TOAST ─────────────────────────────────────────────────
+  window.showToast = function(msg, type = 'success') {
+    const t = document.getElementById('globalToast');
+    t.textContent      = msg;
+    t.style.background = type === 'success' ? '#e8f5e9' : '#fdecea';
+    t.style.color      = type === 'success' ? '#2e7d32' : '#c62828';
+    t.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+  };
+
+  // ── MODAL HELPERS ─────────────────────────────────────────
+  window.closeModal = function(id) {
+    document.getElementById(id).style.display = 'none';
+  };
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if (e.target === el) el.style.display = 'none'; });
+  });
+
+  // ═══════════════════════════════════════════════
+  // ── ORDERS ────────────────────────────────────
+  // ═══════════════════════════════════════════════
   window.allUserOrders = [];
+  const CANCELLABLE = new Set(['pending', 'confirmed']);
+
   async function loadOrders() {
     const tbody = document.getElementById("ordersBody");
     try {
-      // Firebase: query orders collection where userId == user.uid
-      const q    = query(
-        collection(db, "orders"),
-        where("userId", "==", user.uid)
-      );
+      const q    = query(collection(db, "orders"), where("userId", "==", user.uid));
       const snap = await getDocs(q);
 
       if (snap.empty) {
-        tbody.innerHTML = `<tr><td colspan="5">
+        tbody.innerHTML = `<tr><td colspan="6">
           <div class="empty-state">
             <div class="icon">📦</div>
             <p>No orders yet. Start shopping!</p>
@@ -266,74 +361,238 @@
       }
 
       tbody.innerHTML = "";
-      
-      const orders = snap.docs.map(d => ({id: d.id, ...d.data()}));
+      const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       orders.sort((a, b) => (b.createdAt?.toMillis() || 0) - (a.createdAt?.toMillis() || 0));
       window.allUserOrders = orders;
-      
-      orders.forEach(o => {
-        const map = { delivered:"badge-delivered", shipped:"badge-shipped",
-                      pending:"badge-pending",   cancelled:"badge-cancelled" };
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td style="font-family:monospace;font-weight:700;">#${o.id.slice(-6).toUpperCase()}</td>
-          <td>${o.createdAt?.toDate().toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"}) || "—"}</td>
-          <td>${o.items?.length || 0} item(s)</td>
-          <td style="font-family:monospace;font-weight:700;">$${(o.total||0).toFixed(2)}</td>
-          <td>
-            <span class="badge ${map[o.status]||'badge-pending'}">${(o.status||"pending").charAt(0).toUpperCase()+(o.status||"pending").slice(1)}</span>
-          </td>
-          <td>
-            <button class="save-btn" style="padding:6px 12px; font-size:12px;" onclick="viewUserOrder('${o.id}')">View</button>
-          </td>`;
-        tbody.appendChild(row);
-      });
+      orders.forEach(o => buildOrderRow(tbody, o));
     } catch(e) {
-      console.error(e);
-      // Graceful fallback for demo (before Firebase is set up)
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:#888;font-size:14px;">
-        Connect Firebase to see your orders here.</td></tr>`;
+      console.error('loadOrders error:', e);
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:#888;font-size:14px;">
+        Could not load orders. Check your connection.</td></tr>`;
     }
   }
+
+  function buildOrderRow(tbody, o) {
+    const statusKey   = (o.status || 'pending').toLowerCase();
+    const badgeMap    = { delivered:'badge-delivered', shipped:'badge-shipped', confirmed:'badge-confirmed', pending:'badge-pending', cancelled:'badge-cancelled' };
+    const badgeClass  = badgeMap[statusKey] || 'badge-pending';
+    const statusLabel = statusKey.charAt(0).toUpperCase() + statusKey.slice(1);
+    const canCancel   = CANCELLABLE.has(statusKey);
+    const shortId     = o.id.slice(-6).toUpperCase();
+    const dateStr     = o.createdAt
+      ? o.createdAt.toDate().toLocaleDateString("en-GB", { day:"2-digit", month:"short", year:"numeric" })
+      : "—";
+
+    const tr = document.createElement("tr");
+    tr.id = `order-row-${o.id}`;
+    tr.innerHTML = `
+      <td style="font-family:monospace;font-weight:700;">#${shortId}</td>
+      <td>${dateStr}</td>
+      <td>${o.items?.length || 0} item(s)</td>
+      <td style="font-family:monospace;font-weight:700;">$${(o.total||0).toFixed(2)}</td>
+      <td><span class="badge ${badgeClass}" id="status-badge-${o.id}">${statusLabel}</span></td>
+      <td style="white-space:nowrap;">
+        <button class="btn-view" onclick="viewUserOrder('${o.id}')">View</button>
+        ${canCancel ? `<button class="btn-cancel" id="cancel-btn-${o.id}" onclick="openCancelModal('${o.id}')">Cancel</button>` : ''}
+      </td>`;
+    tbody.appendChild(tr);
+  }
+
   loadOrders();
 
+  // ── VIEW ORDER ────────────────────────────────────────────
   window.viewUserOrder = (id) => {
     const order = window.allUserOrders.find(o => o.id === id);
-    if(!order) return;
-    document.getElementById('usr-order-id').textContent = 'Order #' + order.id.toUpperCase();
-    document.getElementById('usr-order-date').textContent = order.createdAt ? order.createdAt.toDate().toLocaleString() : '';
+    if (!order) return;
+    document.getElementById('usr-order-id').textContent    = 'Order #' + order.id.slice(-6).toUpperCase();
+    document.getElementById('usr-order-date').textContent  = order.createdAt ? order.createdAt.toDate().toLocaleString() : '';
     document.getElementById('usr-order-total').textContent = '$' + (order.total || 0).toFixed(2);
-    
-    document.getElementById('usr-order-items').innerHTML = order.items ? order.items.map(i => `
-      <div style="display:flex; align-items:center; padding:12px; border-bottom:1px solid #f0f0f0;">
-        <img src="${i.thumbnail || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:6px; margin-right:12px; object-fit:cover;">
-        <div style="flex:1;">
-          <div style="font-weight:700; color:#1a1a2e; font-size:14px;">${i.name}</div>
-          ${i.options?.size ? `<div style="font-size:12px; color:#888;">Size: ${i.options.size} | Color: ${i.options.color}</div>` : ''}
-        </div>
-        <div style="font-size:13px; font-weight:600; color:#666; margin-right:16px;">Qty: ${i.qty}</div>
-        <div style="font-size:14px; font-weight:800;">$${((i.price||0)*i.qty).toFixed(2)}</div>
-      </div>
-    `).join('') : '<p>No items</p>';
-    
+    document.getElementById('usr-order-items').innerHTML   = order.items
+      ? order.items.map(i => `
+          <div style="display:flex;align-items:center;padding:12px;border-bottom:1px solid #f0f0f0;">
+            <img src="${i.thumbnail || 'https://via.placeholder.com/40'}" style="width:40px;height:40px;border-radius:6px;margin-right:12px;object-fit:cover;">
+            <div style="flex:1;">
+              <div style="font-weight:700;color:#1a1a2e;font-size:14px;">${i.name}</div>
+              ${i.options?.size ? `<div style="font-size:12px;color:#888;">Size: ${i.options.size} | Color: ${i.options.color}</div>` : ''}
+            </div>
+            <div style="font-size:13px;font-weight:600;color:#666;margin-right:16px;">Qty: ${i.qty}</div>
+            <div style="font-size:14px;font-weight:800;">$${((i.price||0)*i.qty).toFixed(2)}</div>
+          </div>`).join('')
+      : '<p style="color:#888;text-align:center;padding:20px;">No items found.</p>';
     document.getElementById('orderModal').style.display = 'flex';
   };
 
-  // ── LOAD PROFILE ──────────────────────────────────────────
+  // ── CANCEL ORDER ──────────────────────────────────────────
+  let _cancelTargetId = null;
+
+  window.openCancelModal = function(orderId) {
+    _cancelTargetId = orderId;
+    document.getElementById('cancelOrderLabel').textContent = 'Order #' + orderId.slice(-6).toUpperCase();
+    document.getElementById('cancelModal').style.display   = 'flex';
+  };
+
+  document.getElementById('confirmCancelBtn').addEventListener('click', async () => {
+    if (!_cancelTargetId) return;
+
+    const btn = document.getElementById('confirmCancelBtn');
+    btn.disabled    = true;
+    btn.textContent = 'Cancelling…';
+
+    try {
+      await updateDoc(doc(db, "orders", _cancelTargetId), { status: "cancelled" });
+
+      const cached = window.allUserOrders.find(x => x.id === _cancelTargetId);
+      if (cached) cached.status = 'cancelled';
+
+      const badge = document.getElementById('status-badge-' + _cancelTargetId);
+      if (badge) {
+        badge.className   = 'badge badge-cancelled';
+        badge.textContent = 'Cancelled';
+      }
+
+      const cancelBtn = document.getElementById('cancel-btn-' + _cancelTargetId);
+      if (cancelBtn) cancelBtn.remove();
+
+      closeModal('cancelModal');
+      showToast('✅ Order cancelled successfully.', 'success');
+    } catch(err) {
+      console.error('Cancel order error:', err);
+      closeModal('cancelModal');
+      showToast('❌ Failed to cancel order. Please try again.', 'error');
+    } finally {
+      btn.disabled    = false;
+      btn.textContent = 'Yes, Cancel It';
+      _cancelTargetId = null;
+    }
+  });
+
+  // ═══════════════════════════════════════════════
+  // ── PROFILE ───────────────────────────────────
+  // ═══════════════════════════════════════════════
   let userProfileDoc = null;
+
+  function renderProfilePhotoPreview(photoURL, name) {
+    const wrap   = document.getElementById('profilePhotoPreviewWrap');
+    const letter = (name || user.email || '?')[0].toUpperCase();
+    if (photoURL) {
+      const img = document.createElement('img');
+      img.className = 'profile-photo-preview';
+      img.alt       = 'Profile Photo';
+      img.src       = photoURL;
+      img.onerror   = () => {
+        const ph = document.createElement('div');
+        ph.className = 'profile-photo-placeholder';
+        ph.textContent = letter;
+        img.replaceWith(ph);
+      };
+      wrap.innerHTML = '';
+      wrap.appendChild(img);
+    } else {
+      wrap.innerHTML = `<div class="profile-photo-placeholder">${letter}</div>`;
+    }
+  }
+
+ // ── PROFILE PHOTO UPLOAD ───────────────────────
+ const photoInput = document.getElementById('photoFileInput');
+ if (photoInput) {
+   photoInput.addEventListener('change', async (e) => {
+     const file = e.target.files[0];
+     if (!file) return;
+     const maxSize = 2 * 1024 * 1024; // 2MB
+     if (file.size > maxSize) {
+       alert('File too large (max 2MB).');
+       return;
+     }
+     const progressEl = document.getElementById('uploadProgress');
+     if (progressEl) {
+       progressEl.style.display = 'block';
+       progressEl.textContent = 'Uploading... 0%';
+     }
+     
+     // Cloudinary Upload
+     const CLOUDINARY_CLOUD_NAME = 'dsppay62o';
+     const CLOUDINARY_UPLOAD_PRESET = 'e-commerce';
+     const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`;
+     const form = new FormData();
+     form.append('file', file);
+     form.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+     form.append('folder', 'profiles');
+
+     const xhr = new XMLHttpRequest();
+     xhr.open('POST', uploadUrl);
+     
+     xhr.upload.onprogress = (e) => {
+       if (e.lengthComputable && progressEl) {
+         const percent = Math.round((e.loaded / e.total) * 100);
+         progressEl.textContent = `Uploading... ${percent}%`;
+       }
+     };
+
+     xhr.onload = async () => {
+       if (xhr.status === 200) {
+         try {
+           const data = JSON.parse(xhr.responseText);
+           const downloadURL = data.secure_url;
+           
+           await updateDoc(doc(db, 'users', user.uid), { photoURL: downloadURL });
+           
+           renderProfilePhotoPreview(downloadURL, document.getElementById('pf-name').value.trim() || user.displayName);
+           renderSidebarAvatar(downloadURL, document.getElementById('pf-name').value.trim() || user.displayName);
+           
+           if (progressEl) progressEl.style.display = 'none';
+           photoInput.value = ''; // Reset input so same file can be selected again
+           alert('Profile photo updated successfully!');
+         } catch (err) {
+           console.error('Error saving url', err);
+           if (progressEl) progressEl.textContent = 'Failed to save profile photo';
+         }
+       } else {
+         console.error('Cloudinary upload error', xhr.status, xhr.responseText);
+         if (progressEl) progressEl.textContent = 'Upload failed.';
+         alert('Failed to upload image.');
+       }
+     };
+     
+     xhr.onerror = () => {
+       console.error('Network error during Cloudinary upload');
+       if (progressEl) progressEl.textContent = 'Network error.';
+       alert('Network error during upload.');
+     };
+
+     xhr.send(form);
+   });
+ }
+
   async function loadProfile() {
     try {
       userProfileDoc = await getUserProfile(user.uid);
-      if (userProfileDoc) {
-        document.getElementById("pf-name").value    = userProfileDoc.name    || user.displayName || "";
-        document.getElementById("pf-email").value   = userProfileDoc.email   || user.email       || "";
-        document.getElementById("pf-phone").value   = userProfileDoc.phone   || "";
-        document.getElementById("pf-city").value    = userProfileDoc.city    || "";
-        document.getElementById("pf-address").value = userProfileDoc.address || "";
-        renderAddresses(userProfileDoc.addresses || []);
-      }
-    } catch(e) {
-      document.getElementById("pf-name").value  = user.displayName || "";
+      // Use Firestore data if available, otherwise fallback to Auth data
+      const nameFromDoc = userProfileDoc?.name;
+      const photoFromDoc = userProfileDoc?.photoURL;
+      const displayName = nameFromDoc || user.displayName || '';
+      const photoURL = photoFromDoc || user.photoURL || '';
+
+      // Populate form fields (use Firestore values when present)
+      document.getElementById("pf-name").value    = displayName;
+      document.getElementById("pf-email").value   = userProfileDoc?.email   || user.email || "";
+      document.getElementById("pf-phone").value   = userProfileDoc?.phone   || "";
+      document.getElementById("pf-city").value    = userProfileDoc?.city    || "";
+      document.getElementById("pf-address").value = userProfileDoc?.address || "";
+      renderAddresses(userProfileDoc?.addresses || []);
+
+      // Sync sidebar name and avatar immediately
+      document.getElementById("sidebarName").textContent = displayName || "User";
+      renderSidebarAvatar(photoURL, displayName);
+
+      // Render preview in profile panel
+      renderProfilePhotoPreview(photoURL, displayName);
+    } catch (e) {
+      console.error('loadProfile error:', e);
+      // Fallback to Auth data if Firestore read fails
+      const fallbackName = user.displayName || '';
+      document.getElementById("sidebarName").textContent = fallbackName || "User";
+      renderSidebarAvatar(user.photoURL, fallbackName);
+      document.getElementById("pf-name").value  = fallbackName;
       document.getElementById("pf-email").value = user.email || "";
       renderAddresses([]);
     }

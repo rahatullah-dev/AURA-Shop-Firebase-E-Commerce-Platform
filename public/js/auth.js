@@ -19,7 +19,7 @@ import {
   deleteUser
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
-  doc, getDoc, setDoc, serverTimestamp
+  doc, getDoc, setDoc, updateDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Re-export for pages that import { auth, db } from auth.js
@@ -79,12 +79,16 @@ export async function deleteUserAccount(currentPassword) {
 }
 
 // ── LOGOUT ─────────────────────────────────────
-export async function logout() {
+export async function logout(redirectUrl = 'auth/login.html') {
   await signOut(auth);
   // Clear any localStorage auth artifacts
   localStorage.removeItem('aura_user');
-  // Use absolute path from project root so it works from any page depth
-  window.location.href = 'auth/login.html';
+  
+  if (redirectUrl === 'auth/login.html' && window.location.pathname.includes('/admin/')) {
+    redirectUrl = '../auth/login.html';
+  }
+  
+  window.location.href = redirectUrl;
 }
 
 // ── AUTH GUARD ──────────────────────────────────

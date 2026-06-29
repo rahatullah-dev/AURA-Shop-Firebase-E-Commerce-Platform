@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA Loader Preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ── LOADER OVERLAY ── */
+  #aura-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #060b18;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 36px;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+
+  #aura-loader.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* ── LOGO WRAPPER ── */
+  .loader-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: logoPulse 2s ease-in-out infinite;
+  }
+
+  .loader-logo img {
+    width: 280px;
+    filter: drop-shadow(0 0 18px #0066ffaa) drop-shadow(0 0 40px #0066ff55);
+    animation: glowBreath 2s ease-in-out infinite;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .loader-bar-wrap {
+    width: 220px;
+    height: 3px;
+    background: #ffffff10;
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .loader-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #0044cc, #0066ff, #33aaff);
+    box-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff55;
+    animation: fillBar 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  /* ── DOTS ── */
+  .loader-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .loader-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #0066ff;
+    opacity: 0.3;
+    animation: dotBounce 1.2s ease-in-out infinite;
+  }
+
+  .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  /* ── TAGLINE ── */
+  .loader-tag {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #0066ff88;
+    animation: fadeInUp 1s ease forwards;
+    opacity: 0;
+    animation-delay: 0.5s;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes logoPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  @keyframes glowBreath {
+    0%, 100% {
+      filter: drop-shadow(0 0 14px #0066ffaa) drop-shadow(0 0 30px #0066ff44);
+    }
+    50% {
+      filter: drop-shadow(0 0 28px #0066ff) drop-shadow(0 0 60px #0066ff88);
+    }
+  }
+
+  @keyframes fillBar {
+    0%   { width: 0%; }
+    30%  { width: 35%; }
+    60%  { width: 65%; }
+    85%  { width: 88%; }
+    100% { width: 100%; }
+  }
+
+  @keyframes dotBounce {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50%       { opacity: 1;   transform: translateY(-5px); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── DEMO PAGE (sirf preview ke liye) ── */
+  body { background: #f5f5f5; }
+  .demo-page {
+    padding: 60px;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    display: none;
+  }
+  .demo-page.show { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     AURA LOADER — COPY THIS SECTION
+     INTO YOUR index.html <body> TOP
+     ══════════════════════════════════ -->
+<div id="aura-loader">
+
+  <div class="loader-logo">
+    <!-- apni logo image ka path yahan daalo -->
+    <img src="logo.png" alt="AURA">
+  </div>
+
+  <div class="loader-bar-wrap">
+    <div class="loader-bar"></div>
+  </div>
+
+  <div class="loader-dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <p class="loader-tag">Loading your experience</p>
+
+</div>
+<!-- ══ LOADER END ══ -->
+
+<!-- Demo content -->
+<div class="demo-page" id="mainContent">
+  <h2 style="color:#0066ff; font-size:2rem;">✅ AURA Shop Loaded!</h2>
+  <p style="margin-top:12px; color:#666;">Tumhari website yahan hogi</p>
+</div>
+
+<script>
+  // ── LOADER HIDE LOGIC ──
+  // Page load hone ke baad loader hide hoga
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('aura-loader');
+      const content = document.getElementById('mainContent');
+
+      loader.classList.add('hide');
+      if (content) content.classList.add('show');
+
+      // DOM se completely remove karo
+      setTimeout(() => loader.remove(), 700);
+    }, 2800); // 2.8 second — adjust kar sakte ho
+  });
+</script>
+
+</body>
+</html>

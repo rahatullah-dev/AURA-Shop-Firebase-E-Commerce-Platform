@@ -91,7 +91,7 @@ export async function createOrder(cartItems, orderDetails, coupon = null) {
       couponCode: coupon ? coupon.code : null,
       couponId: coupon ? coupon.id : null,
       paymentMethod: orderDetails.paymentMethod,
-      paymentStatus: 'paid', // Simulated
+      paymentStatus: orderDetails.paymentMethod === 'card' ? 'pending' : 'paid', // Set status based on method
       status: 'confirmed',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Shop – Your Premium Online Store</title>
+  <meta name="description" content="Aura Shop is a modern, premium online store platform with an elegant UI and seamless shopping experience." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-h: 260;   /* hue for purple gradient */
+      --primary-s: 80%;
+      --primary-l: 55%;
+      --bg-gradient: linear-gradient(135deg, hsl(var(--primary-h), var(--primary-s), 70%), hsl(calc(var(--primary-h) + 30), var(--primary-s), 50%));
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.3);
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg-gradient);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+    .card {
+      backdrop-filter: blur(12px);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 2rem 3rem;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    h1 {
+      margin: 0 0 1rem;
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+    p {
+      margin: 0 0 1.5rem;
+      line-height: 1.5;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.35);
+      transform: translateY(-2px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary-l: 45%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome to Aura Shop</h1>
+    <p>Explore a premium, sleek shopping experience crafted for modern shoppers.</p>
+    <a href="#" class="btn">Enter Store</a>
+  </div>
+</body>
+</html>

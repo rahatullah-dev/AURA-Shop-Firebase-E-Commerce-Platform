@@ -191,7 +191,8 @@
       document.getElementById('ship-name').textContent = ship.name;
       document.getElementById('ship-line1').textContent = ship.street;
       document.getElementById('ship-line2').textContent = `${ship.city}, ${ship.state} ${ship.zip}`;
-      document.getElementById('payment-method').textContent = order.paymentMethod === 'cod' ? 'Cash on Delivery' : 'Credit Card';
+      const pmLabels = { cod: 'Cash on Delivery', card: 'Credit / Debit Card', easypaisa: 'EasyPaisa', jazzcash: 'JazzCash', bank: 'Bank Transfer' };
+      document.getElementById('payment-method').textContent = pmLabels[order.paymentMethod] || order.paymentMethod;
 
       // Totals
       document.getElementById('sum-subtotal').textContent = `$${order.subtotal.toFixed(2)}`;

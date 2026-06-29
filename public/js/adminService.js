@@ -21,7 +21,7 @@ const CLOUDINARY_UPLOAD_PRESET = 'e-commerce'; // unsigned upload preset configu
  * Redirects to admin login if not.
  * @returns {Promise<object>} user object with profile data
  */
-export async function requireAdmin(redirectUrl = '/admin/login.html') {
+export async function requireAdmin(redirectUrl = 'login.html') {
   const user = await getCurrentUser();
   if (!user) {
     console.log('requireAdmin: No user, redirecting to login');
@@ -383,4 +383,161 @@ function generateSlug(name) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
     .substring(0, 60);
+}
+
+// ══════════════════════════════════════════════════════════
+// ADVANCED ANALYTICS (Phase 1, 2, 3)
+// ══════════════════════════════════════════════════════════
+
+export async function getAdvancedAnalytics() {
+  const [usersSnap, productsSnap, ordersSnap] = await Promise.all([
+    getDocs(collection(db, 'users')),
+    getDocs(collection(db, 'products')),
+    getDocs(collection(db, 'orders'))
+  ]);
+
+  const users = usersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const products = productsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+  const orders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  // Helper to parse Firebase timestamp
+  const parseDate = (val) => val && val.toDate ? val.toDate() : new Date(val);
+
+  // 1. Customers Data
+  const totalCustomers = users.length;
+  let newCustomersThisMonth = 0;
+  users.forEach(u => {
+    if (u.createdAt) {
+      const d = parseDate(u.createdAt);
+      if (d >= startOfMonth) newCustomersThisMonth++;
+    }
+  });
+
+  // 2. Revenue Data
+  let todaysRevenue = 0;
+  let monthlyRevenue = 0;
+  
+  // Chart Aggregation Map
+  const chartData = {
+    daily: { labels: [], data: [] },
+    weekly: { labels: [], data: [] },
+    monthly: { labels: [], data: [] }
+  };
+  
+  // Prepare Daily (Last 7 days)
+  for(let i=6; i>=0; i--) {
+    let d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+    chartData.daily.labels.push(d.toLocaleDateString('en-US', {weekday: 'short'}));
+    chartData.daily.data.push(0);
+  }
+
+  // Prepare Weekly (Last 4 weeks)
+  for(let i=3; i>=0; i--) {
+    chartData.weekly.labels.push(`Week ${i === 0 ? 'Current' : '-' + i}`);
+    chartData.weekly.data.push(0);
+  }
+  
+  // Prepare Monthly (Last 6 months)
+  for(let i=5; i>=0; i--) {
+    let d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    chartData.monthly.labels.push(d.toLocaleDateString('en-US', {month: 'short'}));
+    chartData.monthly.data.push(0);
+  }
+
+  // Orders Aggregation
+  const validOrders = orders.filter(o => o.status !== 'cancelled');
+  
+  validOrders.forEach(o => {
+    if (!o.createdAt) return;
+    const d = parseDate(o.createdAt);
+    const amount = o.total || 0;
+    
+    if (d >= startOfDay) todaysRevenue += amount;
+    if (d >= startOfMonth) monthlyRevenue += amount;
+    
+    // Daily
+    const diffDays = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+    if (diffDays >= 0 && diffDays < 7) {
+      chartData.daily.data[6 - diffDays] += amount;
+    }
+
+    // Weekly
+    const diffWeeks = Math.floor(diffDays / 7);
+    if (diffWeeks >= 0 && diffWeeks < 4) {
+      chartData.weekly.data[3 - diffWeeks] += amount;
+    }
+    
+    // Monthly
+    const diffMonths = (now.getFullYear() - d.getFullYear()) * 12 + (now.getMonth() - d.getMonth());
+    if (diffMonths >= 0 && diffMonths < 6) {
+      chartData.monthly.data[5 - diffMonths] += amount;
+    }
+  });
+  
+  // 3. Top Products
+  const productSales = {};
+  validOrders.forEach(o => {
+    if (o.items && Array.isArray(o.items)) {
+      o.items.forEach(item => {
+        const id = item.productId || item.id;
+        if (!productSales[id]) productSales[id] = { qty: 0, revenue: 0, name: item.name, image: item.image || item.thumbnail };
+        productSales[id].qty += item.quantity || 1;
+        productSales[id].revenue += (item.price || 0) * (item.quantity || 1);
+      });
+    }
+  });
+  
+  const topProducts = Object.values(productSales)
+    .sort((a, b) => b.qty - a.qty)
+    .slice(0, 4);
+
+  // 4. Activity Feed
+  const activities = [];
+  orders.forEach(o => {
+    if (o.createdAt) {
+      activities.push({
+        type: 'order',
+        date: parseDate(o.createdAt),
+        title: 'New Order Created',
+        desc: `Order #${o.id.substring(0,8)} by ${o.customer?.name || 'Customer'}`
+      });
+    }
+    if (o.updatedAt && o.status) {
+      activities.push({
+        type: 'status',
+        date: parseDate(o.updatedAt),
+        title: 'Order Status Changed',
+        desc: `Order #${o.id.substring(0,8)} status updated to ${o.status}`
+      });
+    }
+  });
+  
+  products.forEach(p => {
+    if (p.createdAt) {
+      activities.push({
+        type: 'product',
+        date: parseDate(p.createdAt),
+        title: 'Product Added',
+        desc: `New product: ${p.name}`
+      });
+    }
+  });
+  
+  const recentActivity = activities
+    .sort((a, b) => b.date - a.date)
+    .slice(0, 4);
+
+  return {
+    totalCustomers,
+    newCustomersThisMonth,
+    todaysRevenue,
+    monthlyRevenue,
+    chartData,
+    topProducts,
+    recentActivity
+  };
 }
