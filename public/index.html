@@ -7,7 +7,7 @@
   <meta name="description"
     content="AURA – Your premium online shopping destination for electronics, fashion, skincare and more. Free shipping on orders above $50.">
   <title>AURA – Shop Premium Products Online</title>
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="./assets/images/faviconA.png" />
   <link rel="apple-touch-icon" href="./favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -537,7 +537,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 280px;
       gap: 20px;
-      align-items: start;
+      align-items: stretch;
     }
 
     /* -- Hero Sidebar -- */
@@ -731,7 +731,7 @@
       top: 0;
       bottom: 0;
       width: 60px;
-      background: linear-gradient(to right, var(--slide-bg, #1e3a5f), transparent);
+      /* background: linear-gradient(to right, var(--slide-bg, #1e3a5f), transparent); */
       z-index: 1;
     }
 
@@ -864,6 +864,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      height: 100%;
     }
 
     .promo-card {
@@ -876,6 +877,7 @@
       transition: transform var(--tr), box-shadow var(--tr);
       overflow: hidden;
       position: relative;
+      flex: 1;
     }
 
     .promo-card:hover {
@@ -1985,7 +1987,7 @@
     }
 
     .testimonials-section h2 {
-      font-size: clamp(24px, 4vw, 38px);
+      /* font-size: clamp(24px, 4vw, 38px);  */
       font-weight: 800;
       color: var(--dark);
       line-height: 1.15;
@@ -3357,7 +3359,7 @@
 
     .loader-logo img {
       width: 280px;
-      filter: drop-shadow(0 0 18px #0066ffaa) drop-shadow(0 0 40px #0066ff55);
+      /* filter: drop-shadow(0 0 18px #0066ffaa) drop-shadow(0 0 40px #0066ff55); */
       animation: glowBreath 2s ease-in-out infinite;
     }
 
@@ -3498,7 +3500,7 @@
 
     <div class="loader-logo">
       <!-- apni logo image ka path yahan daalo -->
-      <img src="./assets/images/logo2.png" alt="AURA">
+      <img src="./assets/images/logo2-removebg-preview.png" alt="AURA">
     </div>
 
     <div class="loader-bar-wrap">
@@ -3750,7 +3752,7 @@
             </div>
           </div>
           <div class="slide-img-area">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=85"
+            <img src="./assets/images/herobg2.png"
               alt="Smartwatch">
             <div class="slide-discount">FROM $149</div>
           </div>
@@ -3780,7 +3782,7 @@
             </div>
           </div>
           <div class="slide-img-area">
-            <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=900&q=85"
+            <img src="./assets/images/herobg3.png"
               alt="Trail Runner Shoes">
             <div class="slide-discount">-25% OFF</div>
           </div>
@@ -3811,7 +3813,7 @@
             </div>
           </div>
           <div class="slide-img-area">
-            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85"
+            <img src="./assets/images/herobg4.png"
               alt="Pro Camera">
             <div class="slide-discount">-25% OFF</div>
           </div>
@@ -3844,7 +3846,7 @@
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg></span>
         </div>
-        <img src="assets/images/Simple_Pic/Headphone.jpg" class="promo-img" alt="Headphones">
+        <img src="assets/images/Headphonee.png" class="promo-img" alt="Headphones">
       </a>
       <a class="promo-card promo-2" href="products.html?category=electronics">
         <div class="promo-content">
@@ -3855,7 +3857,7 @@
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg></span>
         </div>
-        <img src="assets/images/Simple_Pic/SMartWatch.jpg" class="promo-img" alt="Smartwatch">
+        <img src="assets/images/smartywatch.png" class="promo-img" alt="Smartwatch">
       </a>
       <a class="promo-card promo-3" href="products.html?category=skincare">
         <div class="promo-content">
@@ -3866,7 +3868,7 @@
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg></span>
         </div>
-        <img src="assets/images/Simple_Pic/Perfume.jpg" class="promo-img" alt="Skincare">
+        <img src="assets/images/perfumey.png" class="promo-img" alt="Skincare">
       </a>
     </div>
   </section>
@@ -4211,7 +4213,7 @@
     <div class="section-header">
       <div class="t-badge">Testimonials</div>
       <h2>What Our <span>Customers</span> Say</h2>
-      <p class="t-subtitle">Real reviews from real Aura shoppers around the world.</p>
+      <!-- <p class="t-subtitle">Real reviews from real Aura shoppers around the world.</p> -->
     </div>
 
     <div class="t-slider-outer">
@@ -4282,7 +4284,7 @@
             </div>
             <p class="t-quote">Excellent service and incredibly fast delivery. A total game-changer for online shopping.
               I will definitely be ordering again very soon!</p>
-            <div class="t-avatar"><img src="./assets/images/testimonial images/TestimonialImage (1).png"
+            <div class="t-avatar"><img src="./assets/images/testimonial images/TestimonialIma(2).png"
                 alt="Michael P." onerror="this.style.display='none';this.parentElement.textContent='M'"></div>
             <div class="t-name">Michael P.</div>
             <div class="t-location">New York, NY</div>
