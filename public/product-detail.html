@@ -730,34 +730,50 @@
     }
   };
 
-  window.handleAddToCart = () => {
+  window.handleAddToCart = async () => {
     if (!currentProduct) return;
-    const qty = parseInt(document.getElementById('qty').value);
     
-    // Add to localStorage cart
-    let cart = JSON.parse(localStorage.getItem('aura_cart') || '[]');
-    // Use variant specific ID if sizes/colors matter, using simple id for now
-    const cartItemId = `${currentProduct.id}-${selectedSize}-${selectedColor}`;
-    
-    const existing = cart.find(i => i.cartItemId === cartItemId);
-    const displayPrice = currentProduct.salePrice || currentProduct.price;
-    
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({
-        id: currentProduct.id,
-        cartItemId,
-        name: currentProduct.name,
-        price: displayPrice,
-        qty: qty,
-        thumbnail: currentProduct.thumbnail,
-        options: { size: selectedSize, color: selectedColor }
-      });
+    // Check if user is authenticated
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        // User not logged in - show toast and redirect to login
+        window.showToast('⚠️ Please login to add items to cart.');
+        setTimeout(() => window.location.href = 'auth/login.html?redirect=product-detail', 1500);
+        return;
+      }
+
+      // User is authenticated - proceed with adding to cart
+      const qty = parseInt(document.getElementById('qty').value);
+      
+      // Add to localStorage cart
+      let cart = JSON.parse(localStorage.getItem('aura_cart') || '[]');
+      // Use variant specific ID if sizes/colors matter, using simple id for now
+      const cartItemId = `${currentProduct.id}-${selectedSize}-${selectedColor}`;
+      
+      const existing = cart.find(i => i.cartItemId === cartItemId);
+      const displayPrice = currentProduct.salePrice || currentProduct.price;
+      
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          cartItemId,
+          name: currentProduct.name,
+          price: displayPrice,
+          qty: qty,
+          thumbnail: currentProduct.thumbnail,
+          options: { size: selectedSize, color: selectedColor }
+        });
+      }
+      
+      localStorage.setItem('aura_cart', JSON.stringify(cart));
+      window.showToast(`🛒 Added ${qty} × ${currentProduct.name} to cart!`);
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      window.showToast('❌ Error adding to cart.');
     }
-    
-    localStorage.setItem('aura_cart', JSON.stringify(cart));
-    window.showToast(`🛒 Added ${qty} × ${currentProduct.name} to cart!`);
   };
 
   loadProduct();

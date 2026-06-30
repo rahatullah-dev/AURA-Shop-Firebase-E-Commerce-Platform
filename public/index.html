@@ -4992,29 +4992,44 @@
     }
 
     // ── ADD TO CART ─────────────────────────────────
-    window.addToCartHome = (id, name, price, thumbnail, btn) => {
-      let cart = JSON.parse(localStorage.getItem('aura_cart') || '[]');
-      const key = id || name;
-      const existing = cart.find(i => (i.cartItemId === key) || (i.id === key) || (i.name === name));
-      if (existing) { existing.qty++; }
-      else { cart.push({ id: id || key, cartItemId: key, name, price, qty: 1, thumbnail }); }
-      localStorage.setItem('aura_cart', JSON.stringify(cart));
-      updateCartBadge();
-      showToast(`🛒 ${name} added to cart!`);
+    window.addToCartHome = async (id, name, price, thumbnail, btn) => {
+      // Check if user is authenticated
+      try {
+        const user = auth.currentUser;
+        if (!user) {
+          // User not logged in - show toast and redirect to login
+          window.showToast('⚠️ Please login to add items to cart.');
+          setTimeout(() => window.location.href = 'auth/login.html?redirect=index', 1500);
+          return;
+        }
 
-      if (btn) {
-        const orig = btn.innerHTML;
-        const origBg = btn.style.background;
-        btn.innerHTML = '✓ Added!';
-        btn.style.background = '#16a34a';
-        btn.style.color = '#fff';
-        btn.disabled = true;
-        setTimeout(() => {
-          btn.innerHTML = orig;
-          btn.style.background = origBg;
-          btn.style.color = '';
-          btn.disabled = false;
-        }, 1500);
+        // User is authenticated - proceed with adding to cart
+        let cart = JSON.parse(localStorage.getItem('aura_cart') || '[]');
+        const key = id || name;
+        const existing = cart.find(i => (i.cartItemId === key) || (i.id === key) || (i.name === name));
+        if (existing) { existing.qty++; }
+        else { cart.push({ id: id || key, cartItemId: key, name, price, qty: 1, thumbnail }); }
+        localStorage.setItem('aura_cart', JSON.stringify(cart));
+        updateCartBadge();
+        showToast(`🛒 ${name} added to cart!`);
+
+        if (btn) {
+          const orig = btn.innerHTML;
+          const origBg = btn.style.background;
+          btn.innerHTML = '✓ Added!';
+          btn.style.background = '#16a34a';
+          btn.style.color = '#fff';
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.style.background = origBg;
+            btn.style.color = '';
+            btn.disabled = false;
+          }, 1500);
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        window.showToast('❌ Error adding to cart.');
       }
     };
 

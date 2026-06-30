@@ -1,0 +1,270 @@
+<!-- ═══════════════════════════════════════════════════════════════
+     AURA – Authentication Gate Modal
+     Displays when guest users try to add to cart/wishlist
+     ════════════════════════════════════════════════════════════════ -->
+
+<div id="authGateModal" class="auth-gate-modal" style="display: none;">
+  <div class="auth-gate-overlay"></div>
+  <div class="auth-gate-content">
+    <!-- Close Button -->
+    <button id="authGateClose" class="auth-gate-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <!-- Modal Header -->
+    <div class="auth-gate-header">
+      <div class="auth-gate-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      </div>
+      <h2 class="auth-gate-title">Login or Create an Account</h2>
+      <p class="auth-gate-message" id="authGateMessage">
+        Please login or register to continue.
+      </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="auth-gate-actions">
+      <a href="auth/login.html" class="auth-gate-btn auth-gate-btn-primary" id="authGateLoginBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+          <polyline points="10 17 15 12 10 7" />
+          <line x1="15" y1="12" x2="3" y2="12" />
+        </svg>
+        Login
+      </a>
+      <a href="auth/register.html" class="auth-gate-btn auth-gate-btn-secondary" id="authGateRegisterBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="8.5" cy="7" r="4" />
+          <line x1="20" y1="8" x2="20" y2="14" />
+          <line x1="23" y1="11" x2="17" y2="11" />
+        </svg>
+        Create Account
+      </a>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="auth-gate-footer">
+      <p>After logging in, your action will continue automatically.</p>
+    </div>
+  </div>
+</div>
+
+<style>
+.auth-gate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: authGateFadeIn 0.2s ease-out;
+}
+
+@keyframes authGateFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-gate-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.auth-gate-content {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 480px;
+  width: 90%;
+  padding: 40px 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: authGateSlideUp 0.3s ease-out;
+}
+
+@keyframes authGateSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.auth-gate-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f1f5f9;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748b;
+}
+
+.auth-gate-close:hover {
+  background: #e2e8f0;
+  color: #334155;
+  transform: rotate(90deg);
+}
+
+.auth-gate-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.auth-gate-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.auth-gate-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: #ffffff;
+}
+
+.auth-gate-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.auth-gate-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+
+.auth-gate-message {
+  font-size: 1rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.auth-gate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.auth-gate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-gate-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.auth-gate-btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.auth-gate-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.auth-gate-btn-primary:active {
+  transform: translateY(0);
+}
+
+.auth-gate-btn-secondary {
+  background: #f8fafc;
+  color: #2563eb;
+  border: 2px solid #e2e8f0;
+}
+
+.auth-gate-btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.auth-gate-btn-secondary:active {
+  transform: translateY(0);
+}
+
+.auth-gate-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.auth-gate-footer p {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .auth-gate-content {
+    padding: 32px 24px;
+    width: 95%;
+  }
+
+  .auth-gate-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-gate-message {
+    font-size: 0.9375rem;
+  }
+
+  .auth-gate-btn {
+    padding: 12px 20px;
+    font-size: 0.9375rem;
+  }
+}
+</style>

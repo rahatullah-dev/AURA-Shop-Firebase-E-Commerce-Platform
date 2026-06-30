@@ -180,5 +180,11 @@ service cloud.firestore {
       allow create, delete: if isStaff();
     }
 
+    // ── ADMIN NOTIFICATION STATE ──────────────────────────────────────────────
+    match /adminNotificationState/{adminId} {
+      // Admins can read and write their own notification state
+      allow read, write: if isOwner(adminId) && isAdmin();
+    }
+
   }
 }

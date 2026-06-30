@@ -136,11 +136,15 @@ export async function fetchDerivedNotifications() {
  */
 export async function loadNotifications() {
   try {
+    console.log('[Notifications] Loading notifications...');
+    
     // Get stored read state from Firebase
     const readStateMap = await getNotificationReadState();
+    console.log('[Notifications] Read state from Firebase:', readStateMap);
     
     // Fetch fresh notifications
     const freshNotifs = await fetchDerivedNotifications();
+    console.log('[Notifications] Fresh notifications count:', freshNotifs.length);
     
     // Apply the stored read state to fresh notifications
     freshNotifs.forEach(fn => {
@@ -150,6 +154,9 @@ export async function loadNotifications() {
       }
       // Otherwise, it stays as false (new unread notification)
     });
+    
+    const unreadCount = freshNotifs.filter(n => !n.read).length;
+    console.log('[Notifications] Unread count:', unreadCount);
     
     // Render the notifications
     renderNotifications(freshNotifs);
@@ -227,6 +234,8 @@ export function renderNotifications(notifications) {
  */
 export async function markRead(id) {
   try {
+    console.log('[Notifications] Marking as read:', id);
+    
     // Get current notifications from global variable
     let notifs = window.currentNotifications || [];
     const item = notifs.find(n => n.id === id);
@@ -242,8 +251,12 @@ export async function markRead(id) {
         }
       });
       
+      console.log('[Notifications] Saving read state:', readState);
+      
       // Save to Firebase
       await saveNotificationReadState(readState);
+      
+      console.log('[Notifications] Saved successfully');
       
       // Re-render
       renderNotifications(notifs);
