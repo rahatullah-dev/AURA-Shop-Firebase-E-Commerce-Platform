@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <defs>
+    <style>
+      .jazzcash-red { fill: #ef4444; }
+      .jazzcash-text { fill: #991b1b; font-family: Arial, sans-serif; font-weight: bold; }
+    </style>
+  </defs>
+  <!-- Red background shape -->
+  <rect x="0" y="0" width="200" height="60" rx="8" fill="#ef4444"/>
+  <!-- JazzCash text -->
+  <text x="100" y="38" class="jazzcash-text" font-size="24" text-anchor="middle" fill="white">JazzCash</text>
+</svg>

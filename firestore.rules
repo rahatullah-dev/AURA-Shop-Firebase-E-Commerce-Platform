@@ -59,8 +59,12 @@ service cloud.firestore {
       // Published products are publicly readable; unpublished only for staff
       allow read: if resource.data.isPublished == true || isStaff();
 
-      // Only staff can create/update/delete products
-      allow write: if isStaff();
+      // Staff can create/update/delete products
+      // Authenticated users can update stock field only (for order transactions)
+      allow create, delete: if isStaff();
+      allow update: if isStaff() 
+                    || (isAuth() 
+                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']));
 
       // Variants subcollection — same rules as parent product
       match /variants/{variantId} {
@@ -106,7 +110,12 @@ service cloud.firestore {
                        get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
                        || isStaff()
                      );
-        allow write: if isStaff();
+        // Allow timeline writes from: staff OR the order owner during order creation
+        allow create: if isAuth() && (
+                        isStaff()
+                        || get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
+                      );
+        allow update, delete: if isStaff();
       }
     }
 
