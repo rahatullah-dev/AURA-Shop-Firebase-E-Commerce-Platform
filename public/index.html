@@ -1964,12 +1964,18 @@
 
     /* ═══════ TESTIMONIALS ═══════ */
     .testimonials-section {
-      padding: 72px 24px;
+      padding: 72px clamp(16px, 3vw, 40px);
       background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%);
     }
 
+    .testimonials-section > * {
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .testimonials-section .section-header {
-      text-align: center;
+      text-align: left;
       margin-bottom: 48px;
     }
 
@@ -4211,9 +4217,11 @@
   <!-- ═══════ TESTIMONIALS ═══════ -->
   <section class="testimonials-section" id="testimonials">
     <div class="section-header">
-      <div class="t-badge">Testimonials</div>
-      <h2>What Our <span>Customers</span> Say</h2>
-      <!-- <p class="t-subtitle">Real reviews from real Aura shoppers around the world.</p> -->
+      <div>
+        <div class="section-eyebrow">Testimonials</div>
+        <h2 class="section-title">What Our <span>Customers</span> Say</h2>
+        <!-- <p class="section-sub">Real reviews from real Aura shoppers around the world.</p> -->
+      </div>
     </div>
 
     <div class="t-slider-outer">
