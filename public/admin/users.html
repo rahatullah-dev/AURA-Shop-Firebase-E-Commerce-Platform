@@ -12,6 +12,151 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/admin.css" />
+  
+  <!-- Users Page Specific Styles -->
+  <style>
+    .icon-btn {
+      background: transparent;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--admin-light);
+      flex-shrink: 0;
+    }
+    
+    .icon-btn:hover {
+      background: var(--admin-bg);
+      color: var(--admin-accent);
+      transform: translateY(-1px);
+    }
+    
+    .icon-btn:active {
+      transform: translateY(0);
+    }
+    
+    .icon-btn svg {
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+    }
+    
+    .icon-btn[title="Block"]:hover {
+      color: var(--admin-red);
+      background: rgba(239, 68, 68, 0.1);
+    }
+    
+    .icon-btn[title="Unblock"]:hover {
+      color: var(--admin-green);
+      background: rgba(34, 197, 94, 0.1);
+    }
+    
+    /* Fix table actions column */
+    .users-table td:last-child {
+      white-space: nowrap;
+      width: 140px;
+      min-width: 140px;
+    }
+    
+    .users-table td:last-child > div {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    
+    /* Fix modal positioning - display in center/right, above sidebar */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 1;
+    }
+    
+    .modal-content {
+      position: relative;
+      background: var(--admin-surface);
+      border-radius: var(--admin-radius);
+      padding: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+      max-width: 90%;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+    
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--admin-border);
+    }
+    
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: var(--admin-dark);
+    }
+    
+    .modal-close {
+      background: var(--admin-bg);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--admin-light);
+      transition: all 0.2s;
+    }
+    
+    .modal-close:hover {
+      background: var(--admin-red);
+      color: #fff;
+      transform: rotate(90deg);
+    }
+    
+    .modal-close svg {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
 </head>
 
 <body>
@@ -281,7 +426,7 @@
         <!-- USERS TABLE -->
         <div class="admin-table-wrap" style="margin-top:24px;">
           <div style="overflow-x:auto;">
-            <table class="admin-table">
+            <table class="admin-table users-table">
               <thead>
                 <tr>
                   <th style="width:40px;">
@@ -390,6 +535,8 @@
   <script type="module">
     import { requireAdmin } from '../js/adminService.js';
     import { logout } from '../js/auth.js';
+    import { db } from '../firebase-config.js';
+    import { collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
     import {
       getAllUsers,
       getUserStats,
@@ -458,14 +605,36 @@
     // Load Users
     async function loadUsers() {
       try {
+        // Show loading state
+        const tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:40px;">
+          <div class="loading-spinner" style="margin:0 auto 12px;"></div>
+          <div style="color:var(--admin-light);">Loading users...</div>
+        </td></tr>`;
+
         allUsers = await getAllUsers();
         
-        // Enrich with order stats
-        for (let user of allUsers) {
-          const stats = await getUserOrderStats(user.id);
+        // Fetch ALL orders once (much faster than per-user queries)
+        const ordersSnap = await getDocs(collection(db, 'orders'));
+        const allOrders = ordersSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        // Calculate stats for each user from all orders
+        const orderStatsByUser = {};
+        allOrders.forEach(order => {
+          if (!order.userId) return;
+          if (!orderStatsByUser[order.userId]) {
+            orderStatsByUser[order.userId] = { totalOrders: 0, totalSpent: 0 };
+          }
+          orderStatsByUser[order.userId].totalOrders++;
+          orderStatsByUser[order.userId].totalSpent += (order.total || 0);
+        });
+        
+        // Enrich users with order stats
+        allUsers.forEach(user => {
+          const stats = orderStatsByUser[user.id] || { totalOrders: 0, totalSpent: 0 };
           user.totalOrders = stats.totalOrders;
           user.totalSpent = stats.totalSpent;
-        }
+        });
         
         filteredUsers = [...allUsers];
         applyFilters();
