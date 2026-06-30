@@ -1,4 +1,61 @@
 import { getAllOrders, getAllProducts } from './adminService.js';
+import { db } from '../firebase-config.js';
+import { doc, getDoc, setDoc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getCurrentUser } from './auth.js';
+
+let currentAdminId = null;
+
+/**
+ * Initialize the current admin user ID
+ */
+async function initCurrentAdmin() {
+  if (!currentAdminId) {
+    const user = await getCurrentUser();
+    if (user) {
+      currentAdminId = user.uid;
+    }
+  }
+  return currentAdminId;
+}
+
+/**
+ * Get notification read state from Firebase
+ */
+async function getNotificationReadState() {
+  try {
+    const adminId = await initCurrentAdmin();
+    if (!adminId) return {};
+    
+    const docRef = doc(db, 'adminNotificationState', adminId);
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      return docSnap.data().readNotifications || {};
+    }
+    return {};
+  } catch (error) {
+    console.error('Error getting notification read state:', error);
+    return {};
+  }
+}
+
+/**
+ * Save notification read state to Firebase
+ */
+async function saveNotificationReadState(readNotifications) {
+  try {
+    const adminId = await initCurrentAdmin();
+    if (!adminId) return;
+    
+    const docRef = doc(db, 'adminNotificationState', adminId);
+    await setDoc(docRef, {
+      readNotifications: readNotifications,
+      lastUpdated: new Date()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error saving notification read state:', error);
+  }
+}
 
 /**
  * Derives notifications from existing collections.
@@ -75,26 +132,31 @@ export async function fetchDerivedNotifications() {
 }
 
 /**
- * Loads notifications into the UI and handles localStorage persistence.
+ * Loads notifications into the UI and handles Firebase persistence.
  */
 export async function loadNotifications() {
-  const localData = localStorage.getItem('adminNotifications');
-  let currentNotifs = localData ? JSON.parse(localData) : [];
-  
-  // Fetch fresh ones and merge keeping the "read" state
-  const freshNotifs = await fetchDerivedNotifications();
-  
-  freshNotifs.forEach(fn => {
-    const existing = currentNotifs.find(cn => cn.id === fn.id);
-    if (existing) {
-      fn.read = existing.read;
-    }
-  });
-
-  currentNotifs = freshNotifs;
-  localStorage.setItem('adminNotifications', JSON.stringify(currentNotifs));
-  
-  renderNotifications(currentNotifs);
+  try {
+    // Get stored read state from Firebase
+    const readStateMap = await getNotificationReadState();
+    
+    // Fetch fresh notifications
+    const freshNotifs = await fetchDerivedNotifications();
+    
+    // Apply the stored read state to fresh notifications
+    freshNotifs.forEach(fn => {
+      // If we have a stored read state for this notification, use it
+      if (readStateMap[fn.id] === true) {
+        fn.read = true;
+      }
+      // Otherwise, it stays as false (new unread notification)
+    });
+    
+    // Render the notifications
+    renderNotifications(freshNotifs);
+  } catch (error) {
+    console.error('Error loading notifications:', error);
+    renderNotifications([]);
+  }
 }
 
 /**
@@ -105,6 +167,9 @@ export function renderNotifications(notifications) {
   const badge = document.getElementById('notifBadge');
   
   if (!dropdown || !badge) return;
+
+  // Store notifications in a global variable for access by mark functions
+  window.currentNotifications = notifications;
 
   const unreadCount = notifications.filter(n => !n.read).length;
   
@@ -134,7 +199,7 @@ export function renderNotifications(notifications) {
     }
 
     return `
-      <div class="notif-item ${n.read ? 'read' : ''}" data-id="${n.id}" style="display:flex; gap:12px; padding:14px 20px; border-bottom:1px solid #f1f5f9; cursor:pointer; transition:background 0.15s; background:${n.read ? '#f8fafc' : '#ffffff'};">
+      <div class="notif-item ${n.read ? 'read' : ''}" data-id="${n.id}" style="display:flex; gap:12px; padding:14px 20px; border-bottom:1px solid #f1f5f9; cursor:pointer; transition:background 0.15s; background:${n.read ? '#f8fafc' : '#ffffff'};" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='${n.read ? '#f8fafc' : '#ffffff'}'">
         <div style="width:36px; height:36px; border-radius:50%; background:${iconColor}18; color:${iconColor}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
           <div style="width:8px;height:8px;border-radius:50%;background:currentColor;"></div>
         </div>
@@ -160,32 +225,87 @@ export function renderNotifications(notifications) {
 /**
  * Marks a specific notification as read.
  */
-export function markRead(id) {
-  let notifs = JSON.parse(localStorage.getItem('adminNotifications') || '[]');
-  const item = notifs.find(n => n.id === id);
-  if (item) {
-    item.read = true;
-    localStorage.setItem('adminNotifications', JSON.stringify(notifs));
-    renderNotifications(notifs);
+export async function markRead(id) {
+  try {
+    // Get current notifications from global variable
+    let notifs = window.currentNotifications || [];
+    const item = notifs.find(n => n.id === id);
+    
+    if (item && !item.read) {
+      item.read = true;
+      
+      // Build readState object from all notifications
+      const readState = {};
+      notifs.forEach(n => {
+        if (n.read) {
+          readState[n.id] = true;
+        }
+      });
+      
+      // Save to Firebase
+      await saveNotificationReadState(readState);
+      
+      // Re-render
+      renderNotifications(notifs);
+    }
+  } catch (error) {
+    console.error('Error marking notification as read:', error);
   }
 }
 
 /**
  * Marks all notifications as read.
  */
-export function markAllRead() {
-  let notifs = JSON.parse(localStorage.getItem('adminNotifications') || '[]');
-  notifs.forEach(n => n.read = true);
-  localStorage.setItem('adminNotifications', JSON.stringify(notifs));
-  renderNotifications(notifs);
+export async function markAllRead() {
+  try {
+    // Get current notifications from global variable
+    let notifs = window.currentNotifications || [];
+    
+    // Mark all as read
+    notifs.forEach(n => n.read = true);
+    
+    // Build readState object
+    const readState = {};
+    notifs.forEach(n => {
+      readState[n.id] = true;
+    });
+    
+    // Save to Firebase
+    await saveNotificationReadState(readState);
+    
+    // Re-render
+    renderNotifications(notifs);
+  } catch (error) {
+    console.error('Error marking all notifications as read:', error);
+  }
 }
 
 /**
  * Removes all read (seen) notifications from the list.
  */
-export function clearReadNotifications() {
-  let notifs = JSON.parse(localStorage.getItem('adminNotifications') || '[]');
-  const unread = notifs.filter(n => !n.read);
-  localStorage.setItem('adminNotifications', JSON.stringify(unread));
-  renderNotifications(unread);
+export async function clearReadNotifications() {
+  try {
+    // Get current notifications from global variable
+    let notifs = window.currentNotifications || [];
+    
+    // Keep only unread
+    const unread = notifs.filter(n => !n.read);
+    
+    // Build readState object (only unread ones will have their state preserved)
+    // Read notifications are effectively "cleared" by not including them
+    const readState = {};
+    unread.forEach(n => {
+      if (n.read) {
+        readState[n.id] = true;
+      }
+    });
+    
+    // Save to Firebase
+    await saveNotificationReadState(readState);
+    
+    // Re-render
+    renderNotifications(unread);
+  } catch (error) {
+    console.error('Error clearing read notifications:', error);
+  }
 }
