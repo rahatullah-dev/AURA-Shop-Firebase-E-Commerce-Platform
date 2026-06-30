@@ -127,6 +127,22 @@
         </div>
         <div class="admin-topbar-actions" style="display:flex; align-items:center; gap:16px; position:relative;">
           
+          <!-- Search Bar -->
+          <div class="admin-search-wrapper" style="position: relative;">
+            <div class="admin-search" style="display:flex; align-items:center; background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:10px; padding:0 12px; transition:border-color 0.22s cubic-bezier(0.4,0,0.2,1); width:280px;">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="width:15px; height:15px; color:#94a3b8; flex-shrink:0;">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input type="text" placeholder="Search products, orders..." id="adminSearchInput" autocomplete="off" style="border:none; background:none; outline:none; padding:9px 8px; font-size:.84rem; font-family:'Outfit',sans-serif; color:#0f172a; width:100%;">
+            </div>
+            <div class="admin-search-suggestions" id="adminSearchSuggestions" style="position:absolute; top:100%; left:0; right:0; background:#ffffff; border:1px solid #e2e8f0; border-top:none; border-radius:0 0 10px 10px; max-height:400px; overflow-y:auto; margin-top:-1px; box-shadow:0 8px 24px rgba(15,23,42,0.12); z-index:1000; display:none;">
+              <div style="padding:12px 16px; border-bottom:1px solid #f8fafc; cursor:pointer; transition:background 0.22s; font-size:.84rem;">
+                <!-- Suggestions will be populated here -->
+              </div>
+            </div>
+          </div>
+
           <!-- Message Center -->
           <div class="msg-wrapper" style="position: relative; display: flex; align-items: center;">
             <a href="messages.html" id="msgBtn" style="background:none; border:none; color:var(--admin-light); cursor:pointer; padding:4px; position:relative; display:block;">
@@ -651,6 +667,47 @@
 
     if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
     if(overlay) overlay.addEventListener('click', toggleMenu);
+
+    // ── ADMIN SEARCH FUNCTIONALITY ─────────────────────
+    const adminSearchInput = document.getElementById('adminSearchInput');
+    const adminSearchSuggestions = document.getElementById('adminSearchSuggestions');
+
+    if (adminSearchInput && adminSearchSuggestions) {
+      // Focus styling
+      adminSearchInput.parentElement.addEventListener('focusin', function() {
+        this.style.borderColor = '#2563eb';
+      });
+      
+      adminSearchInput.parentElement.addEventListener('focusout', function() {
+        this.style.borderColor = '#e2e8f0';
+      });
+
+      // Search functionality (placeholder for now - can be expanded)
+      adminSearchInput.addEventListener('input', async function() {
+        const query = this.value.trim().toLowerCase();
+        
+        if (query.length < 2) {
+          adminSearchSuggestions.style.display = 'none';
+          return;
+        }
+
+        // Show loading state
+        adminSearchSuggestions.innerHTML = '<div style="padding:16px;text-align:center;color:#94a3b8;font-size:.84rem;">Searching...</div>';
+        adminSearchSuggestions.style.display = 'block';
+
+        // Simulate search results (you can expand this to search products, orders, etc.)
+        setTimeout(() => {
+          adminSearchSuggestions.innerHTML = '<div style="padding:16px;text-align:center;color:#94a3b8;font-size:.84rem;">No results found</div>';
+        }, 300);
+      });
+
+      // Close suggestions when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.admin-search-wrapper')) {
+          adminSearchSuggestions.style.display = 'none';
+        }
+      });
+    }
 
   </script>
   <script src="../js/darkmode.js"></script>
