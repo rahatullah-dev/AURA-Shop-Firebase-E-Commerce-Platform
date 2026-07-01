@@ -92,15 +92,23 @@ export async function createOrder(cartItems, orderDetails, coupon = null) {
       couponId: coupon ? coupon.id : null,
       paymentMethod: orderDetails.paymentMethod,
       paymentStatus: orderDetails.paymentMethod === 'card' ? 'pending' : 'paid', // Set status based on method
-      status: 'confirmed',
+      status: 'processing',
       createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      confirmedAt: serverTimestamp()
+      updatedAt: serverTimestamp()
     };
 
     // Write Order
     const orderRef = doc(db, 'orders', orderId);
     transaction.set(orderRef, orderData);
+
+    // Add initial timeline event inside transaction
+    const timelineRef = doc(db, `orders/${orderId}/timeline`, doc(collection(db, 'timeline')).id);
+    transaction.set(timelineRef, {
+      status: 'processing',
+      message: 'Your order has been placed and is being processed.',
+      actor: 'system',
+      createdAt: serverTimestamp()
+    });
 
     // Update Coupon usage if applicable
     if (coupon) {
@@ -113,15 +121,7 @@ export async function createOrder(cartItems, orderDetails, coupon = null) {
 
   }); // End Transaction
 
-  // 2. Add Timeline Event (Outside transaction for simplicity, or could be batched)
-  await setDoc(doc(db, `orders/${orderId}/timeline`, doc(collection(db, 'timeline')).id), {
-    status: 'confirmed',
-    message: 'Your order has been confirmed and is being processed.',
-    actor: 'system',
-    createdAt: serverTimestamp()
-  });
-
-  // 3. Clear Cart
+  // 2. Clear Cart
   await clearCartFull();
 
   return { orderId, orderNumber };

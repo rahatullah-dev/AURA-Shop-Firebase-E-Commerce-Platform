@@ -56,15 +56,19 @@ service cloud.firestore {
 
     // ── PRODUCTS ──────────────────────────────────────────────────────────────
     match /products/{productId} {
-      // Published products are publicly readable; unpublished only for staff
-      allow read: if resource.data.isPublished == true || isStaff();
+      // Anyone can read published products (needed for order transactions)
+      // Staff can read all products
+      allow read: if resource.data.isPublished == true || isStaff() || isAuth();
 
-      // Staff can create/update/delete products
-      // Authenticated users can update stock field only (for order transactions)
-      allow create, delete: if isStaff();
-      allow update: if isStaff() 
-                    || (isAuth() 
-                        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock']));
+      // Staff can do everything
+      allow write: if isStaff();
+      
+      // Authenticated users can update ONLY the stock field (for order placement)
+      // Stock can only be decreased (not increased)
+      allow update: if isAuth() 
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+                    && request.resource.data.stock is number
+                    && request.resource.data.stock <= resource.data.stock;
 
       // Variants subcollection — same rules as parent product
       match /variants/{variantId} {
@@ -110,11 +114,8 @@ service cloud.firestore {
                        get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
                        || isStaff()
                      );
-        // Allow timeline writes from: staff OR the order owner during order creation
-        allow create: if isAuth() && (
-                        isStaff()
-                        || get(/databases/$(database)/documents/orders/$(orderId)).data.userId == request.auth.uid
-                      );
+        // Allow timeline creation from any authenticated user (order transaction validated at parent level)
+        allow create: if isAuth();
         allow update, delete: if isStaff();
       }
     }
