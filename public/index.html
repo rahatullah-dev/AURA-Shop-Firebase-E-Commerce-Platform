@@ -102,6 +102,14 @@
         <div class="search-suggestions" id="searchSuggestions"></div>
       </div>
 
+      <!-- Mobile Search Button -->
+      <button class="icon-btn mobile-search-btn" aria-label="Search" id="mobileSearchTrigger" style="display:none;">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </button>
+
       <a href="wishlist.html" class="icon-btn" aria-label="Wishlist">
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path
@@ -503,11 +511,11 @@
   <!-- ═══════ CATEGORY SHOWCASE ═══════ -->
   <section class="section">
     <div class="section-header">
-      <!-- <div>
+      <div>
         <div class="section-eyebrow">Shop by Category</div>
         <h2 class="section-title">Popular Categories</h2>
         <div class="section-sub">Discover products across our most popular categories</div>
-      </div> -->
+      </div>
       
     </div>
     <div class="cat-showcase-grid">
@@ -547,16 +555,16 @@
   </section>
 
   <!-- ═══════ TRENDING PRODUCTS ═══════ -->
-  <section class="tp-wrapper" id="trending-products" style="margin: 60px auto;">
+  <!-- ═══════ TRENDING PRODUCTS ═══════ -->
+  <section class="tp-wrapper trending-product" id="trending-products">
     <div class="tp-header">
       <div class="tp-title-col">
         <div class="tp-eyebrow">Trending Now</div>
         <h2 class="tp-title">Trending Products</h2>
-        <p class="tp-subtitle">Most popular products this week</p>
       </div>
       <a href="products.html" class="tp-view-all">View All
-        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="16" height="16">
-          <path d="M9 18l6-6-6-6" />
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
       </a>
     </div>
@@ -1135,34 +1143,82 @@
   </section>
 
   <!-- ═══════ PAYMENT OPTIONS ═══════ -->
+  <!-- ═══════ PAYMENT OPTIONS ═══════ -->
   <section class="payment-section">
     <div class="payment-header">
       <div class="payment-eyebrow">We Accept</div>
       <h2 class="payment-title">Secure Payment Options</h2>
       <p class="payment-subtitle">Shop with confidence using our secure payment methods</p>
     </div>
-    <div class="payment-grid">
-      <div class="payment-card"><img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZnSZrFrCPZmzBLLpSc_I-nq4omxnCF-1PzR0Cq-mI6Q&s=10"
-          alt="Visa" loading="lazy"></div>
-      <div class="payment-card"><img src="https://images.icon-icons.com/1178/PNG/512/mastercard_82049.png"
-          alt="Mastercard" loading="lazy"></div>
-      <div class="payment-card"><img
-          src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg"
-          alt="American Express" loading="lazy"></div>
-      <div class="payment-card"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"
-          loading="lazy"></div>
-      <div class="payment-card"><img
-          src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe"
-          loading="lazy"></div>
-      <div class="payment-card"><img
-          src="./assets/images/jazzcash.png"
-          alt="JazzCash" loading="lazy" style="transform: scale(1.3);"></div>
-      <div class="payment-card"><img
-          src="./assets/images/easypaisa.png"
-          alt="Easypaisa" loading="lazy" style="transform: scale(1.4);"></div>
+    <div class="payment-carousel-wrapper">
+      <button class="payment-nav-btn payment-prev" id="paymentPrev" aria-label="Previous payments">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+      <div class="payment-grid" id="paymentGrid">
+        <div class="payment-card"><img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZnSZrFrCPZmzBLLpSc_I-nq4omxnCF-1PzR0Cq-mI6Q&s=10"
+            alt="Visa" loading="lazy"></div>
+        <div class="payment-card"><img src="https://images.icon-icons.com/1178/PNG/512/mastercard_82049.png"
+            alt="Mastercard" loading="lazy"></div>
+        <div class="payment-card"><img
+            src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg"
+            alt="American Express" loading="lazy"></div>
+        <div class="payment-card"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"
+            loading="lazy"></div>
+        <div class="payment-card"><img
+            src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" alt="Stripe"
+            loading="lazy"></div>
+        <div class="payment-card"><img
+            src="./assets/images/jazzcash.png"
+            alt="JazzCash" loading="lazy" style="transform: scale(1.3);"></div>
+        <div class="payment-card"><img
+            src="./assets/images/easypaisa.png"
+            alt="Easypaisa" loading="lazy" style="transform: scale(1.4);"></div>
+      </div>
+      <button class="payment-nav-btn payment-next" id="paymentNext" aria-label="Next payments">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
     </div>
   </section>
+
+  <script>
+    // Payment carousel navigation
+    (function() {
+      const paymentGrid = document.getElementById('paymentGrid');
+      const prevBtn = document.getElementById('paymentPrev');
+      const nextBtn = document.getElementById('paymentNext');
+
+      if (!paymentGrid || !prevBtn || !nextBtn) return;
+
+      function updateButtons() {
+        const scrollLeft = paymentGrid.scrollLeft;
+        const maxScroll = paymentGrid.scrollWidth - paymentGrid.clientWidth;
+        
+        prevBtn.style.opacity = scrollLeft > 0 ? '1' : '0.3';
+        prevBtn.style.pointerEvents = scrollLeft > 0 ? 'auto' : 'none';
+        
+        nextBtn.style.opacity = scrollLeft < maxScroll - 1 ? '1' : '0.3';
+        nextBtn.style.pointerEvents = scrollLeft < maxScroll - 1 ? 'auto' : 'none';
+      }
+
+      prevBtn.addEventListener('click', function() {
+        paymentGrid.scrollBy({ left: -250, behavior: 'smooth' });
+      });
+
+      nextBtn.addEventListener('click', function() {
+        paymentGrid.scrollBy({ left: 250, behavior: 'smooth' });
+      });
+
+      paymentGrid.addEventListener('scroll', updateButtons);
+      window.addEventListener('resize', updateButtons);
+      
+      updateButtons();
+    })();
+  </script>
 
   <!-- ═══════ FOOTER ═══════ -->
   <footer class="footer">
@@ -1992,6 +2048,140 @@
       tInit();
       tStartAuto();
     })();
+  </script>
+
+  <!-- ═══════ MOBILE BOTTOM NAVIGATION ═══════ -->
+  <nav class="mobile-bottom-nav" aria-label="Mobile navigation">
+    <div class="mobile-nav-content">
+      <a href="index.html" class="mobile-nav-item active">
+        <div class="mobile-nav-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          </svg>
+        </div>
+        <span class="mobile-nav-label">Home</span>
+      </a>
+      <a href="products.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+        </div>
+        <span class="mobile-nav-label">Categories</span>
+      </a>
+      <a href="order-summary.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1" />
+            <circle cx="20" cy="21" r="1" />
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          </svg>
+          <span class="mobile-nav-badge" id="mobileCartBadge" style="display:none;">0</span>
+        </div>
+        <span class="mobile-nav-label">Cart</span>
+      </a>
+      <a href="wishlist.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          <span class="mobile-nav-badge" id="mobileWishlistBadge" style="display:none;">0</span>
+        </div>
+        <span class="mobile-nav-label">Wishlist</span>
+      </a>
+      <a href="my-account.html" class="mobile-nav-item" id="mobileAccountLink">
+        <div class="mobile-nav-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </div>
+        <span class="mobile-nav-label">Account</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══════ MOBILE SEARCH OVERLAY ═══════ -->
+  <div class="mobile-search-overlay" id="mobileSearchOverlay"></div>
+  <div class="mobile-search-panel" id="mobileSearchPanel">
+    <div class="mobile-search-header">
+      <button class="mobile-search-back" id="mobileSearchBack" aria-label="Close search">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <div class="mobile-search-input-wrap">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" placeholder="Search products..." id="mobileSearchInput" autocomplete="off">
+      </div>
+    </div>
+    <div class="mobile-search-suggestions" id="mobileSearchSuggestions"></div>
+  </div>
+
+  <script>
+    // Mobile Search Functionality
+    const mobileSearchBtn = document.getElementById('mobileSearchTrigger');
+    const mobileSearchOverlay = document.getElementById('mobileSearchOverlay');
+    const mobileSearchPanel = document.getElementById('mobileSearchPanel');
+    const mobileSearchBack = document.getElementById('mobileSearchBack');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+
+    function openMobileSearch() {
+      mobileSearchOverlay.classList.add('active');
+      mobileSearchPanel.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => mobileSearchInput.focus(), 300);
+    }
+
+    function closeMobileSearch() {
+      mobileSearchOverlay.classList.remove('active');
+      mobileSearchPanel.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileSearchBtn) {
+      mobileSearchBtn.addEventListener('click', openMobileSearch);
+    }
+
+    if (mobileSearchBack) {
+      mobileSearchBack.addEventListener('click', closeMobileSearch);
+    }
+
+    if (mobileSearchOverlay) {
+      mobileSearchOverlay.addEventListener('click', closeMobileSearch);
+    }
+
+    // Sync mobile cart badge with desktop
+    function updateMobileCartBadge() {
+      const desktopBadge = document.getElementById('cartCount');
+      const mobileBadge = document.getElementById('mobileCartBadge');
+      if (desktopBadge && mobileBadge) {
+        const count = desktopBadge.textContent;
+        mobileBadge.textContent = count;
+        mobileBadge.style.display = count > 0 ? 'flex' : 'none';
+      }
+    }
+
+    // Update on page load and when cart changes
+    updateMobileCartBadge();
+    setInterval(updateMobileCartBadge, 1000);
+
+    // Active nav item highlighting
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+      const href = item.getAttribute('href');
+      if (href && (currentPath.includes(href) || (href === 'index.html' && currentPath === '/'))) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
   </script>
 </body>
 
