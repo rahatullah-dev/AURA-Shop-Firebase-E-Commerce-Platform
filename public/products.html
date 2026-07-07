@@ -1307,6 +1307,13 @@
 
     // ── WISHLIST ───────────────────────────────────────────
     window.toggleWishlistBtn = async (btn, id) => {
+      // Check login first using auth directly (faster than going through wishlistService)
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        showToast('⚠️ Please login to save to wishlist.');
+        setTimeout(() => window.location.href = 'auth/login.html?redirect=products', 1500);
+        return;
+      }
       try {
         const added = await toggleWishlistService(id);
         if (added) {
@@ -1323,8 +1330,8 @@
           showToast('⚠️ Please login to save to wishlist.');
           setTimeout(() => window.location.href = 'auth/login.html?redirect=products', 1500);
         } else {
-          console.error(err);
-          showToast('❌ Error updating wishlist.');
+          console.error('Wishlist error:', err);
+          showToast('❌ Error updating wishlist: ' + (err.code || err.message));
         }
       }
     };
