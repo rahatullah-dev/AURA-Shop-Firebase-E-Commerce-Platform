@@ -2130,16 +2130,23 @@
 
       /* ═══ CATEGORY STRIP MOBILE ═══ */
       .cat-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        overflow-x: visible;
         margin: 20px auto;
         padding: 0 16px;
-        gap: 12px;
+        gap: 10px;
       }
 
       .cat-chip {
         flex-direction: column;
-        gap: 8px;
-        padding: 12px 16px;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 6px;
         border-radius: 10px;
+        white-space: normal;
+        min-width: 0;
       }
 
       .cat-chip-icon {
@@ -2147,6 +2154,7 @@
         height: 32px;
         border-radius: 8px;
         font-size: 0.9rem;
+        flex-shrink: 0;
       }
 
       .cat-chip-icon svg {
@@ -2155,10 +2163,11 @@
       }
 
       .cat-chip-label {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         white-space: normal;
         text-align: center;
         line-height: 1.2;
+        word-break: break-word;
       }
 
       /* ═══ FEATURE BAR MOBILE ═══ */
