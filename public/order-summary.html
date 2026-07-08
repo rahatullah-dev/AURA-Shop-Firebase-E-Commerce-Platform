@@ -80,6 +80,24 @@
     .toast.error{border-left-color:var(--red)}
 
     @media(max-width:860px){.page-wrap{grid-template-columns:1fr}}
+    @media(max-width:520px){
+      body { overflow-x: hidden; }
+      .page-wrapper { padding: 16px 12px 80px; }
+      .cart-header { padding: 16px; font-size: 1.1rem; }
+      .cart-item { padding: 16px; gap: 12px; position: relative; flex-wrap: wrap; align-items: flex-start; }
+      .item-img { width: 70px; height: 70px; }
+      .item-details { flex: 1 1 calc(100% - 82px); }
+      .item-name { font-size: 0.9rem; padding-right: 28px; }
+      .item-meta { font-size: 0.75rem; }
+      .item-price { font-size: 0.95rem; }
+      .qty-wrap { margin-left: 82px; height: 32px; margin-top: -10px;}
+      .qty-btn { width: 30px; font-size: 1rem; }
+      .qty-val { width: 36px; font-size: 0.85rem; }
+      .delete-btn { position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; }
+      .delete-btn svg { width: 16px; height: 16px; }
+      .summary-col { padding: 20px 16px; }
+      .summary-title { font-size: 1.1rem; margin-bottom: 16px; }
+    }
   /* ═══════ MOBILE BOTTOM NAVIGATION ═══════ */
   .mobile-bottom-nav {
     display: none;
