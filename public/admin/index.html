@@ -129,8 +129,8 @@
 
     <!-- MAIN CONTENT -->
     <main class="admin-main">
-      <div class="admin-topbar">
-        <div style="display:flex;align-items:center;gap:12px;">
+      <div class="admin-topbar dashboard-topbar">
+        <div style="display:flex;align-items:center;gap:12px;" class="topbar-left">
           <button class="mobile-menu-btn" id="menuBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="3" y1="12" x2="21" y2="12" />
@@ -138,7 +138,7 @@
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <h1>Dashboard Overview</h1>
+          <h1 class="page-title">Dashboard Overview</h1>
         </div>
         <div class="admin-topbar-actions" style="display:flex; align-items:center; gap:16px; position:relative;">
           
@@ -202,22 +202,23 @@
       </div>
 
       <div class="admin-content">
-        <!-- STATS GRID -->
-        <div class="stat-grid" id="statsGrid">
-          <div class="stat-card">
-            <div class="stat-icon blue">
-              <div class="loading-spinner"></div>
+        <div class="stats-wrapper">
+          <!-- STATS GRID -->
+          <div class="stat-grid" id="statsGrid">
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <div class="loading-spinner"></div>
+              </div>
+              <div class="stat-info">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">...</div>
+              </div>
             </div>
-            <div class="stat-info">
-              <div class="stat-label">Total Revenue</div>
-              <div class="stat-value">...</div>
-            </div>
+            <!-- More stats loaded via JS -->
           </div>
-          <!-- More stats loaded via JS -->
-        </div>
 
-        <!-- ADVANCED STATS GRID -->
-        <div class="stat-grid" id="advStatsGrid" style="margin-top:24px;">
+          <!-- ADVANCED STATS GRID -->
+          <div class="stat-grid" id="advStatsGrid">
            <div class="stat-card">
             <div class="stat-icon green">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
@@ -255,6 +256,7 @@
             </div>
           </div>
         </div>
+        </div>
 
         <div class="analytics-grid">
            <div class="chart-panel">
@@ -278,6 +280,7 @@
              <div id="topProductsContainer">
                <div class="loading-spinner"></div>
              </div>
+             <a href="products.html" class="panel-footer-link">View All Products</a>
            </div>
         </div>
 
@@ -289,6 +292,7 @@
              <ul class="activity-feed" id="activityFeedContainer">
                <div class="loading-spinner"></div>
              </ul>
+             <a href="orders.html" class="panel-footer-link">View All Activity</a>
            </div>
         </div>
 
@@ -318,6 +322,53 @@
       </div>
     </main>
 
+    <!-- MOBILE BOTTOM NAV -->
+    <nav class="mobile-bottom-nav">
+      <a href="index.html" class="active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="5" rx="1"></rect>
+          <rect x="14" y="12" width="7" height="9" rx="1"></rect>
+          <rect x="3" y="16" width="7" height="5" rx="1"></rect>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="orders.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <path d="M16 10a4 4 0 0 1-8 0"></path>
+        </svg>
+        <span>Orders</span>
+        <span class="nav-badge" id="bottomNavPendingOrders" style="display:none">0</span>
+      </a>
+      <a href="products.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+          <line x1="7" y1="7" x2="7.01" y2="7"></line>
+        </svg>
+        <span>Products</span>
+      </a>
+      <a href="categories.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"></line>
+          <line x1="8" y1="12" x2="21" y2="12"></line>
+          <line x1="8" y1="18" x2="21" y2="18"></line>
+          <line x1="3" y1="6" x2="3.01" y2="6"></line>
+          <line x1="3" y1="12" x2="3.01" y2="12"></line>
+          <line x1="3" y1="18" x2="3.01" y2="18"></line>
+        </svg>
+        <span>Categories</span>
+      </a>
+      <a href="#" id="mobileMoreBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="2"></circle>
+          <circle cx="19" cy="12" r="2"></circle>
+          <circle cx="5" cy="12" r="2"></circle>
+        </svg>
+        <span>More</span>
+      </a>
+    </nav>
   </div>
 
   <script type="module">
@@ -414,11 +465,17 @@
         
         // Update nav badge
         const pendingBadge = document.getElementById('navPendingOrders');
+        const bottomPendingBadge = document.getElementById('bottomNavPendingOrders');
         if (stats.pendingOrders > 0) {
           pendingBadge.textContent = stats.pendingOrders;
           pendingBadge.style.display = 'inline-block';
+          if (bottomPendingBadge) {
+            bottomPendingBadge.textContent = stats.pendingOrders;
+            bottomPendingBadge.style.display = 'inline-flex';
+          }
         } else {
           pendingBadge.style.display = 'none';
+          if (bottomPendingBadge) bottomPendingBadge.style.display = 'none';
         }
 
         const grid = document.getElementById('statsGrid');
@@ -682,6 +739,14 @@
 
     if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
     if(overlay) overlay.addEventListener('click', toggleMenu);
+
+    const mobileMoreBtn = document.getElementById('mobileMoreBtn');
+    if (mobileMoreBtn) {
+      mobileMoreBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleMenu();
+      });
+    }
 
     // ── ADMIN SEARCH FUNCTIONALITY ─────────────────────
     const adminSearchInput = document.getElementById('adminSearchInput');
