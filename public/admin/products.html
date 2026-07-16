@@ -118,35 +118,41 @@
     <!-- MAIN CONTENT -->
     <main class="admin-main">
       <div class="admin-topbar products-topbar">
-        <!-- Row 1: menu | brand | search-icon | add-btn -->
-        <button class="mobile-menu-btn prod-menu-btn" id="menuBtn">
+        <!-- Mobile Menu -->
+        <button class="mobile-menu-btn" id="menuBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
         </button>
-
-        <div class="prod-brand">
+        
+        <!-- Brand (Mobile only) -->
+        <div class="mobile-brand" style="display:none; align-items:center; gap:8px;">
           <div class="sidebar-brand-icon" style="width:32px;height:32px;font-size:14px;border-radius:8px;">A</div>
-          <div class="prod-brand-text">Aura<span>Admin Panel</span></div>
+          <div class="sidebar-brand-text" style="font-size:14px;">Aura<span style="font-size:9px;">Admin Panel</span></div>
+        </div>
+        
+        <!-- Page Title -->
+        <h1 class="page-title">Products</h1>
+
+        <!-- Search Bar -->
+        <div class="admin-search" style="width:100%; max-width:400px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search products..." style="width:100%;" />
         </div>
 
-        <button class="btn-icon prod-search-icon" onclick="document.getElementById('searchInput').focus()">
+        <!-- Mobile search toggle -->
+        <button class="btn-icon mobile-search-toggle" style="display:none;" onclick="document.getElementById('searchInput').focus()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
-
-        <button class="btn btn-primary prod-add-btn" onclick="openProductModal()">
+        
+        <!-- Add Button (Desktop) -->
+        <button class="btn btn-primary desktop-add-btn" onclick="openProductModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Product
+        </button>
+        
+        <!-- Add Button (Mobile) -->
+        <button class="btn btn-primary btn-icon mobile-add-btn" style="display:none;" onclick="openProductModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-
-        <!-- Row 2: title -->
-        <h1 class="prod-page-title page-title">Products</h1>
-
-        <!-- Row 3: search bar -->
-        <div class="prod-search-bar admin-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="searchInput" placeholder="Search products..." />
-        </div>
-
-        <!-- keep old actions div empty for desktop (desktop uses its own layout) -->
-        <div class="admin-topbar-actions" style="display:none;"></div>
       </div>
 
 

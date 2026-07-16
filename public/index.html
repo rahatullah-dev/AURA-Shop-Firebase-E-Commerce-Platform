@@ -2183,6 +2183,823 @@
       }
     });
   </script>
+
+  <!-- ═══════ BACK TO TOP BUTTON ═══════ -->
+  <button id="backToTopBtn" aria-label="Back to Top" title="Back to Top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <style>
+    /* Back to Top Button */
+    #backToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--dark, #0f172a);
+      color: var(--gold, #f59e0b);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+    
+    #backToTopBtn.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    
+    #backToTopBtn:hover {
+      transform: scale(1.08) translateY(0);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+      border-color: rgba(245, 158, 11, 0.8);
+    }
+
+    #backToTopBtn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 768px) {
+      #backToTopBtn {
+        bottom: 80px;
+        right: 16px;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 300) {
+            backToTopBtn.classList.add('show');
+          } else {
+            backToTopBtn.classList.remove('show');
+          }
+        }, { passive: true });
+
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+    });
+  </script>
+
+  <!-- ═══════ CONTACT US FLOATING BUTTON & MODAL ═══════ -->
+  <button id="contactUsBtn" aria-label="Contact Us" title="Contact Us">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+  </button>
+
+  <div id="contactModal" class="contact-modal" style="display: none;">
+    <div class="contact-overlay" id="contactOverlay"></div>
+    <div class="contact-content" id="contactContent" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <button id="contactClose" class="contact-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+      
+      <div class="contact-header">
+        <div class="contact-icon blue" id="contactMainIcon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <h2 class="contact-title" id="contactMainTitle">Contact Us via Email</h2>
+        <p class="contact-message" id="contactMainMessage">We'd love to hear from you. Send us a message!</p>
+
+        <div class="contact-tabs">
+          <button class="contact-tab active" data-tab="email" data-color="blue" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Email
+          </button>
+          <button class="contact-tab" data-tab="whatsapp" data-color="green" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            WhatsApp
+          </button>
+          <button class="contact-tab" data-tab="call" data-color="gold" type="button">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            Call
+          </button>
+        </div>
+      </div>
+      
+      <div class="contact-body">
+        <div id="tabContentEmail" class="contact-tab-content active">
+          <form id="contactForm" class="contact-form">
+            <div class="contact-field">
+              <input type="text" id="contactName" name="name" required placeholder="Full Name" class="contact-input" />
+            </div>
+            <div class="contact-field">
+              <input type="email" id="contactEmail" name="email" required placeholder="Email Address" class="contact-input" />
+              <span id="contactEmailError" class="contact-error">Please enter a valid email address.</span>
+            </div>
+            <div class="contact-field">
+              <input type="text" id="contactSubject" name="subject" required placeholder="Subject" class="contact-input" />
+            </div>
+            <div class="contact-field">
+              <textarea id="contactMessage" name="message" required placeholder="Your Message" rows="4" class="contact-input textarea-input"></textarea>
+            </div>
+            <button type="submit" id="contactSubmitBtn" class="contact-btn contact-btn-primary">
+              Send Message
+            </button>
+          </form>
+          
+          <div id="contactSuccess" class="contact-success" style="display: none;">
+            Message sent successfully! We will get back to you soon.
+          </div>
+        </div>
+
+        <div id="tabContentWhatsapp" class="contact-tab-content" style="display: none;">
+          <div class="contact-info-card">
+            <div class="info-card-icon whatsapp">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            </div>
+            <h3 class="info-card-title">Chat with us on WhatsApp</h3>
+            <p class="info-card-desc">Click the button below to start a conversation with us instantly.</p>
+            <div class="info-card-detail">
+              +92 321 9955370
+            </div>
+            <a href="https://wa.me/923219955370" target="_blank" rel="noopener noreferrer" class="contact-btn contact-btn-whatsapp">
+              Open WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div id="tabContentCall" class="contact-tab-content" style="display: none;">
+          <div class="contact-info-card">
+            <div class="info-card-icon call">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </div>
+            <h3 class="info-card-title">Phone Number</h3>
+            <div class="info-card-detail" style="margin-bottom: 16px;">
+              +92 321 9955370
+            </div>
+            <h3 class="info-card-title" style="font-size: 1rem;">Business Hours</h3>
+            <div class="info-card-detail" style="font-size: 0.9375rem; font-weight: 400;">
+              Monday - Saturday <span>10:00 AM – 7:00 PM</span>
+            </div>
+            <a href="tel:+923219955370" class="contact-btn contact-btn-call">
+              Call Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* Floating Contact Button */
+    #contactUsBtn {
+      position: fixed;
+      bottom: 88px; /* Above back to top */
+      right: 20px;
+      z-index: 9998;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--dark, #0f172a);
+      color: var(--accent, #2563eb);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    #contactUsBtn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+      border-color: rgba(37, 99, 235, 0.8);
+    }
+
+    #contactUsBtn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    @media (max-width: 768px) {
+      #contactUsBtn {
+        bottom: 148px;
+        right: 16px;
+      }
+    }
+
+    /* Contact Modal (Mirrors Auth Gate Modal) */
+    .contact-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: contactFadeIn 0.2s ease-out;
+    }
+
+    @keyframes contactFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .contact-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .contact-content {
+      position: relative;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      max-width: 440px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+      animation: contactSlideUp 0.3s ease-out;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes contactSlideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .contact-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .contact-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      transform: rotate(90deg);
+    }
+
+    .contact-close svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .contact-header {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .contact-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 8px;
+      margin-right: -8px;
+    }
+
+    .contact-body::-webkit-scrollbar {
+      width: 4px;
+    }
+    .contact-body::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+    .contact-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    .contact-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .contact-icon.blue {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.8) 0%, rgba(29, 78, 216, 0.8) 100%);
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+    }
+    .contact-icon.green {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.8) 0%, rgba(21, 128, 61, 0.8) 100%);
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+    }
+    .contact-icon.gold {
+      background: linear-gradient(135deg, rgba(234, 179, 8, 0.8) 0%, rgba(161, 98, 7, 0.8) 100%);
+      box-shadow: 0 8px 24px rgba(234, 179, 8, 0.3);
+    }
+
+    /* Tabs Navigation */
+    .contact-tabs {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 4px;
+      margin-top: 16px;
+      margin-bottom: 8px;
+      gap: 4px;
+    }
+
+    .contact-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 4px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .contact-tab:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-tab.active[data-color="blue"] {
+      background: rgba(37, 99, 235, 0.2);
+      border-color: rgba(37, 99, 235, 0.5);
+      color: #3b82f6;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    .contact-tab.active[data-color="green"] {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: rgba(34, 197, 94, 0.5);
+      color: #4ade80;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .contact-tab.active[data-color="gold"] {
+      background: rgba(234, 179, 8, 0.2);
+      border-color: rgba(234, 179, 8, 0.5);
+      color: #facc15;
+      box-shadow: 0 0 12px rgba(234, 179, 8, 0.3);
+    }
+
+    .contact-tab-content {
+      animation: tabFadeIn 0.3s ease-out;
+    }
+
+    @keyframes tabFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* WhatsApp & Call Info Cards */
+    .contact-info-card {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .info-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: #ffffff;
+    }
+
+    .info-card-icon.whatsapp {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .info-card-icon.call {
+      background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+      box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+    }
+
+    .info-card-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 0 0 8px;
+    }
+
+    .info-card-desc {
+      font-size: 0.9375rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0 0 20px;
+      line-height: 1.5;
+    }
+    
+    .info-card-detail {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .info-card-detail span {
+      display: block;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+      margin-top: 4px;
+    }
+
+    .contact-btn-whatsapp {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+    .contact-btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .contact-btn-call {
+      background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(234, 179, 8, 0.3);
+    }
+    .contact-btn-call:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(234, 179, 8, 0.4);
+    }
+
+    .contact-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .contact-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin: 0 0 4px;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-message {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-field {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.2);
+      font-family: 'Outfit', sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    
+    .contact-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .contact-input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .textarea-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .contact-error {
+      color: #ef4444;
+      font-size: 0.875rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+    }
+
+    .contact-btn-primary {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .contact-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .contact-btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .contact-btn-primary:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .contact-success {
+      background: #dcfce7;
+      color: #16a34a;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 640px) {
+      .contact-content {
+        padding: 16px;
+        width: 95%;
+      }
+      .contact-title {
+        font-size: 1.25rem;
+      }
+      .contact-message {
+        font-size: 0.875rem;
+      }
+      .contact-tab {
+        padding: 8px 2px;
+        font-size: 0.85rem;
+      }
+      .contact-info-card {
+        padding: 16px;
+      }
+      .info-card-title {
+        font-size: 1rem;
+      }
+      .info-card-detail {
+        font-size: 1rem;
+        margin-bottom: 16px;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="./js/emailjs-config.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactUsBtn = document.getElementById('contactUsBtn');
+      const contactModal = document.getElementById('contactModal');
+      const contactOverlay = document.getElementById('contactOverlay');
+      const contactClose = document.getElementById('contactClose');
+      const contactForm = document.getElementById('contactForm');
+      const contactEmail = document.getElementById('contactEmail');
+      const contactEmailError = document.getElementById('contactEmailError');
+      const contactSubmitBtn = document.getElementById('contactSubmitBtn');
+      const contactSuccess = document.getElementById('contactSuccess');
+      
+      let previousFocus = null;
+
+      const tabData = {
+        email: {
+          title: "Contact Us via Email",
+          message: "We'd love to hear from you. Send us a message!",
+          iconClass: "blue",
+          iconSvg: '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>'
+        },
+        whatsapp: {
+          title: "Contact Us on WhatsApp",
+          message: "We're online! Chat with us for quick support.",
+          iconClass: "green",
+          iconSvg: '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>'
+        },
+        call: {
+          title: "Contact Us by Call",
+          message: "Speak with our support team. We're here to help!",
+          iconClass: "gold",
+          iconSvg: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>'
+        }
+      };
+
+      const contactMainTitle = document.getElementById('contactMainTitle');
+      const contactMainMessage = document.getElementById('contactMainMessage');
+      const contactMainIcon = document.getElementById('contactMainIcon');
+      const contactMainIconSvg = contactMainIcon.querySelector('svg');
+      const contactTabs = document.querySelectorAll('.contact-tab');
+      const contactTabContents = document.querySelectorAll('.contact-tab-content');
+
+      function switchTab(tabId) {
+        contactTabs.forEach(tab => {
+          if (tab.dataset.tab === tabId) tab.classList.add('active');
+          else tab.classList.remove('active');
+        });
+
+        contactTabContents.forEach(content => {
+          if (content.id === `tabContent${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`) {
+            content.style.display = 'block';
+          } else {
+            content.style.display = 'none';
+          }
+        });
+
+        const data = tabData[tabId];
+        contactMainTitle.textContent = data.title;
+        contactMainMessage.textContent = data.message;
+        contactMainIcon.className = `contact-icon ${data.iconClass}`;
+        contactMainIconSvg.innerHTML = data.iconSvg;
+      }
+
+      contactTabs.forEach(tab => {
+        tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+      });
+
+      function openContactModal() {
+        previousFocus = document.activeElement;
+        contactModal.style.display = 'flex';
+        contactForm.style.display = 'flex';
+        contactSuccess.style.display = 'none';
+        contactForm.reset();
+        contactSubmitBtn.disabled = false;
+        contactSubmitBtn.textContent = 'Send Message';
+        contactEmailError.style.display = 'none';
+        
+        switchTab('email');
+        
+        const focusableElements = contactModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        if (focusableElements.length > 0) {
+          setTimeout(() => focusableElements[1].focus(), 100); 
+        }
+      }
+
+      function closeContactModal() {
+        contactModal.style.display = 'none';
+        if (previousFocus) {
+          previousFocus.focus();
+        }
+      }
+
+      if (contactUsBtn) contactUsBtn.addEventListener('click', openContactModal);
+      if (contactClose) contactClose.addEventListener('click', closeContactModal);
+      if (contactOverlay) contactOverlay.addEventListener('click', closeContactModal);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactModal.style.display === 'flex') {
+          closeContactModal();
+        }
+      });
+      
+      contactModal.addEventListener('keydown', function(e) {
+        if (e.key === 'Tab') {
+          const focusableElements = contactModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+          if (focusableElements.length === 0) return;
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              lastElement.focus();
+              e.preventDefault();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              firstElement.focus();
+              e.preventDefault();
+            }
+          }
+        }
+      });
+
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const emailVal = contactEmail.value.trim();
+          if (!validateEmail(emailVal)) {
+            contactEmailError.style.display = 'block';
+            contactEmail.focus();
+            return;
+          }
+          
+          contactEmailError.style.display = 'none';
+          contactSubmitBtn.disabled = true;
+          contactSubmitBtn.textContent = 'Sending...';
+
+          if (typeof emailjs === 'undefined') {
+            alert('Email service is currently unavailable. Please try again later.');
+            contactSubmitBtn.disabled = false;
+            contactSubmitBtn.textContent = 'Send Message';
+            return;
+          }
+
+          emailjs.sendForm(emailjsConfig.SERVICE_ID, emailjsConfig.TEMPLATE_ID, contactForm)
+            .then(() => {
+              contactForm.style.display = 'none';
+              contactSuccess.style.display = 'block';
+              
+              setTimeout(() => {
+                closeContactModal();
+              }, 3000);
+            }, (error) => {
+              console.error('EmailJS Error:', error);
+              alert('Failed to send message. Please try again.');
+              contactSubmitBtn.disabled = false;
+              contactSubmitBtn.textContent = 'Send Message';
+            });
+        });
+        
+        contactEmail.addEventListener('input', () => {
+          contactEmailError.style.display = 'none';
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
